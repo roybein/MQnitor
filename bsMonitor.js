@@ -5,29 +5,34 @@ Router.route('/', function () {
 Router.route('/monitor');
 
 Router.route('/setup');
-/*
-if (Meteor.isClient) {
-	Template.main.helpers({
-		sensors: [
-			{
-				id: "0001",
-				name: "Sensor 1",
-				value: "24",
-				desciption: "connect with kettle",
-				check:	"True",
-			 },
-			{
-				id: "0002",
-				name: "Sensor 2",
-				value: "56",
-				desciption: "connect with Fireplace",
-				check:	"False",
-			}
-		]
+
+Sensors = new Mongo.Collection("sensors");
+DigitalIputs = new Mongo.Collection("digitalIputs");
+AnalogInputs = new Mongo.Collection("analogInputs");
+Relays = new Mongo.Collection("relays");
+
+
+if(Meteor.isClient) {
+	Template.monitor.helpers({
+		sensors: function() {
+			return Sensors.find({});
+		},
+
+		digitalIputs: function() {
+			return DigitalIputs.find({});
+		},
+
+		analogInputs: function() {
+			return AnalogInputs.find({});
+		},
+
+		relays: function() {
+			return Relays.find({});
+		}
 	});
 }
-*/
 
+/*
 if (Meteor.isClient) {
 	Template.monitor.helpers({
 		sensors: [
@@ -59,6 +64,23 @@ if (Meteor.isClient) {
 			{	name: "Analog Input 2",
 				value: "12",
 			},
+		],
+
+		relays: [
+			{	name: "Relay 1",
+				status: "OFF",
+				control: "schedule a",
+			},
+			{	name: "Relay 2",
+				status: "ON",
+				control: "schedule c",
+			},
+			{	name: "Relay 3",
+				status: "OFF",
+				control: "schedule f",
+			},
 		]
 	});
 }
+*/
+

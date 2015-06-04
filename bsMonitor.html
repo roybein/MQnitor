@@ -62,7 +62,7 @@
 				</table>
 			</div>
 
-			<div class="col of-8">
+			<div class="col of-4">
 				<table class ="tbl center bordered narrow alternate cosmic">
 					<thead>
 						<tr>
@@ -73,6 +73,23 @@
 					<tbody>
 						{{#each analogInputs}}
 							{{> analogInput}}
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col of-4">
+				<table class ="tbl center bordered narrow alternate cosmic">
+					<thead>
+						<tr>
+							<th>Relay</th>
+							<th>Status</th>
+							<th>Control</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each relays}}
+							{{> relay}}
 						{{/each}}
 					</tbody>
 				</table>
@@ -128,5 +145,13 @@
 	<tr>
 		<td>{{name}}</td>
 		<td>{{value}}</td>
+	</tr>
+</template>
+
+<template name="relay">
+	<tr>
+		<td>{{name}}</td>
+		<td>{{status}}</td>
+		<td>{{control}}</td>
 	</tr>
 </template>
