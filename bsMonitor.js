@@ -7,10 +7,27 @@ Router.route('/monitor');
 Router.route('/setup');
 
 Sensors = new Mongo.Collection("sensors");
-DigitalIputs = new Mongo.Collection("digitalIputs");
+DigitalInputs = new Mongo.Collection("digitalInputs");
 AnalogInputs = new Mongo.Collection("analogInputs");
 Relays = new Mongo.Collection("relays");
 
+mqttClient = mqtt.connect('mqtt:accrete.org');
+
+mqttClient.on("connect", function() {
+		console.log("connected accrete mqtt");
+
+		mqttClient.publish("presence", "hello mqtt from meteor", function() {
+				console.log("publish done");
+		});
+
+		mqttClient.subscribe("presence", function() {
+				console.log("subscribe done");
+		});
+
+		mqttClient.on("message", function(p1, p2) {
+			console.log(p1, p2.toString());
+		});
+});
 
 if(Meteor.isClient) {
 	Template.monitor.helpers({
@@ -18,8 +35,8 @@ if(Meteor.isClient) {
 			return Sensors.find({});
 		},
 
-		digitalIputs: function() {
-			return DigitalIputs.find({});
+		digitalInputs: function() {
+			return DigitalInputs.find({});
 		},
 
 		analogInputs: function() {
