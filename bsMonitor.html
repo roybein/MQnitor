@@ -1,7 +1,9 @@
 <head>
 	<meta charset="utf-8">
 	<title>Monitor | Brain Sences</title>
+	<!--
 	<meta name="viewport" content="width-device-width, initial-scale=1.0">
+	-->
 	<meta name="description" content="">
 	<meta name="author" content="roybein@linkgo.io">
 
@@ -10,18 +12,16 @@
 
 <body>
 </body>
-
 <template name='monitor'>
 	<nav class="bar limit center dark" role="navigation">
 		<ul>
-            <li class="active"><a href="monitor">Monitor</a></li>
-            <li><a href="setup">Setup</a></li>
+			<li class="active"><a href="monitor">Monitor</a></li>
+			<li><a href="setup">Setup</a></li>
 		</ul>
-
 	</nav>
 
 	<main>
-	<section class="container">
+		<section class="container">
 		<section class="row">
 			<div class="col of-12">
 				<table class ="tbl center bordered narrow alternate cosmic">
@@ -45,7 +45,6 @@
 
 		<section class="row">
 		<section class="col of-12">	
-
 			<div class="col of-4">
 				<table class ="tbl center bordered narrow alternate cosmic">
 					<thead>
@@ -115,7 +114,13 @@
     </nav>
 
     <main>
-        <p>This is setup page</p>
+			<section class="container">
+				<section class="row">
+					<div class="col of-12">
+					{{> example}}
+					</div>
+				</section>
+			</section>
     </main>
 
     <footer>
@@ -151,7 +156,21 @@
 <template name="relay">
 	<tr>
 		<td>{{name}}</td>
-		<td>{{status}}</td>
-		<td>{{control}}</td>
+		<td>
+			<div class="input-container">
+			<label><input type="radio" name={{id}} class="relay-control" id={{id}} value="off" {{relayOffCheck}}>Off</label>
+			<label><input type="radio" name={{id}} class="relay-control" id={{id}} value="on" {{relayOnCheck}}  >On</label>
+			<label><input type="radio" name={{id}} class="relay-control" id={{id}} value="auto" {{relayAutoCheck}} >Auto</label>
+			</div>
+		</td>
+		<td>{{schedule}}</td>
 	</tr>
 </template>
+
+<template name="example">
+		<form>
+			<input type="text" name="myInput" />
+			<input class="form tight push" value="Submit From"/>
+		</form>
+</template>
+

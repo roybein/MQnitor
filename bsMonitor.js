@@ -11,6 +11,7 @@ DigitalInputs = new Mongo.Collection("digitalInputs");
 AnalogInputs = new Mongo.Collection("analogInputs");
 Relays = new Mongo.Collection("relays");
 
+/*
 mqttClient = mqtt.connect('mqtt:accrete.org');
 
 mqttClient.on("connect", function() {
@@ -28,9 +29,11 @@ mqttClient.on("connect", function() {
 			console.log(p1, p2.toString());
 		});
 });
+*/
 
 if(Meteor.isClient) {
 	Template.monitor.helpers({
+
 		sensors: function() {
 			return Sensors.find({});
 		},
@@ -45,59 +48,59 @@ if(Meteor.isClient) {
 
 		relays: function() {
 			return Relays.find({});
+		},
+
+	});
+
+	Template.monitor.events({
+	  "submit form": function (event, template) {
+	    var inputValue = event.target.myInput.value;
+	    var helperValue = this;
+	    alert(inputValue);
+	  }
+	});
+
+	Template.example.events({
+	  "click .alert": function (event, template) {
+	    alert("My button was clicked!");
+	  },
+	  "submit form": function (event, template) {
+	    var inputValue = event.target.myInput.value;
+	    var helperValue = this;
+	    alert(inputValue);
+	  }
+	});
+
+	Template.relay.helpers({
+		relayOffCheck: function() {
+			console.log(this.name);
+			return this.status === "off" ? 'checked' : '';
+		},
+		
+		relayOnCheck: function() {
+			return this.status === "on"? 'checked' : '';
+		},
+
+		relayAutoCheck: function() {
+			return this.status === "auto"? 'checked' : '';
+		},
+
+		schedule: function() {
+			if(this.status === "auto") {
+				return this.schedule;
+			} else {
+				return "";
+			}
 		}
 	});
-}
 
-/*
-if (Meteor.isClient) {
-	Template.monitor.helpers({
-		sensors: [
-			{	index: "0001",
-				name: "sensor 0001",
-				value: "24",
-				description: "connect with the kettle",
-			},
-			{	index: "0002",
-				name: "sensor 0002",
-				value: "89",
-				description: "connect with the fireplace",
-			},
-		],
-
-		digitalInputs: [
-			{	name: "Digital Input 1",
-				status: "Alarm",
-			},
-			{	name: "Digital Input 2",
-				status: "Open",
-			},
-		],
-
-		analogInputs: [
-			{	name: "Analog Input 1",
-				value: "23",
-			},
-			{	name: "Analog Input 2",
-				value: "12",
-			},
-		],
-
-		relays: [
-			{	name: "Relay 1",
-				status: "OFF",
-				control: "schedule a",
-			},
-			{	name: "Relay 2",
-				status: "ON",
-				control: "schedule c",
-			},
-			{	name: "Relay 3",
-				status: "OFF",
-				control: "schedule f",
-			},
-		]
+	Template.relay.events({
+	  "change .relay-control": function (event, template) {
+			var element = event.target;
+			console.log(element.value);
+			Relays.update({_id:Relays.findOne({id:element.id})['_id']}, {$set:{status:element.value}});
+	  }
 	});
 }
-*/
+
 
