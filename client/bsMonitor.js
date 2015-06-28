@@ -1,7 +1,7 @@
 Template.monitor.helpers({
 
 	sensors: function() {
-		return Sensors.find({});
+		return sensorAll.collec.find({});
 	},
 
 	digitalInputs: function() {
@@ -13,7 +13,7 @@ Template.monitor.helpers({
 	},
 
 	relays: function() {
-		return Relays.find({});
+		return relayAll.collec.find({});
 	},
 
 });
@@ -39,19 +39,19 @@ Template.example.events({
 
 Template.relay.helpers({
 	relayOffCheck: function() {
-		return this.status === "off" ? 'checked' : '';
+		return this.value === "off" ? 'checked' : '';
 	},
 	
 	relayOnCheck: function() {
-		return this.status === "on"? 'checked' : '';
+		return this.value === "on"? 'checked' : '';
 	},
 
 	relayAutoCheck: function() {
-		return this.status === "auto"? 'checked' : '';
+		return this.value === "auto"? 'checked' : '';
 	},
 
 	plan: function() {
-		if(this.status === "auto") {
+		if(this.value === "auto") {
 			return this.plan;
 		} else {
 			return "";
@@ -61,9 +61,8 @@ Template.relay.helpers({
 
 Template.relay.events({
   "change .relay-control": function (event, template) {
-		var element = event.target;
-		console.log(element.name, element.value);
-		Relays.update({_id:Relays.findOne({index:element.id})['_id']}, {$set:{status:element.value}});
+		console.log(event.target.id, event.target.value);
+        relayAll.collec.update({_id:event.target.id}, {$set:{value:event.target.value}});
   }
 });
 

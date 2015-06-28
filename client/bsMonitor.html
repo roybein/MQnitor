@@ -129,7 +129,7 @@
 
 <template name="sensor">
     <tr>
-        <td>{{index}}</td>
+        <td>{{_id}}</td>
         <td>{{name}}</td>
         <td>{{value}} {{unit}}</td>
         <td>{{description}}</td>
@@ -158,12 +158,12 @@
         <td>{{name}}</td>
         <td>
             <div class="input-container">
-            <label><input type="radio" name={{index}} class="relay-control" id={{index}} value="off" {{relayOffCheck}}>Off</label>
-            <label><input type="radio" name={{index}} class="relay-control" id={{index}} value="on" {{relayOnCheck}}  >On</label>
-            <label><input type="radio" name={{index}} class="relay-control" id={{index}} value="auto" {{relayAutoCheck}} >Auto</label>
+            <label><input type="radio" name={{_id}} class="relay-control" id={{_id}} value="off" {{relayOffCheck}}>Off</label>
+            <label><input type="radio" name={{_id}} class="relay-control" id={{_id}} value="on" {{relayOnCheck}}  >On</label>
+            <label><input type="radio" name={{_id}} class="relay-control" id={{_id}} value="auto" {{relayAutoCheck}} >Auto</label>
             </div>
         </td>
-        <td>{{plan}}</td>
+        <td>{{plan.name}}</td>
     </tr>
 </template>
 
