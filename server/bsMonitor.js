@@ -27,11 +27,11 @@ var handle = querySensors.observeChanges({
 			console.log("id=", id, "fields=", fields);
             if(Object.keys(fields) == 'value') {
                 var sensor = sensorAll.getSensor(id);
+                console.log(sensor.name);
                   
                 var pIdG = sensorAll.collec.findOne({_id:id}).planIdGroup;
                 pIdG.forEach(function(elem, index, group) {
-                    var plan = planAll.getPlan(elem);
-                    console.log("check plan:", plan);
+                    planAll.checkPlan(elem);
                 });
             }
 		}
