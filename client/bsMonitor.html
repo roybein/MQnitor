@@ -11,7 +11,9 @@
 </head>
 
 <body>
+
 </body>
+
 <template name='monitor'>
     <nav class="bar limit center dark" role="navigation">
         <ul>
@@ -95,12 +97,17 @@
             </div>
 
         </section>
-
         </section>
 
+        <section class="row">
+            <div class="col of-12">
+            <p>add plan here</p>
+            {{> newPlan}}
+            </div>    
+        </section>
     </section>
+    
     </main>
-
     <footer>
     </footer>
 </template>
@@ -159,18 +166,89 @@
         <td>
             <div class="input-container">
             <label><input type="radio" name={{_id}} class="relay-control" id={{_id}} value="off" {{relayOffCheck}}>Off</label>
-            <label><input type="radio" name={{_id}} class="relay-control" id={{_id}} value="on" {{relayOnCheck}}  >On</label>
-            <label><input type="radio" name={{_id}} class="relay-control" id={{_id}} value="auto" {{relayAutoCheck}} >Auto</label>
+            <label><input type="radio" name={{_id}} class="relay-control" id={{_id}} value="on" {{relayOnCheck}}>On</label>
             </div>
         </td>
-        <td>{{plan.name}}</td>
+        <td>{{plan}}</td>
+        <!--<td><button class="btn green" data-toggle="modal" data-target="#myModal">{{buttonName}}</button></td> -->
+
     </tr>
+
+</template>
+
+<template name="newPlan">
+    <form class="form" role="form">
+        <div class="input-container">
+            <label for="form-planIndex">Plan Index</label>
+            <input type="text" name="form-planIndex" id="form-planIndex" value={{planIndex}}>
+        </div>
+    
+        <div class="input-container">
+            <label for="form-planName">Plan Name</label>
+            <input type="text" name="form-planName" id="form-planName" value={{planName}}>
+        </div>
+    
+        <div class="input-container">
+            <label for="form-relayIndex">Relay Index</label>
+            <input type="text" name="form-relayIndex" id="form-relayIndex" value={{relayIndex}}>
+        </div>
+
+        <div class="input-container">
+            <label for="form-relayValue">Plan Value</label>
+            <input type="text" name="form-relayValue" id="form-relayValue" value={{relayValue}}>
+        </div>
+        <div class="input-container">
+            <table class ="tbl center bordered narrow alternate cosmic">
+            <thead>
+                <tr>
+                    <th>index</th>
+                    <th>sensorIndex</th>
+                    <th>yesMin</th>
+                    <th>yesMax</th>
+                    <th>LogicValue</th>
+                    <th>LogicType</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each judgeGroup}}
+                    {{> judgeElem}}
+                {{/each}}
+                {{> newJudgeElem}}
+            </tbody>
+            </table>
+        </div>
+
+        <div class="input-container buttons">
+            <button type="submit" class="btn cosmic">Submit</button>
+        </div>
+    </form>
 </template>
 
 <template name="example">
-        <form>
-            <input type="text" name="myInput" />
-            <input class="form tight push" value="Submit From"/>
-        </form>
+   <form>
+       <input type="text" name="myInput" />
+       <input class="form tight push" value="Submit From"/>
+   </form>
 </template>
 
+<template name="judgeElem">
+<tr>
+<td>{{index}}</td>
+<td>{{sensorIndex}}</td>
+<td>{{yesMin}}</td>
+<td>{{yesMax}}</td>
+<td>{{logicValue}}</td>
+<td>{{logicType}}</td>
+</tr>
+</template>
+
+<template name="newJudgeElem">
+<tr>
+<td>{{index}}</td>
+<td>{{sensorIndex}}</td>
+<td>{{yesMin}}</td>
+<td>{{yesMax}}</td>
+<td>{{logicValue}}</td>
+<td>{{logicType}}</td>
+</tr>
+</template>

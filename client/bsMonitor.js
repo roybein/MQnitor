@@ -51,12 +51,68 @@ Template.relay.helpers({
 	},
 
 	plan: function() {
-		if(this.value === "auto") {
-			return this.plan;
+		if(this.planId === null) {
+            return "no plan";
 		} else {
-			return "";
+			return planAll.getPlan(this.planId).name;
 		}
-	}
+	},
+
+    buttonName: function() {
+        if(this.planId === null) {
+            return "Add";
+        } else {
+            return "Edit";
+        }
+    }
+});
+
+Template.newPlan.helpers({
+    planIndex: function() {
+        return newPlan.index;
+    },
+
+    planName: function() {
+        return newPlan.name;
+    },
+
+    relayIndex: function() {
+        return newPlan.relayIndex;
+    },
+
+    relayValue: function() {
+        return newPlan.relayValue;
+    },
+
+    judgeGroup: function() {
+        return newPlan.judgeGroup;
+    }
+});
+
+Template.newJudgeElem.helpers({
+    index: function() {
+        return newJudgeElem.index;
+    },
+
+    sensorIndex: function() {
+        return newJudgeElem.sensorIndex;
+    },
+
+    yesMin: function() {
+        return newJudgeElem.yesMin;
+    },
+
+    yesMax: function() {
+        return newJudgeElem.yesMax;
+    },
+
+    logicValue: function() {
+        return newJudgeElem.logicValue;
+    },
+
+    logicType: function() {
+        return newJudgeElem.logicType;
+    }
 });
 
 Template.relay.events({
