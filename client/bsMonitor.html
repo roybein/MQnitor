@@ -47,7 +47,7 @@
 
         <section class="row">
         <section class="col of-12">    
-            <div class="col of-4">
+            <div class="col of-6">
                 <table class ="tbl center bordered narrow alternate cosmic">
                     <thead>
                         <tr>
@@ -63,7 +63,7 @@
                 </table>
             </div>
 
-            <div class="col of-4">
+            <div class="col of-6">
                 <table class ="tbl center bordered narrow alternate cosmic">
                     <thead>
                         <tr>
@@ -78,8 +78,12 @@
                     </tbody>
                 </table>
             </div>
+        </section>
+        </section>
 
-            <div class="col of-4">
+        <section class="row">
+        <section class="col of-12">    
+            <div class="col of-6">
                 <table class ="tbl center bordered narrow alternate cosmic">
                     <thead>
                         <tr>
@@ -96,14 +100,31 @@
                 </table>
             </div>
 
+            <div class="col of-6">
+                <table class ="tbl center bordered narrow alternate cosmic">
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th>Name</th>
+                            <th>Relay Index</th>
+                            <th>Relay Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each plans}}
+                            {{> plan}}
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
         </section>
         </section>
 
+
         <section class="row">
-            <div class="col of-12">
-            <p>add plan here</p>
+        <section class="col of-12">    
             {{> newPlan}}
-            </div>    
+        </section>
         </section>
     </section>
     
@@ -170,34 +191,53 @@
             </div>
         </td>
         <td>{{plan}}</td>
-        <!--<td><button class="btn green" data-toggle="modal" data-target="#myModal">{{buttonName}}</button></td> -->
-
     </tr>
 
 </template>
 
+<template name="plan">
+    <tr>
+        <td>{{_id}}</td>
+        <td>{{name}}</td>
+        <td>{{relayIndex}}</td>
+        <td>{{relayValue}}</td>
+        <td><button class="btn green" id="editPlan">edit</button></td>
+        <td><button class="btn green" id="delPlan">delete</button></td>
+    </tr>
+</template>
+
 <template name="newPlan">
     <form class="form" role="form">
-        <div class="input-container">
+        <div class="col of-3"> 
+        <div class="input-container is-small">
             <label for="form-planIndex">Plan Index</label>
-            <input type="text" name="form-planIndex" id="form-planIndex" value={{planIndex}}>
+            <input type="text" name="form-planIndex" id="form-planIndex" value={{index}}>
+        </div>
         </div>
     
-        <div class="input-container">
+        <div class="col of-3"> 
+        <div class="input-container is-small">
             <label for="form-planName">Plan Name</label>
-            <input type="text" name="form-planName" id="form-planName" value={{planName}}>
+            <input type="text" name="form-planName" id="form-planName" value={{name}}>
         </div>
-    
-        <div class="input-container">
+        </div>
+
+        <div class="col of-3"> 
+        <div class="input-container is-small">
             <label for="form-relayIndex">Relay Index</label>
             <input type="text" name="form-relayIndex" id="form-relayIndex" value={{relayIndex}}>
         </div>
+        </div>
 
-        <div class="input-container">
-            <label for="form-relayValue">Plan Value</label>
+        <div class="col of-3"> 
+        <div class="input-container is-small">
+            <label for="form-relayValue">Relay Value</label>
             <input type="text" name="form-relayValue" id="form-relayValue" value={{relayValue}}>
         </div>
-        <div class="input-container">
+        </div>
+
+        <div class="col of-12">
+        <div class="input-container is-tiny">
             <table class ="tbl center bordered narrow alternate cosmic">
             <thead>
                 <tr>
@@ -207,6 +247,7 @@
                     <th>yesMax</th>
                     <th>LogicValue</th>
                     <th>LogicType</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -217,9 +258,12 @@
             </tbody>
             </table>
         </div>
+        </div>
 
+        <div class="col of-12">
         <div class="input-container buttons">
-            <button type="submit" class="btn cosmic">Submit</button>
+            <button class="btn cosmic" id="addPlan">Add Plan</button>
+        </div>
         </div>
     </form>
 </template>
@@ -228,6 +272,7 @@
    <form>
        <input type="text" name="myInput" />
        <input class="form tight push" value="Submit From"/>
+       <button type="alert" class="btn cosmic">Submit</button>
    </form>
 </template>
 
@@ -239,16 +284,18 @@
 <td>{{yesMax}}</td>
 <td>{{logicValue}}</td>
 <td>{{logicType}}</td>
+<td><button class="btn green" id="deleteJudgeElem">delete</button></td>
 </tr>
 </template>
 
 <template name="newJudgeElem">
 <tr>
-<td>{{index}}</td>
-<td>{{sensorIndex}}</td>
-<td>{{yesMin}}</td>
-<td>{{yesMax}}</td>
-<td>{{logicValue}}</td>
-<td>{{logicType}}</td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="index" value={{index}}></div></td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="sensorIndex" value={{sensorIndex}}></div></td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="yesMin" value={{yesMin}}></div></td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="yesMax" value={{yesMax}}></div></td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="logicValue" value={{logicValue}}></div></td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="logicType" value={{logicType}}></div></td>
+<td><button class="btn green" id="addJudgeElem">add</button></td>
 </tr>
 </template>

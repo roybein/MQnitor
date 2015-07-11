@@ -1,5 +1,5 @@
-/*
 // a mqtt test
+/*
 mqttClient = mqtt.connect('mqtt:accrete.org');
 
 mqttClient.on("connect", function() {
@@ -9,13 +9,21 @@ mqttClient.on("connect", function() {
 				console.log("publish done");
 		});
 
-		mqttClient.subscribe("presence", function() {
+		mqttClient.subscribe("/nodemcu/input", function() {
 				console.log("subscribe done");
 		});
 
 		mqttClient.on("message", function(p1, p2) {
 			console.log(p1, p2.toString());
+            if (parseInt(p2) > 900) {
+                console.log("turn on");
+                mqttClient.publish("/nodemcu/output", "1");
+            } else {
+                console.log("turn off");
+                mqttClient.publish("/nodemcu/output", "0");
+            }
 		});
+
 });
 */
 

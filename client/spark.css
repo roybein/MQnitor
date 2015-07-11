@@ -3461,9 +3461,11 @@ form.horizontal .input-container.radio label {
 /* Size Overrides */
 form.form:not(.tight) .is-tiny input {
   width: 46px;
+  height: 23px;
 }
 form.form:not(.tight) .is-small input {
   width: 40%;
+  height: 23px;
 }
 form.form:not(.tight) .is-medium input {
   width: 70%;
