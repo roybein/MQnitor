@@ -6,8 +6,6 @@
     -->
     <meta name="description" content="">
     <meta name="author" content="roybein@linkgo.io">
-
-    <link href="spark.css" rel="stylesheet">
 </head>
 
 <body>
@@ -15,18 +13,44 @@
 </body>
 
 <template name='monitor'>
+<!--
+  <div class="ui top attached demo menu">
+    <button class="toggle button">
+      Menu
+    </button>
+  </div>
+    <div class="ui inverted labeled icon left inline vertical sidebar menu">
+      <a class="item">
+        <i class="home icon"></i>
+        Home
+      </a>
+      <a class="item">
+        <i class="block layout icon"></i>
+        Topics
+      </a>
+      <a class="item">
+        <i class="smile icon"></i>
+        Friends
+      </a>
+      <a class="item">
+        <i class="calendar icon"></i>
+        History
+      </a>
+    </div>
+-->
+<!--
     <nav class="bar limit center dark" role="navigation">
         <ul>
             <li class="active"><a href="monitor">Monitor</a></li>
             <li><a href="setup">Setup</a></li>
         </ul>
     </nav>
-
+-->
+  <div class="pusher">
     <main>
-        <section class="container">
-        <section class="row">
-            <div class="col of-12">
-                <table class ="tbl center bordered narrow alternate cosmic">
+        <div class="ui segments">
+            <div class="ui red segment">
+                <table class ="ui celled padded table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -43,12 +67,9 @@
                     </tbody>
                 </table>
             </div>
-        </section>
 
-        <section class="row">
-        <section class="col of-12">    
-            <div class="col of-6">
-                <table class ="tbl center bordered narrow alternate cosmic">
+            <div class="ui red segment">
+                <table class ="ui celled padded table">
                     <thead>
                         <tr>
                             <th>Digtal Input</th>
@@ -63,8 +84,8 @@
                 </table>
             </div>
 
-            <div class="col of-6">
-                <table class ="tbl center bordered narrow alternate cosmic">
+            <div class="ui red segment">
+                <table class ="ui celled padded table">
                     <thead>
                         <tr>
                             <th>Analog Input</th>
@@ -78,13 +99,9 @@
                     </tbody>
                 </table>
             </div>
-        </section>
-        </section>
 
-        <section class="row">
-        <section class="col of-12">    
-            <div class="col of-6">
-                <table class ="tbl center bordered narrow alternate cosmic">
+            <div class="ui yellow segment">
+                <table class ="ui celled padded table">
                     <thead>
                         <tr>
                             <th>Relay</th>
@@ -100,14 +117,16 @@
                 </table>
             </div>
 
-            <div class="col of-6">
-                <table class ="tbl center bordered narrow alternate cosmic">
+            <div class="ui yellow segment">
+                <table class ="ui celled padded table">
                     <thead>
                         <tr>
                             <th>Index</th>
                             <th>Name</th>
                             <th>Relay Index</th>
                             <th>Relay Value</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -117,18 +136,17 @@
                     </tbody>
                 </table>
             </div>
-        </section>
-        </section>
 
+            <button class="ui button" id="newPlan">new Plan</button>
 
-        <section class="row">
-        <section class="col of-12">    
+          <div class="ui fullscreen long reserved modal">
+          <div class="ui container">
             {{> newPlan}}
-        </section>
-        </section>
-    </section>
-    
+          </div>
+          </div>
+      </div>
     </main>
+</div>
     <footer>
     </footer>
 </template>
@@ -201,53 +219,51 @@
         <td>{{name}}</td>
         <td>{{relayIndex}}</td>
         <td>{{relayValue}}</td>
-        <td><button class="btn green" id="editPlan">edit</button></td>
-        <td><button class="btn green" id="delPlan">delete</button></td>
+        <td><button class="ui mini primary button" id="editPlan">edit</button></td>
+        <td><button class="ui mini primary button" id="delPlan">delete</button></td>
     </tr>
 </template>
 
 <template name="newPlan">
-    <form class="form" role="form">
-        <div class="col of-3"> 
-        <div class="input-container is-small">
-            <label for="form-planIndex">Plan Index</label>
-            <input type="text" name="form-planIndex" id="form-planIndex" value={{index}}>
-        </div>
-        </div>
+<h3 class="ui center aligned header">New Plan</h3>
+  <div class="ui labeled input small">
+    <div class="ui label">
+      Plan Index
+    </div>
+    <input type="text" id="planIndex" value={{index}}>
+  </div>
     
-        <div class="col of-3"> 
-        <div class="input-container is-small">
-            <label for="form-planName">Plan Name</label>
-            <input type="text" name="form-planName" id="form-planName" value={{name}}>
-        </div>
-        </div>
+  <div class="ui labeled input small">
+    <div class="ui label">
+      Plan Name
+    </div>
+    <input type="text" id="planName" value={{name}}>
+  </div>
 
-        <div class="col of-3"> 
-        <div class="input-container is-small">
-            <label for="form-relayIndex">Relay Index</label>
-            <input type="text" name="form-relayIndex" id="form-relayIndex" value={{relayIndex}}>
-        </div>
-        </div>
+  <div class="ui labeled input small">
+    <div class="ui label">
+      Relay Index
+    </div>
+    <input type="text" id="relayIndex" value={{relayIndex}}>
+  </div>
 
-        <div class="col of-3"> 
-        <div class="input-container is-small">
-            <label for="form-relayValue">Relay Value</label>
-            <input type="text" name="form-relayValue" id="form-relayValue" value={{relayValue}}>
-        </div>
-        </div>
+  <div class="ui labeled input small">
+    <div class="ui label">
+      Relay Value
+    </div>
+    <input type="text" id="relayValue" value={{relayValue}}>
+  </div>
 
-        <div class="col of-12">
-        <div class="input-container is-tiny">
-            <table class ="tbl center bordered narrow alternate cosmic">
+            <table class ="ui small table">
             <thead>
                 <tr>
-                    <th>index</th>
-                    <th>sensorIndex</th>
-                    <th>yesMin</th>
-                    <th>yesMax</th>
-                    <th>LogicValue</th>
-                    <th>LogicType</th>
-                    <th>Action</th>
+                    <th class="one wide">index</th>
+                    <th class="two wide">sensorIndex</th>
+                    <th class="two wide">yesMin</th>
+                    <th class="two wide">yesMax</th>
+                    <th class="two wide">LogicValue</th>
+                    <th class="two wide">LogicType</th>
+                    <th class="one wide">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -257,15 +273,6 @@
                 {{> newJudgeElem}}
             </tbody>
             </table>
-        </div>
-        </div>
-
-        <div class="col of-12">
-        <div class="input-container buttons">
-            <button class="btn cosmic" id="addPlan">Add Plan</button>
-        </div>
-        </div>
-    </form>
 </template>
 
 <template name="example">
@@ -284,7 +291,7 @@
 <td>{{yesMax}}</td>
 <td>{{logicValue}}</td>
 <td>{{logicType}}</td>
-<td><button class="btn green" id="deleteJudgeElem">delete</button></td>
+<td><button class="ui button" id="deleteJudgeElem">delete</button></td>
 </tr>
 </template>
 
@@ -296,6 +303,6 @@
 <td><div class="input-container is-tiny"><input type="text" class="green" id="yesMax" value={{yesMax}}></div></td>
 <td><div class="input-container is-tiny"><input type="text" class="green" id="logicValue" value={{logicValue}}></div></td>
 <td><div class="input-container is-tiny"><input type="text" class="green" id="logicType" value={{logicType}}></div></td>
-<td><button class="btn green" id="addJudgeElem">add</button></td>
+<td><button class="ui button" id="addJudgeElem">add</button></td>
 </tr>
 </template>

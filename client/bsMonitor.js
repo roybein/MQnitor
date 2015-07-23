@@ -21,6 +21,14 @@ Template.monitor.helpers({
 	},
 });
 
+Template.monitor.events({
+    "click #newPlan": function (event, template) {
+        console.log("edit a new plan");
+        $('.fullscreen.long.reserved.modal')
+            .modal('show');
+    },
+});
+
 /*
 Template.example.events({
   "click .alert": function (event, template) {
@@ -138,13 +146,16 @@ Template.newPlan.helpers({
 */
 
 Template.newPlan.events({
+/*
     "click #addPlan": function (event, template) {
-        console.log("add newPlan to be Plan", planAll.collec.find().count());
+        console.log("add newPlan to be Plan:", planAll.collec.find().count());
         var plan = _.clone(newPlan)
         plan.index = planAll.collec.find().count();
         planAll.addPlan(plan);
         return false;
     },
+*/
+
 
     "change #form-planIndex": function (event, template) {
         console.log(event.target.id, event.target.value);
