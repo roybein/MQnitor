@@ -22,7 +22,7 @@ Template.monitor.helpers({
 });
 
 Template.monitor.events({
-    "click #createNewPlan": function (event, template) {
+    "click #createNewPlan": function(event, template) {
         newPlan = new Plan("new", "dummy_name", "dummy_relay_index", "dummy_plan_value", []);
         Session.set('newPlan', EJSON.toJSONValue(newPlan));
         $('.long.modal')
@@ -30,6 +30,7 @@ Template.monitor.events({
         $('.long.modal')
             .modal('show');
     },
+
 });
 
 Template.relay.helpers({
@@ -76,6 +77,7 @@ Template.plan.events({
 
     "click #delPlan": function(event, template) {
         console.log("delPlan:", this._id);
+        planAll.delPlan(this._id);
     },
 });
 
@@ -115,6 +117,7 @@ Template.newPlan.helpers({
 Template.newPlan.helpers({
     index: function() {
         var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
+        console.log("newPlan helpers:", newPlan);
         if (newPlan) {
             return newPlan.index;
         } else {
@@ -161,48 +164,45 @@ Template.newPlan.helpers({
 });
 
 Template.newPlan.events({
-/*
-    "click #addPlan": function (event, template) {
-        console.log("add newPlan to be Plan:", planAll.collec.find().count());
-        var plan = _.clone(newPlan)
-        plan.index = planAll.collec.find().count();
-        planAll.addPlan(plan);
+    "click #savePlan": function (event, template) {
+        planAll.addPlan(newPlan);
         return false;
     },
-*/
 
     "click #addJudgeElem": function (event, template) {
         newJudgeElem = new JudgeElem("new", "dummy_sensorIndex", 0, 0, true, "ori");
         newPlan.addJudgeElem(newJudgeElem);
-        console.log(newPlan);
+        Session.set('newPlan', EJSON.toJSONValue(newPlan));
+        return false;
+    },
+
+    "click #deleteJudgeElem": function (event, template) {
+        console.log("delete judgeElem: ", this.index);
+        newPlan.delJudgeElem(this.index);
         Session.set('newPlan', EJSON.toJSONValue(newPlan));
         return false;
     },
 
     "change #planIndex": function (event, template) {
         console.log(event.target.id, event.target.value);
-        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
         newPlan.index = event.target.value;
         Session.set('newPlan', EJSON.toJSONValue(newPlan));
     },
     
     "change #planName": function (event, template) {
       	console.log(event.target.id, event.target.value);
-        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
         newPlan.name = event.target.value;
         Session.set('newPlan', EJSON.toJSONValue(newPlan));
     },
 
     "change #relayIndex": function (event, template) {
       	console.log(event.target.id, event.target.value);
-        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
         newPlan.relayIndex = event.target.value;
         Session.set('newPlan', EJSON.toJSONValue(newPlan));
     },
 
     "change #relayValue": function (event, template) {
       	console.log(event.target.id, event.target.value);
-        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
         newPlan.relayValue = event.target.value;
         Session.set('newPlan', EJSON.toJSONValue(newPlan));
     }
@@ -245,12 +245,6 @@ Template.newJudgeElem.helpers({
 */
 Template.judgeElem.events({
 
-    "click #deleteJudgeElem": function (event, template) {
-        console.log("delete judgeElem: ", this.index);
-        newPlan.delJudgeElem(this.index);
-        planAll.updatePlan(newPlan);
-        return false;
-    },
     
     "change #index": function (event, template) {
         console.log(event.target.id, event.target.value);
