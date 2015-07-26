@@ -73,6 +73,13 @@ Template.relay.events({
 Template.plan.events({
     "click #editPlan": function(event, template) {
         console.log("editPlan:", this._id);
+        newPlan = this;
+        Session.set('newPlan', EJSON.toJSONValue(newPlan));
+        $('.long.modal')
+            .modal({observeChanges: true});
+        $('.long.modal')
+            .modal('show');
+        
     },
 
     "click #delPlan": function(event, template) {
@@ -90,29 +97,6 @@ Template.judgeElem.helpers({
         }
     }
 });
-/*
-Template.newPlan.helpers({
-    index: function() {
-        return planNew.getPlan("new").index;
-    },
-
-    name: function() {
-        return planNew.getPlan("new").name;
-    },
-
-    relayIndex: function() {
-        return planNew.getPlan("new").relayIndex;
-    },
-
-    relayValue: function() {
-        return planNew.getPlan("new").relayValue;
-    },
-
-    judgeGroup: function() {
-        return planNew.getPlan("new").judgeGroup;
-    }
-});
-*/
 
 Template.newPlan.helpers({
     index: function() {
@@ -166,6 +150,8 @@ Template.newPlan.helpers({
 Template.newPlan.events({
     "click #savePlan": function (event, template) {
         planAll.addPlan(newPlan);
+        $('.long.modal')
+            .modal('hide');
         return false;
     },
 

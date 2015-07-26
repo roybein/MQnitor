@@ -21,6 +21,8 @@
         </ul>
     </nav>
 -->
+  <div class="ui container">
+
         <div class="ui segments">
             <div class="ui red segment">
               <h3 class="ui center topMarginSmall header">Sensor</h3>
@@ -42,6 +44,7 @@
                 </table>
             </div>
 
+            <div class="ui horizontal segments">
             <div class="ui red segment">
               <h3 class="ui center topMarginSmall header">Digital Input</h3>
                 <table class ="ui celled padded table">
@@ -75,6 +78,7 @@
                     </tbody>
                 </table>
             </div>
+            </div>
 
             <div class="ui yellow segment">
               <h3 class="ui center topMarginSmall header">Relay</h3>
@@ -95,7 +99,10 @@
             </div>
 
             <div class="ui yellow segment">
-              <h3 class="ui center topMarginSmall header">Plan</h3>
+              <div class= "left floated header">
+                New Plan
+                <button class="ui primary right floated button" id="createNewPlan">New Plan</button>
+              </div>
                 <table class ="ui celled padded table">
                     <thead>
                         <tr>
@@ -115,13 +122,14 @@
                 </table>
             </div>
 
-            <button class="ui button" id="createNewPlan">new Plan</button>
 
           <div class="newPlan ui large long modal">
             {{> newPlan}}
           </div>
 
       </div>
+
+  </div>
 </template>
 
 <template name='setup'>
@@ -265,9 +273,6 @@
           {{#each judgeGroup}}
               {{> judgeElem}}
           {{/each}}
-<!--
-          {{> newJudgeElem}}
--->
       </tbody>
       </table>
       </div>
