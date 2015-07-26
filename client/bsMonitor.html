@@ -14,31 +14,6 @@
 
 <template name='monitor'>
 <!--
-  <div class="ui top attached demo menu">
-    <button class="toggle button">
-      Menu
-    </button>
-  </div>
-    <div class="ui inverted labeled icon left inline vertical sidebar menu">
-      <a class="item">
-        <i class="home icon"></i>
-        Home
-      </a>
-      <a class="item">
-        <i class="block layout icon"></i>
-        Topics
-      </a>
-      <a class="item">
-        <i class="smile icon"></i>
-        Friends
-      </a>
-      <a class="item">
-        <i class="calendar icon"></i>
-        History
-      </a>
-    </div>
--->
-<!--
     <nav class="bar limit center dark" role="navigation">
         <ul>
             <li class="active"><a href="monitor">Monitor</a></li>
@@ -46,10 +21,9 @@
         </ul>
     </nav>
 -->
-  <div class="pusher">
-    <main>
         <div class="ui segments">
             <div class="ui red segment">
+              <h3 class="ui center topMarginSmall header">Sensor</h3>
                 <table class ="ui celled padded table">
                     <thead>
                         <tr>
@@ -69,6 +43,7 @@
             </div>
 
             <div class="ui red segment">
+              <h3 class="ui center topMarginSmall header">Digital Input</h3>
                 <table class ="ui celled padded table">
                     <thead>
                         <tr>
@@ -85,6 +60,7 @@
             </div>
 
             <div class="ui red segment">
+              <h3 class="ui center topMarginSmall header">Analog Input</h3>
                 <table class ="ui celled padded table">
                     <thead>
                         <tr>
@@ -101,6 +77,7 @@
             </div>
 
             <div class="ui yellow segment">
+              <h3 class="ui center topMarginSmall header">Relay</h3>
                 <table class ="ui celled padded table">
                     <thead>
                         <tr>
@@ -118,6 +95,7 @@
             </div>
 
             <div class="ui yellow segment">
+              <h3 class="ui center topMarginSmall header">Plan</h3>
                 <table class ="ui celled padded table">
                     <thead>
                         <tr>
@@ -137,18 +115,13 @@
                 </table>
             </div>
 
-            <button class="ui button" id="newPlan">new Plan</button>
+            <button class="ui button" id="createNewPlan">new Plan</button>
 
-          <div class="ui fullscreen long reserved modal">
-          <div class="ui container">
+          <div class="newPlan ui large long modal">
             {{> newPlan}}
           </div>
-          </div>
+
       </div>
-    </main>
-</div>
-    <footer>
-    </footer>
 </template>
 
 <template name='setup'>
@@ -225,54 +198,88 @@
 </template>
 
 <template name="newPlan">
-<h3 class="ui center aligned header">New Plan</h3>
-  <div class="ui labeled input small">
-    <div class="ui label">
-      Plan Index
-    </div>
-    <input type="text" id="planIndex" value={{index}}>
-  </div>
-    
-  <div class="ui labeled input small">
-    <div class="ui label">
-      Plan Name
-    </div>
-    <input type="text" id="planName" value={{name}}>
+  
+  <div class= "left floated header">
+    New Plan
+    <button class="ui primary right floated button">Save</button>
   </div>
 
-  <div class="ui labeled input small">
-    <div class="ui label">
-      Relay Index
-    </div>
-    <input type="text" id="relayIndex" value={{relayIndex}}>
-  </div>
+  <div class="ui container">
 
-  <div class="ui labeled input small">
-    <div class="ui label">
-      Relay Value
-    </div>
-    <input type="text" id="relayValue" value={{relayValue}}>
-  </div>
+    <div class="ui grid" style="margin: 20px 50px">
 
-            <table class ="ui small table">
-            <thead>
-                <tr>
-                    <th class="one wide">index</th>
-                    <th class="two wide">sensorIndex</th>
-                    <th class="two wide">yesMin</th>
-                    <th class="two wide">yesMax</th>
-                    <th class="two wide">LogicValue</th>
-                    <th class="two wide">LogicType</th>
-                    <th class="one wide">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each judgeGroup}}
-                    {{> judgeElem}}
-                {{/each}}
-                {{> newJudgeElem}}
-            </tbody>
-            </table>
+      <div class="ui equal width centered row">
+
+      <div class="column"> 
+      <div class="ui labeled mini input">
+        <div class="ui label">
+          Plan Index
+        </div>
+        <input type="text" id="planIndex" value={{index}}>
+      </div>
+      </div>
+        
+      <div class="column"> 
+      <div class="ui labeled mini input">
+        <div class="ui label">
+          Plan Name
+        </div>
+        <input type="text" id="planName" value={{name}}>
+      </div>
+      </div>
+
+      <div class="column"> 
+      <div class="ui labeled mini input">
+        <div class="ui label">
+          Relay Index
+        </div>
+        <input type="text" id="relayIndex" value={{relayIndex}}>
+      </div>
+      </div>
+
+      <div class="column"> 
+      <div class="ui labeled mini input">
+        <div class="ui label">
+          Relay Value
+        </div>
+        <input type="text" id="relayValue" value={{relayValue}}>
+      </div>
+      </div>
+
+      </div>
+
+      <div class="centered row">
+      <table class ="ui small table">
+      <thead>
+          <tr>
+              <th class="one wide">index</th>
+              <th class="two wide">sensorIndex</th>
+              <th class="two wide">yesMin</th>
+              <th class="two wide">yesMax</th>
+              <th class="two wide">LogicValue</th>
+              <th class="two wide">LogicType</th>
+              <th class="one wide">Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          {{#each judgeGroup}}
+              {{> judgeElem}}
+          {{/each}}
+<!--
+          {{> newJudgeElem}}
+-->
+      </tbody>
+      </table>
+      </div>
+
+      <div class="row" >
+      <div class="right floated column">
+      <button class="ui mini right floated button" id="addJudgeElem">add judge element</button>
+      </div>
+      </div>
+
+    </div>
+  </div>
 </template>
 
 <template name="example">
@@ -283,7 +290,7 @@
    </form>
 </template>
 
-<template name="judgeElem">
+<template name="leagacy_judgeElem">
 <tr>
 <td>{{index}}</td>
 <td>{{sensorIndex}}</td>
@@ -295,7 +302,7 @@
 </tr>
 </template>
 
-<template name="newJudgeElem">
+<template name="judgeElem">
 <tr>
 <td><div class="input-container is-tiny"><input type="text" class="green" id="index" value={{index}}></div></td>
 <td><div class="input-container is-tiny"><input type="text" class="green" id="sensorIndex" value={{sensorIndex}}></div></td>
@@ -303,6 +310,5 @@
 <td><div class="input-container is-tiny"><input type="text" class="green" id="yesMax" value={{yesMax}}></div></td>
 <td><div class="input-container is-tiny"><input type="text" class="green" id="logicValue" value={{logicValue}}></div></td>
 <td><div class="input-container is-tiny"><input type="text" class="green" id="logicType" value={{logicType}}></div></td>
-<td><button class="ui button" id="addJudgeElem">add</button></td>
 </tr>
 </template>

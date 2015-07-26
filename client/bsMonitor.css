@@ -1,10 +1,17 @@
+/*
 .ui.container {
     margin-top: 100px;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-bottom: 100px;
 }
-
-.ui.center.header {
+.ui.center.topMarginLarge.header {
     margin-top: 100px;
 }
 
+.ui.center.topMarginSmall.header {
+    margin-top: 30px;
+}
 .ui.fullscreen.long.reserved.modal {
 }
+*/

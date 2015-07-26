@@ -22,25 +22,15 @@ Template.monitor.helpers({
 });
 
 Template.monitor.events({
-    "click #newPlan": function (event, template) {
-        console.log("edit a new plan");
-        $('.fullscreen.long.reserved.modal')
+    "click #createNewPlan": function (event, template) {
+        newPlan = new Plan("new", "dummy_name", "dummy_relay_index", "dummy_plan_value", []);
+        Session.set('newPlan', EJSON.toJSONValue(newPlan));
+        $('.long.modal')
+            .modal({observeChanges: true});
+        $('.long.modal')
             .modal('show');
     },
 });
-
-/*
-Template.example.events({
-  "click .alert": function (event, template) {
-    alert("My button was clicked!");
-  },
-  "submit form": function (event, template) {
-    var inputValue = event.target.myInput.value;
-    var helperValue = this;
-    alert(inputValue);
-  }
-});
-*/
 
 Template.relay.helpers({
 	relayOffCheck: function() {
@@ -98,52 +88,77 @@ Template.judgeElem.helpers({
         }
     }
 });
-
-Template.newPlan.helpers({
-    index: function() {
-        return planAll.getPlan("new").index;
-    },
-
-    name: function() {
-        return planAll.getPlan("new").name;
-    },
-
-    relayIndex: function() {
-        return planAll.getPlan("new").relayIndex;
-    },
-
-    relayValue: function() {
-        return planAll.getPlan("new").relayValue;
-    },
-
-    judgeGroup: function() {
-        return planAll.getPlan("new").judgeGroup;
-    }
-});
-
 /*
 Template.newPlan.helpers({
     index: function() {
-        return newPlan.index;
+        return planNew.getPlan("new").index;
     },
 
     name: function() {
-        return newPlan.name;
+        return planNew.getPlan("new").name;
     },
 
     relayIndex: function() {
-        return newPlan.relayIndex;
+        return planNew.getPlan("new").relayIndex;
     },
 
     relayValue: function() {
-        return newPlan.relayValue;
+        return planNew.getPlan("new").relayValue;
     },
 
     judgeGroup: function() {
-        return newPlan.judgeGroup;
+        return planNew.getPlan("new").judgeGroup;
     }
 });
 */
+
+Template.newPlan.helpers({
+    index: function() {
+        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
+        if (newPlan) {
+            return newPlan.index;
+        } else {
+            return null;
+        }
+    },
+
+    name: function() {
+        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
+        if (newPlan) {
+            return newPlan.name;
+        } else {
+            return null;
+        }
+    },
+
+    relayIndex: function() {
+        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
+        if (newPlan) {
+            return newPlan.relayIndex;
+        } else {
+            return null;
+        }
+    },
+
+    relayValue: function() {
+        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
+        if (newPlan) {
+            return newPlan.relayValue;
+        } else {
+            return null;
+        }
+    },
+
+    judgeGroup: function() {
+        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
+        console.log(newPlan);
+        if (newPlan) {
+            return newPlan.judgeGroup;
+        } else {
+            return null;
+        }
+    }
+});
 
 Template.newPlan.events({
 /*
@@ -156,32 +171,44 @@ Template.newPlan.events({
     },
 */
 
+    "click #addJudgeElem": function (event, template) {
+        newJudgeElem = new JudgeElem("new", "dummy_sensorIndex", 0, 0, true, "ori");
+        newPlan.addJudgeElem(newJudgeElem);
+        console.log(newPlan);
+        Session.set('newPlan', EJSON.toJSONValue(newPlan));
+        return false;
+    },
 
-    "change #form-planIndex": function (event, template) {
+    "change #planIndex": function (event, template) {
         console.log(event.target.id, event.target.value);
+        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
         newPlan.index = event.target.value;
-        planAll.updatePlan(newPlan);
+        Session.set('newPlan', EJSON.toJSONValue(newPlan));
     },
     
-    "change #form-planName": function (event, template) {
+    "change #planName": function (event, template) {
       	console.log(event.target.id, event.target.value);
+        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
         newPlan.name = event.target.value;
-        planAll.updatePlan(newPlan);
+        Session.set('newPlan', EJSON.toJSONValue(newPlan));
     },
 
-    "change #form-relayIndex": function (event, template) {
+    "change #relayIndex": function (event, template) {
       	console.log(event.target.id, event.target.value);
+        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
         newPlan.relayIndex = event.target.value;
-        planAll.updatePlan(newPlan);
+        Session.set('newPlan', EJSON.toJSONValue(newPlan));
     },
 
-    "change #form-relayValue": function (event, template) {
+    "change #relayValue": function (event, template) {
       	console.log(event.target.id, event.target.value);
+        var newPlan = EJSON.fromJSONValue(Session.get("newPlan"));
         newPlan.relayValue = event.target.value;
-        planAll.updatePlan(newPlan);
+        Session.set('newPlan', EJSON.toJSONValue(newPlan));
     }
 });
 
+/*
 Template.judgeElem.events({
     "click #deleteJudgeElem": function (event, template) {
         console.log("delete judgeElem: ", this.index);
@@ -190,7 +217,6 @@ Template.judgeElem.events({
         return false;
     },
 });
-
 Template.newJudgeElem.helpers({
     index: function() {
         return newJudgeElem.index;
@@ -216,18 +242,19 @@ Template.newJudgeElem.helpers({
         return newJudgeElem.logicType;
     }
 });
+*/
+Template.judgeElem.events({
 
-Template.newJudgeElem.events({
-    "click #addJudgeElem": function (event, template) {
-        var judgeElem = _.clone(newJudgeElem)
-        console.log("add ", judgeElem);
-        newPlan.addJudgeElem(judgeElem);
+    "click #deleteJudgeElem": function (event, template) {
+        console.log("delete judgeElem: ", this.index);
+        newPlan.delJudgeElem(this.index);
         planAll.updatePlan(newPlan);
         return false;
     },
     
     "change #index": function (event, template) {
         console.log(event.target.id, event.target.value);
+        console.log(newJudgeElem);
         newJudgeElem.index = event.target.value;
     },
     
@@ -256,4 +283,3 @@ Template.newJudgeElem.events({
         newJudgeElem.logicType = event.target.value;
     }
 });
-
