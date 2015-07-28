@@ -101,7 +101,7 @@
             <div class="ui yellow segment">
               <div class= "left floated header">
                 New Plan
-                <button class="ui primary right floated button" id="createNewPlan">New Plan</button>
+                <button class="ui primary tiny right floated button" id="createPlan">New Plan</button>
               </div>
                 <table class ="ui celled padded table">
                     <thead>
@@ -123,8 +123,8 @@
             </div>
 
 
-          <div class="newPlan ui large long modal">
-            {{> newPlan}}
+          <div class="onePlan ui large long modal">
+            {{> onePlan}}
           </div>
 
       </div>
@@ -200,12 +200,12 @@
         <td>{{name}}</td>
         <td>{{relayIndex}}</td>
         <td>{{relayValue}}</td>
-        <td><button class="ui mini primary button" id="editPlan">edit</button></td>
-        <td><button class="ui mini primary button" id="delPlan">delete</button></td>
+        <td><button class="ui mini button" id="editPlan">edit</button></td>
+        <td><button class="ui mini button" id="delPlan">delete</button></td>
     </tr>
 </template>
 
-<template name="newPlan">
+<template name="onePlan">
   
   <div class= "left floated header">
     New Plan
@@ -217,40 +217,42 @@
     <div class="ui grid" style="margin: 20px 50px">
 
       <div class="ui equal width centered row">
-
+      <!--
       <div class="column"> 
       <div class="ui labeled mini input">
         <div class="ui label">
           Plan Index
         </div>
-        <input type="text" id="planIndex" value={{index}}>
+        <input type="text" id="planIndex" value={{onePlan.index}}>
       </div>
       </div>
+      -->
         
       <div class="column"> 
-      <div class="ui labeled mini input">
+      <div class="ui labeled input">
         <div class="ui label">
           Plan Name
         </div>
-        <input type="text" id="planName" value={{name}}>
+        <input type="text" id="planName" value={{onePlan.name}}>
       </div>
+
       </div>
 
       <div class="column"> 
-      <div class="ui labeled mini input">
+      <div class="ui labeled input">
         <div class="ui label">
           Relay Index
         </div>
-        <input type="text" id="relayIndex" value={{relayIndex}}>
+        <input type="text" id="relayIndex" value={{onePlan.relayIndex}}>
       </div>
       </div>
 
       <div class="column"> 
-      <div class="ui labeled mini input">
+      <div class="ui labeled input">
         <div class="ui label">
           Relay Value
         </div>
-        <input type="text" id="relayValue" value={{relayValue}}>
+        <input type="text" id="relayValue" value={{onePlan.relayValue}}>
       </div>
       </div>
 
@@ -270,7 +272,7 @@
           </tr>
       </thead>
       <tbody>
-          {{#each judgeGroup}}
+          {{#each onePlan.judgeGroup}}
               {{> judgeElem}}
           {{/each}}
       </tbody>
@@ -279,7 +281,7 @@
 
       <div class="row" >
       <div class="right floated column">
-      <button class="ui mini right floated button" id="addJudgeElem">add judge element</button>
+      <button class="ui primary tiny right floated button" id="addJudgeElem">add judge element</button>
       </div>
       </div>
 
@@ -309,7 +311,10 @@
 
 <template name="judgeElem">
 <tr>
+<!--
 <td><div class="input-container is-tiny"><input type="text" class="green" id="index" value={{index}}></div></td>
+-->
+<td><div>{{index}}</div></td>
 <td><div class="input-container is-tiny"><input type="text" class="green" id="sensorIndex" value={{sensorIndex}}></div></td>
 <td><div class="input-container is-tiny"><input type="text" class="green" id="yesMin" value={{yesMin}}></div></td>
 <td><div class="input-container is-tiny"><input type="text" class="green" id="yesMax" value={{yesMax}}></div></td>
