@@ -115,32 +115,6 @@ Template.onePlan.helpers({
             return null;
         }
     },
-/*
-    index: function() {
-        var plan = planAll.getPlan(Session.get("modifyPlanIndex"));
-        if (plan != null) {
-            return plan.index;
-        } else {
-            return null;
-        }
-    },
-
-    name: function() {
-        planAll.getPlan(Session.get("modifyPlanIndex")).name;
-    },
-
-    relayIndex: function() {
-        return planAll.getPlan(Session.get("modifyPlanIndex")).name;
-    },
-
-    relayValue: function() {
-        return planAll.getPlan(Session.get("modifyPlanIndex")).name;
-    },
-
-    judgeGroup: function() {
-        return planAll.getPlan(Session.get("modifyPlanIndex")).name;
-    }
-*/
 });
 
 Template.onePlan.events({

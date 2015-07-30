@@ -12,16 +12,27 @@
 
 </body>
 
+<template name='home'>
+  {{> atNavButton}}
+</template>
+
+<template name='topMenu'>
+  <div class="ui top fixed menu">
+    <div class="item">
+    </div>
+    <a class="item" href="/monitor" id="topMenuMonitor">Monitor</a>
+    <a class="item" href="/setup" id="topMenuSetup">Setup</a>
+    <div class="right menu">
+      {{> atNavButton}} 
+    </div>
+  </div>
+</template>
+
 <template name='monitor'>
-<!--
-    <nav class="bar limit center dark" role="navigation">
-        <ul>
-            <li class="active"><a href="monitor">Monitor</a></li>
-            <li><a href="setup">Setup</a></li>
-        </ul>
-    </nav>
--->
-  <div class="ui container">
+
+  {{> topMenu }}
+
+  <div class="ui container" style="margin-top: 50px">
 
         <div class="ui segments">
             <div class="ui red segment">
@@ -133,25 +144,9 @@
 </template>
 
 <template name='setup'>
-    <nav class="bar limit center dark" role="navigation">
-        <ul>
-            <li ><a href="monitor">Monitor</a></li>
-            <li class="active"><a href="">Setup</a></li>
-        </ul>
-    </nav>
+  {{> topMenu }}
 
-    <main>
-            <section class="container">
-                <section class="row">
-                    <div class="col of-12">
-                    {{> example}}
-                    </div>
-                </section>
-            </section>
-    </main>
-
-    <footer>
-    </footer>
+  
 </template>
 
 <template name="sensor">
