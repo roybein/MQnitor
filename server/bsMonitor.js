@@ -28,16 +28,13 @@ mqttClient.on("connect", function() {
 */
 
 // register a listener on data collection Sensors
-var querySensors = sensorAll.collec.find();
+var queryInput = contactAll.collec.find({direction:"input"});
 
-var handle = querySensors.observeChanges({
+var handle = queryInput.observeChanges({
 		changed: function(id, fields) {
-			console.log("id=", id, "fields=", fields);
+			console.log("_id=", id, "fields=", fields);
             if(Object.keys(fields) == 'value') {
-                var sensor = sensorAll.getSensor(id);
-                console.log(sensor.name);
-                  
-                var pIdG = sensorAll.collec.findOne({_id:id}).planIdGroup;
+                var pIdG = contactAll.collec.findOne({_id:id}).planIdGroup;
                 pIdG.forEach(function(elem, index, group) {
                     planAll.checkPlan(elem);
                 });

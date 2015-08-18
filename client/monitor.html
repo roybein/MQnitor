@@ -1,0 +1,359 @@
+<head>
+    <meta charset="utf-8">
+    <title>Monitor | Brain Sences</title>
+    <!--
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    -->
+    <meta name="description" content="">
+    <meta name="author" content="roybein@linkgo.io">
+</head>
+
+<body>
+
+</body>
+
+<template name='home'>
+  {{> atNavButton}}
+</template>
+
+<template name='monitor'>
+
+  {{> topMenu }}
+
+  <div class="ui container" style="margin-top: 50px">
+
+        <div class="ui segments">
+            <div class="ui red segment">
+              <h3 class="ui center topMarginSmall header">Input</h3>
+                <table class ="ui celled padded table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Value</th>
+                            <th>Lock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each inputs}}
+                            {{> input}}
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ui yellow segment">
+              <h3 class="ui center topMarginSmall header">output</h3>
+                <table class ="ui celled padded table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Value</th>
+                            <th>Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each outputs}}
+                            {{> output}}
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ui yellow segment">
+              <div class= "left floated header">
+                New Plan
+                <button class="ui primary tiny right floated button" id="createPlan">New Plan</button>
+              </div>
+                <table class ="ui celled padded table">
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th>Name</th>
+                            <th>Output Index</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each plans}}
+                            {{> plan}}
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+
+          <div class="onePlan ui large long modal">
+            {{> onePlan}}
+          </div>
+
+      </div>
+
+  </div>
+</template>
+
+<template name="input">
+    <tr>
+        <td>{{_id}}</td>
+        <td>{{name}}</td>
+        <td>{{type}}</td>
+        <td>{{value}} {{unit}}</td>
+        <td><input type="checkbox"></td>
+    </tr>
+</template>
+
+<template name="output">
+    <tr>
+        <td>{{_id}}</td>
+        <td>{{name}}</td>
+        <td>{{type}}</td>
+        <td>
+            <div class="input-container">
+            <label><input type="radio" name={{_id}} class="output-control" id={{_id}} value="off" {{outputOffCheck}}>Off</label>
+            <label><input type="radio" name={{_id}} class="output-control" id={{_id}} value="on" {{outputOnCheck}}>On</label>
+            </div>
+        </td>
+        <td>{{plan}}</td>
+    </tr>
+
+</template>
+
+<template name="plan">
+    <tr>
+        <td>{{_id}}</td>
+        <td>{{name}}</td>
+        <td>{{outputId}}</td>
+        <td><button class="ui mini button" id="editPlan">edit</button></td>
+        <td><button class="ui mini button" id="delPlan">delete</button></td>
+    </tr>
+</template>
+
+<template name="onePlan">
+  
+  <div class= "left floated header">
+    New Plan
+    <button class="ui primary right floated button" id="savePlan">Save</button>
+  </div>
+
+  <div class="ui container">
+
+        <div class="ui segments">
+
+            <div class="ui red segment">
+              <div class="ui form">
+                <div class="two fields">
+                  <div class="field">
+                    <label>Plan Name</label> 
+                    <input type="text" id="planName" placeholder="input a name" value={{onePlan.name}}>
+                  </div>
+                  <div class="field">
+                    <label>Output</label>
+                    <div class="ui selection dropdown" id="planOutputSel">
+                      <input type="hidden" id="output">
+                      <i class="dropdown icon" ></i>
+                      <div class="default text">Output</div>
+                      <div class="menu">
+                        {{#each outputsForPlan}}
+                          <div class="item">{{name}}</div>
+                        {{/each}}
+                      </div>
+                    </div>
+                    <!--
+                    <div class="ui compact menu">
+                      <div class="ui simple dropdown item">
+                        select a output
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                          {{#each outputsForPlan}}
+                            <div class="item">{{name}}</div>
+                          {{/each}}
+                        </div> 
+                      </div>
+                    </div>
+                    -->
+
+                  </div>
+                </div>
+
+                <div class="two fields">
+                  <div class="field">
+                    <label>Output Value</label>
+                    <select class="ui dropdown" id="planOutputValue">
+                      <option value="on">on</option>
+                      <option value="off">off</option>
+                    </select>
+                  </div>
+
+                  <div class="field" id="pwm field" style="display: none">
+                  <div class="two fields">
+                  <div class="field">
+                    <label>PWM Frequency</label>
+                    <input type="text" id="planOutputPwmFreq" placeholder="input frequency">
+                  </div>
+                  <div class="field">
+                    <label>PWM Duty</label>
+                    <input type="text" id="planOutputPwmDuty" placeholder="input duty">
+                  </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {{> judgeElemTime}}
+
+            {{#each judgeElemInputs}}
+              {{> judgeElemInput}}
+            {{/each}}
+
+            <button class="ui primary tiny right floated button" id="addJudgeElem">Add JudgeElem</button>
+        </div>
+
+<!--
+    <div class="ui grid" style="margin: 20px 50px">
+
+      <div class="centered row">
+      <table class ="ui small table">
+      <thead>
+          <tr>
+              <th class="one wide">index</th>
+              <th class="two wide">Input Index</th>
+              <th class="two wide">yesMin</th>
+              <th class="two wide">yesMax</th>
+              <th class="two wide">LogicValue</th>
+              <th class="two wide">LogicType</th>
+              <th class="one wide">Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          {{#each onePlan.judgeGroup}}
+              {{> judgeElem}}
+          {{/each}}
+      </tbody>
+      </table>
+      </div>
+
+      <div class="row" >
+      <div class="right floated column">
+      <button class="ui primary tiny right floated button" id="addJudgeElem">add judge element</button>
+      </div>
+      </div>
+
+    </div>
+-->
+
+  </div>
+</template>
+
+<template name="judgeElem">
+<tr>
+<!--
+<td><div class="input-container is-tiny"><input type="text" class="green" id="index" value={{index}}></div></td>
+-->
+<td><div>{{index}}</div></td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="sensorIndex" value={{sensorIndex}}></div></td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="yesMin" value={{yesMin}}></div></td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="yesMax" value={{yesMax}}></div></td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="logicValue" value={{logicValue}}></div></td>
+<td><div class="input-container is-tiny"><input type="text" class="green" id="logicType" value={{logicType}}></div></td>
+<td><button class="ui button" id="deleteJudgeElem">delete</button></td>
+</tr>
+</template>
+
+<template name="judgeElemTime">
+  <h5 class="ui attached header">
+    Plan Time
+  </h5>
+  <div class="ui attached yellow segment">
+    <div class="ui form">
+      <div class="three fields">
+        <div class="field">
+          <label>Start Time</label>
+          <input type="text" id="judgeElemTimeStart" value={{valueStart}}>
+        </div>
+        <div class="field">
+          <label>End Time</label>
+          <input type="text" id="judgeElemTimeEnd" value={{valueEnd}}>
+        </div>
+        <div class="field">
+          <label>Repeat Day</label>
+          <input type="text" id="judgeElemWeekday" value={{valueWeekday}}>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="judgeElemInput">
+<!--
+  <h5 class="ui attached header">
+    JudgeElem {{_id}}
+  </h5>
+  <button class="ui mini button" id="delJudgeElem">delete</button>
+-->
+              <h5 class= "ui attached header">
+                JudgeElem {{_id}}
+                <button class="ui tiny right floated button" id="delJudgeElem">Delete</button>
+              </h5>
+
+  <div class="ui attached yellow segment">
+    <div class="ui form" id="judgeElemFromInputSel">
+      <div class="two fields">
+
+        <div class="field">
+          <label>Iutput</label>
+          <div class="ui selection dropdown" id="judgeElemInputSel">
+            <input type="hidden" id="iutput">
+            <i class="dropdown icon" ></i>
+            <div class="default text">Iutput</div>
+            <div class="menu">
+              {{#each iutputs}}
+                <div class="item">{{name}}</div>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+
+        <div class="field" id="judgeElemLogicOp">
+          <label>Logic Operator</label>
+            <select class="ui dropdown" id="judgeElemLogicOp">
+              <option value="root">root</option>
+              <option value="and">and</option>
+              <option value="or">or</option>
+              <option value="not">not</option>
+            </select>
+        </div>
+
+      </div>
+
+      <div class="two fields" id="judgeElemValueMinMax">
+        <div class="field">
+          <label>Min Value</label>
+          <input type="text" id="judgeElemValueMin" value={{valueMin}}>
+        </div>
+        <div class="field">
+          <label>Max Value</label>
+          <input type="text" id="judgeElemValueMax" value={{valueMax}}>
+        </div>
+      </div>
+
+        <div class="field" id="judgeElemWaterMark" style="display: none">
+          <label>Water Mark</label>
+          <input type="text" id="judgeElemWaterMark" value={{waterMark}}>
+        </div>
+
+        <div class="field" id="judgeElemValueTrue" style="display: none">
+          <label>Ture Value</label>
+            <select class="ui dropdown" id="judgeElemValueTrue">
+              <option value="on">on</option>
+              <option value="off">off</option>
+            </select>
+        </div>
+
+    </div>
+  </div>
+</template>

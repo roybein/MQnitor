@@ -1,30 +1,21 @@
 Template.monitor.helpers({
 
-	sensors: function() {
-		return sensorAll.collec.find({});
+	inputs: function() {
+		return contactAll.collec.find({direction:"input"});
 	},
 
-	digitalInputs: function() {
-		return DigitalInputs.find({});
-	},
-
-	analogInputs: function() {
-		return AnalogInputs.find({});
-	},
-
-	relays: function() {
-		return relayAll.collec.find({});
+	outputs: function() {
+		return contactAll.collec.find({direction:"output"});
 	},
 
 	plans: function() {
-		return planAll.collec.find({_id:{$ne:'new'}});
+		return planAll.collec.find({});
 	},
 });
 
 Template.monitor.events({
     "click #createPlan": function(event, template) {
-        //var plan = planAll.getPlan("new");
-        var plan = new Plan("new", null, null, null, []);
+        var plan = {_id:"new", name:null, outputId:null, outputValue:null, judgeGroup:[]};
         console.log("get new plan:", plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
         $('.long.modal')
@@ -32,19 +23,18 @@ Template.monitor.events({
         $('.long.modal')
             .modal('show');
     },
-
 });
 
-Template.relay.helpers({
-	relayOffCheck: function() {
+Template.output.helpers({
+	outputOffCheck: function() {
 		return this.value === "off" ? 'checked' : '';
 	},
 	
-	relayOnCheck: function() {
+	outputOnCheck: function() {
 		return this.value === "on"? 'checked' : '';
 	},
 
-	relayAutoCheck: function() {
+	outputAutoCheck: function() {
 		return this.value === "auto"? 'checked' : '';
 	},
 
@@ -70,10 +60,10 @@ Template.relay.helpers({
     }
 });
 
-Template.relay.events({
-  "change .relay-control": function (event, template) {
+Template.output.events({
+  "change .output-control": function (event, template) {
 		console.log(event.target.id, event.target.value);
-        relayAll.collec.update({_id:event.target.id}, {$set:{value:event.target.value}});
+        contactAll.collec.update({_id:event.target.id}, {$set:{value:event.target.value}});
   }
 });
 
@@ -106,6 +96,11 @@ Template.judgeElem.helpers({
 });
 
 Template.onePlan.helpers({
+	outputsForPlan: function() {
+		var ret =  contactAll.collec.find({direction:"output"});
+        return ret;
+	},
+
     onePlan: function() {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         if (plan != null) {
@@ -115,6 +110,14 @@ Template.onePlan.helpers({
             return null;
         }
     },
+
+    judgeElemInputs: function() {
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        return plan.judgeGroup.filter( function(el) {
+            return el.inputId !== "weekday" &&
+                    el.inputId !== "time";
+        });
+    }
 });
 
 Template.onePlan.events({
@@ -127,59 +130,76 @@ Template.onePlan.events({
         } else {
             planAll.updatePlan(plan);
         }
+
         $('.long.modal')
             .modal('hide');
         return false;
     },
-
-    "click #addJudgeElem": function (event, template) {
-        newJudgeElem = new JudgeElem("new", "dummy_sensorIndex", 0, 0, true, "ori");
-        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        console.log(plan);
-        plan.addJudgeElem(newJudgeElem);
-        console.log("after addJudgeElem plan=", plan);
-        Session.set("onePlan", EJSON.toJSONValue(plan));
-        var checkPlan = EJSON.fromJSONValue(Session.get("onePlan"));
-        console.log("after addJudgeElem plan=", checkPlan);
-        return false;
-    },
-
-    "click #deleteJudgeElem": function (event, template) {
-        console.log("delete judgeElem: ", this.index);
-        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        plan.delJudgeElem(this.index);
-        Session.set("onePlan", EJSON.toJSONValue(plan));
-        return false;
-    },
-
+/*
     "change #planIndex": function (event, template) {
         console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         plan.index = event.target.value;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
-    
+*/   
     "change #planName": function (event, template) {
-      	console.log(event.target.id, event.target.value);
+      	console.log(event.target.id, ":", event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        console.log(plan);
         plan.name = event.target.value;
+        console.log(plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 
-    "change #relayIndex": function (event, template) {
+    "click #planOutputSel": function (event, template) {
+        //console.log("here click dropdown");
+        $('#planOutputSel').dropdown();
+    },
+
+    "change #planOutputSel": function (event, template) {
+      	console.log(event.target.id, ":", event.target.value);
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        plan.outputId = event.target.value;
+        Session.set("onePlan", EJSON.toJSONValue(plan));
+        console.log("output type:", event.target.id);
+        var output = contactAll.collec.findOne({name:event.target.value});
+        if(output.type == "pwm") {
+            console.log("is pwm, show pwm field");
+            document.getElementById("pwm field").style.display="";       
+        } else {
+            console.log("not pwm, hide pwm field");
+            document.getElementById("pwm field").style.display="none";       
+        }
+    },
+
+    "click #planRelayValue": function (event, template) {
+        //console.log("here click dropdown");
+        $('#planRelayValue').dropdown();
+    },
+
+    "change #outputValue": function (event, template) {
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        plan.relayIndex = event.target.value;
+        plan.outputValue = event.target.value;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 
-    "change #relayValue": function (event, template) {
-      	console.log(event.target.id, event.target.value);
+    "click #addJudgeElem": function (event, template) {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        plan.relayValue = event.target.value;
+        newJudgeElem = {_id:"new"};
+        newJudgeElem._id = plan.judgeGroup.length.toString();
+        plan = addJudgeElem(plan, newJudgeElem);
         Session.set("onePlan", EJSON.toJSONValue(plan));
-    }
+        return false;
+    },
+
+    "click #delJudgeElem": function (event, template) {
+        console.log("delete judgeElem ", this._id);
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        plan = delJudgeElem(plan, this.index);
+        Session.set("onePlan", EJSON.toJSONValue(plan));
+        return false;
+    },
 });
 
 /*
