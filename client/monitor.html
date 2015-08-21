@@ -133,7 +133,7 @@
 </template>
 
 <template name="onePlan">
-  
+
   <div class= "left floated header">
     New Plan
     <button class="ui primary right floated button" id="savePlan">Save</button>
@@ -147,7 +147,7 @@
               <div class="ui form">
                 <div class="two fields">
                   <div class="field">
-                    <label>Plan Name</label> 
+                    <label>Plan Name</label>
                     <input type="text" id="planName" placeholder="input a name" value={{onePlan.name}}>
                   </div>
                   <div class="field">
@@ -171,7 +171,7 @@
                           {{#each outputsForPlan}}
                             <div class="item">{{name}}</div>
                           {{/each}}
-                        </div> 
+                        </div>
                       </div>
                     </div>
                     -->
@@ -252,24 +252,9 @@
   </div>
 </template>
 
-<template name="judgeElem">
-<tr>
-<!--
-<td><div class="input-container is-tiny"><input type="text" class="green" id="index" value={{index}}></div></td>
--->
-<td><div>{{index}}</div></td>
-<td><div class="input-container is-tiny"><input type="text" class="green" id="sensorIndex" value={{sensorIndex}}></div></td>
-<td><div class="input-container is-tiny"><input type="text" class="green" id="yesMin" value={{yesMin}}></div></td>
-<td><div class="input-container is-tiny"><input type="text" class="green" id="yesMax" value={{yesMax}}></div></td>
-<td><div class="input-container is-tiny"><input type="text" class="green" id="logicValue" value={{logicValue}}></div></td>
-<td><div class="input-container is-tiny"><input type="text" class="green" id="logicType" value={{logicType}}></div></td>
-<td><button class="ui button" id="deleteJudgeElem">delete</button></td>
-</tr>
-</template>
-
 <template name="judgeElemTimeInput">
   <h5 class="ui attached header">
-    Plan Time
+    JudgeElem {{_id}}
     <button class="ui tiny right floated button" id="delJudgeElem">Delete</button>
   </h5>
   <div class="ui attached blue segment">

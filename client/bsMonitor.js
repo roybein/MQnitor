@@ -85,16 +85,6 @@ Template.plan.events({
     },
 });
 
-Template.judgeElem.helpers({
-    isNew: function() {
-        if(this.index === "new") {
-            return true;
-        } else {
-            return false;
-        }
-    }
-});
-
 Template.onePlan.helpers({
 	outputsForPlan: function() {
 		var ret =  contactAll.collec.find({direction:"output"});
@@ -130,12 +120,15 @@ Template.onePlan.helpers({
 Template.onePlan.events({
     "click #savePlan": function (event, template) {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        if(plan.index == "new") {
-            plan.index = planAll.collec.find().count().toString();
+        if(plan._id == "new") {
+            plan._id = planAll.collec.find().count().toString();
             console.log("savePlan:", plan);
             planAll.addPlan(plan);
+						planAll.attachPlan(plan._id);
         } else {
+						planAll.detachPlan(plan._id);
             planAll.updatePlan(plan);
+						planAll.attachPlan(plan._id);
         }
 
         $('.long.modal')
@@ -166,10 +159,9 @@ Template.onePlan.events({
     "change #planOutputSel": function (event, template) {
       	console.log(event.target.id, ":", event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        plan.outputId = event.target.value;
+				var output = contactAll.collec.findOne({name:event.target.value});
+        plan.outputId = output._id;
         Session.set("onePlan", EJSON.toJSONValue(plan));
-        console.log("output type:", event.target.id);
-        var output = contactAll.collec.findOne({name:event.target.value});
         if(output.type == "pwm") {
             console.log("is pwm, show pwm field");
             document.getElementById("pwm field").style.display="";
@@ -213,7 +205,7 @@ Template.onePlan.events({
     "click #delJudgeElem": function (event, template) {
         console.log("delete judgeElem ", this._id);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        plan = delJudgeElem(plan, this.index);
+        plan = delJudgeElem(plan, this._id);
         Session.set("onePlan", EJSON.toJSONValue(plan));
         if (this._id === "time") {
             document.getElementById("addJudgeElemTimeInput")
@@ -265,7 +257,7 @@ Template.judgeElemInput.events({
                 document.getElementById("judgeElemValueTrue")
                     .style.display="";
                 break;
-            case "counter": 
+            case "counter":
                 document.getElementById("judgeElemValueMinMax")
                     .style.display="none";
                 document.getElementById("judgeElemWaterMark")
