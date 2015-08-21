@@ -204,13 +204,16 @@
               </div>
             </div>
 
-            {{> judgeElemTime}}
+            {{#each judgeElemTimeInputs}}
+              {{> judgeElemTimeInput}}
+            {{/each}}
 
             {{#each judgeElemInputs}}
               {{> judgeElemInput}}
             {{/each}}
 
-            <button class="ui primary tiny right floated button" id="addJudgeElem">Add JudgeElem</button>
+            <button class="ui primary tiny right floated button" id="addJudgeElemTimeInput">Set Time For Plan</button>
+            <button class="ui primary tiny right floated button" id="addJudgeElemInput">Set Input Check For Plan</button>
         </div>
 
 <!--
@@ -264,9 +267,35 @@
 </tr>
 </template>
 
-<template name="judgeElemTime">
+<template name="judgeElemTimeInput">
   <h5 class="ui attached header">
     Plan Time
+    <button class="ui tiny right floated button" id="delJudgeElem">Delete</button>
+  </h5>
+  <div class="ui attached blue segment">
+    <div class="ui form">
+      <div class="three fields">
+        <div class="field">
+          <label>Start Time</label>
+          <input type="text" id="judgeElemTimeStart" value={{timeStart}}>
+        </div>
+        <div class="field">
+          <label>End Time</label>
+          <input type="text" id="judgeElemTimeEnd" value={{timeEnd}}>
+        </div>
+        <div class="field">
+          <label>Repeat Day</label>
+          <input type="text" id="judgeElemWeekday" value={{weekdayRepeat}}>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="judgeElemWeekdayInput">
+  <h5 class="ui attached header">
+    Plan Time
+    <button class="ui tiny right floated button" id="delJudgeElem">Delete</button>
   </h5>
   <div class="ui attached yellow segment">
     <div class="ui form">
@@ -282,23 +311,18 @@
         <div class="field">
           <label>Repeat Day</label>
           <input type="text" id="judgeElemWeekday" value={{valueWeekday}}>
-        </div>
+       </div>
       </div>
     </div>
   </div>
 </template>
 
 <template name="judgeElemInput">
-<!--
-  <h5 class="ui attached header">
+
+  <h5 class= "ui attached header">
     JudgeElem {{_id}}
+    <button class="ui tiny right floated button" id="delJudgeElem">Delete</button>
   </h5>
-  <button class="ui mini button" id="delJudgeElem">delete</button>
--->
-              <h5 class= "ui attached header">
-                JudgeElem {{_id}}
-                <button class="ui tiny right floated button" id="delJudgeElem">Delete</button>
-              </h5>
 
   <div class="ui attached yellow segment">
     <div class="ui form" id="judgeElemFromInputSel">
@@ -307,11 +331,11 @@
         <div class="field">
           <label>Iutput</label>
           <div class="ui selection dropdown" id="judgeElemInputSel">
-            <input type="hidden" id="iutput">
+            <input type="hidden" id="input">
             <i class="dropdown icon" ></i>
-            <div class="default text">Iutput</div>
+            <div class="default text">Input</div>
             <div class="menu">
-              {{#each iutputs}}
+              {{#each inputsForJudgeElem}}
                 <div class="item">{{name}}</div>
               {{/each}}
             </div>
@@ -341,18 +365,18 @@
         </div>
       </div>
 
-        <div class="field" id="judgeElemWaterMark" style="display: none">
-          <label>Water Mark</label>
-          <input type="text" id="judgeElemWaterMark" value={{waterMark}}>
-        </div>
+      <div class="field" id="judgeElemWaterMark" style="display: none">
+        <label>Water Mark</label>
+        <input type="text" id="judgeElemWaterMark" value={{waterMark}}>
+      </div>
 
-        <div class="field" id="judgeElemValueTrue" style="display: none">
-          <label>Ture Value</label>
-            <select class="ui dropdown" id="judgeElemValueTrue">
-              <option value="on">on</option>
-              <option value="off">off</option>
-            </select>
-        </div>
+      <div class="field" id="judgeElemValueTrue" style="display: none">
+        <label>Ture Value</label>
+          <select class="ui dropdown" id="judgeElemValueTrue">
+            <option value="on">on</option>
+            <option value="off">off</option>
+          </select>
+      </div>
 
     </div>
   </div>
