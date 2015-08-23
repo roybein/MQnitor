@@ -103,17 +103,24 @@ Template.onePlan.helpers({
 
     judgeElemInputs: function() {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        return plan.judgeGroup.filter( function(el) {
-            return el.inputId !== "weekday" &&
-                    el.inputId !== "time";
-        });
+        if (plan != null) {
+            return plan.judgeGroup.filter( function(el) {
+                return el.inputId !== "time";
+            });
+        } else {
+            return null;
+        }
     },
 
     judgeElemTimeInputs: function() {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        return plan.judgeGroup.filter( function(el) {
-            return el.inputId == "time";
-        });
+        if (plan != null) {
+            return plan.judgeGroup.filter( function(el) {
+                return el.inputId == "time";
+            });
+        } else {
+            return null;
+        }
     },
 });
 
@@ -150,12 +157,12 @@ Template.onePlan.events({
         console.log(plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
-
+/*
     "click #planOutputSel": function (event, template) {
         //console.log("here click dropdown");
         $('#planOutputSel').dropdown();
     },
-
+*/
     "change #planOutputSel": function (event, template) {
       	console.log(event.target.id, ":", event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
@@ -170,12 +177,12 @@ Template.onePlan.events({
             document.getElementById("pwm field").style.display="none";
         }
     },
-
+/*
     "click #planRelayValue": function (event, template) {
         //console.log("here click dropdown");
         $('#planRelayValue').dropdown();
     },
-
+*/
     "change #outputValue": function (event, template) {
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
@@ -222,14 +229,23 @@ Template.judgeElemInput.helpers({
         console.log("here return:", ret);
         return ret;
 	},
+
+    inputSelected: function (inputId) {
+        console.log("this:", this);
+        console.log("inputId:", inputId);
+        //var input = contactAll.collec.findOne({_id:this.inputId});
+        //console.log("input:", input);
+        //return input.name;
+    },
 });
 
 Template.judgeElemInput.events({
+/*
     "click #judgeElemInputSel": function (event, template) {
         console.log("here click dropdown");
         $('#judgeElemInputSel').dropdown();
     },
-
+*/
     "change #judgeElemInputSel": function(event, template) {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
@@ -274,7 +290,13 @@ Template.judgeElemInput.events({
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this._id].logicOp = event.target.value;
+        jg.forEach( function (elem, index, array) {
+            console.log("this._id=", this._id);
+            if (elem._id === this._id) {
+                console.log(elem);
+                jg[index].logicOp = event.target.value;
+            }
+        }, this);
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
@@ -345,89 +367,12 @@ Template.judgeElemTimeInput.events({
     },
 });
 
-/*
-Template.newJudgeElem.helpers({
-    index: function() {
-        return newJudgeElem.index;
-    },
-
-    sensorIndex: function() {
-        return newJudgeElem.sensorIndex;
-    },
-
-    yesMin: function() {
-        return newJudgeElem.yesMin;
-    },
-
-    yesMax: function() {
-        return newJudgeElem.yesMax;
-    },
-
-    logicValue: function() {
-        return newJudgeElem.logicValue;
-    },
-
-    logicType: function() {
-        return newJudgeElem.logicType;
-    }
+Template.judgeElemInput.onRendered( function() {
+    this.find('option.inputForJudgeElem#' + this.data.inputId).setAttribute("selected", "selected");
+    this.find('option.logicOpForJudgeElem[value=' + this.data.logicOp + "]").setAttribute("selected", "selected");
 });
 
-Template.judgeElem.events({
-    "change #index": function (event, template) {
-      	console.log(event.target.id, event.target.value);
-        plan = planAll.getPlan(Session.get("modifyPlanIndex"));
-        var judgeElem = plan.getJudgeElem(this.index);
-        judgeElem.index = event.target.value;
-        plan.updateJudgeElem(judgeElem);
-        planAll.updatePlan(plan);
-    },
-    "change #sensorIndex": function (event, template) {
-      	console.log(event.target.id, event.target.value);
-        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        console.log(plan);
-        console.log("this.index=", this.index);
-        var judgeElem = plan.getJudgeElem(this.index);
-        console.log(judgeElem);
-        judgeElem.sensorIndex = event.target.value;
-        plan.updateJudgeElem(judgeElem);
-        Session.set("onePlan", EJSON.toJSONValue(plan));
-    },
-
-    "change #yesMin": function (event, template) {
-      	console.log(event.target.id, event.target.value);
-        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        console.log("this=", this);
-        var judgeElem = plan.getJudgeElem(this.index);
-        judgeElem.yesMin = event.target.value;
-        plan.updateJudgeElem(judgeElem);
-        Session.set("onePlan", EJSON.toJSONValue(plan));
-    },
-
-    "change #yesMax": function (event, template) {
-      	console.log(event.target.id, event.target.value);
-        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        var judgeElem = plan.getJudgeElem(this.index);
-        judgeElem.yesMax = event.target.value;
-        plan.updateJudgeElem(judgeElem);
-        Session.set("onePlan", EJSON.toJSONValue(plan));
-    },
-
-    "change #logicValue": function (event, template) {
-      	console.log(event.target.id, event.target.value);
-        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        var judgeElem = plan.getJudgeElem(this.index);
-        judgeElem.logicValue = event.target.value;
-        plan.updateJudgeElem(judgeElem);
-        Session.set("onePlan", EJSON.toJSONValue(plan));
-    },
-
-    "change #logicType": function (event, template) {
-      	console.log(event.target.id, event.target.value);
-        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        var judgeElem = plan.getJudgeElem(this.index);
-        judgeElem.logicType = event.target.value;
-        plan.updateJudgeElem(judgeElem);
-        Session.set("onePlan", EJSON.toJSONValue(plan));
-    }
+Template.onePlan.onRendered( function() {
+    this.find('option.outputForPlan#' + this.data.outputId).setAttribute("selected", "selected");
+    this.find('option.outputValueForPlan[value=' + this.data.outputValue + "]").setAttribute("selected", "selected");
 });
-*/

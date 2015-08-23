@@ -21,7 +21,6 @@
   {{> topMenu }}
 
   <div class="ui container" style="margin-top: 50px">
-
         <div class="ui segments">
             <div class="ui red segment">
               <h3 class="ui center topMarginSmall header">Input</h3>
@@ -146,35 +145,19 @@
             <div class="ui red segment">
               <div class="ui form">
                 <div class="two fields">
+
                   <div class="field">
                     <label>Plan Name</label>
                     <input type="text" id="planName" placeholder="input a name" value={{onePlan.name}}>
                   </div>
+
                   <div class="field">
                     <label>Output</label>
-                    <div class="ui selection dropdown" id="planOutputSel">
-                      <input type="hidden" id="output">
-                      <i class="dropdown icon" ></i>
-                      <div class="default text">Output</div>
-                      <div class="menu">
+                    <select class="ui dropdown" id="planOutputSel">
                         {{#each outputsForPlan}}
-                          <div class="item">{{name}}</div>
+                          <option class="outputForPlan" id={{_id}}>{{name}}</option>
                         {{/each}}
-                      </div>
-                    </div>
-                    <!--
-                    <div class="ui compact menu">
-                      <div class="ui simple dropdown item">
-                        select a output
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                          {{#each outputsForPlan}}
-                            <div class="item">{{name}}</div>
-                          {{/each}}
-                        </div>
-                      </div>
-                    </div>
-                    -->
+                    </select>
 
                   </div>
                 </div>
@@ -183,8 +166,8 @@
                   <div class="field">
                     <label>Output Value</label>
                     <select class="ui dropdown" id="planOutputValue">
-                      <option value="on">on</option>
-                      <option value="off">off</option>
+                      <option class="outputValueForPlan" value="on">on</option>
+                      <option class="outputValueForPlan" value="off">off</option>
                     </select>
                   </div>
 
@@ -315,25 +298,20 @@
 
         <div class="field">
           <label>Iutput</label>
-          <div class="ui selection dropdown" id="judgeElemInputSel">
-            <input type="hidden" id="input">
-            <i class="dropdown icon" ></i>
-            <div class="default text">Input</div>
-            <div class="menu">
-              {{#each inputsForJudgeElem}}
-                <div class="item">{{name}}</div>
-              {{/each}}
-            </div>
-          </div>
+          <select class="ui dropdown" id="judgeElemInputSel">
+            {{#each inputsForJudgeElem}}
+              <option class="inputForJudgeElem" id={{_id}}>{{name}}</option>
+            {{/each}}
+          </select>
         </div>
 
         <div class="field" id="judgeElemLogicOp">
           <label>Logic Operator</label>
             <select class="ui dropdown" id="judgeElemLogicOp">
-              <option value="root">root</option>
-              <option value="and">and</option>
-              <option value="or">or</option>
-              <option value="not">not</option>
+              <option class="logicOpForJudgeElem" value="root">root</option>
+              <option class="logicOpForJudgeElem" value="and">and</option>
+              <option class="logicOpForJudgeElem" value="or">or</option>
+              <option class="logicOpForJudgeElem" value="not">not</option>
             </select>
         </div>
 
