@@ -126,16 +126,17 @@ Template.onePlan.helpers({
 
 Template.onePlan.events({
     "click #savePlan": function (event, template) {
+        //TOOD: validate
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         if(plan._id == "new") {
             plan._id = planAll.collec.find().count().toString();
             console.log("savePlan:", plan);
             planAll.addPlan(plan);
-						planAll.attachPlan(plan._id);
+            planAll.attachPlan(plan._id);
         } else {
-						planAll.detachPlan(plan._id);
+            planAll.detachPlan(plan._id);
             planAll.updatePlan(plan);
-						planAll.attachPlan(plan._id);
+            planAll.attachPlan(plan._id);
         }
 
         $('.long.modal')
@@ -192,32 +193,37 @@ Template.onePlan.events({
 
     "click #addJudgeElemTimeInput": function (event, template) {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        newJudgeElem = {_id:"time", inputId:"time"};
+        newJudgeElem = {index:"new", inputId:"time", logicOp:"and"};
+        newJudgeElem.index = plan.judgeGroup.length.toString();
         plan = addJudgeElem(plan, newJudgeElem);
         Session.set("onePlan", EJSON.toJSONValue(plan));
+        /*
         document.getElementById("addJudgeElemTimeInput")
             .style.display="none";
+        */
         return false;
 	},
 
     "click #addJudgeElemInput": function (event, template) {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        newJudgeElem = {_id:"new"};
-        newJudgeElem._id = plan.judgeGroup.length.toString();
+        newJudgeElem = {index:"new"};
+        newJudgeElem.index = plan.judgeGroup.length.toString();
         plan = addJudgeElem(plan, newJudgeElem);
         Session.set("onePlan", EJSON.toJSONValue(plan));
         return false;
     },
 
     "click #delJudgeElem": function (event, template) {
-        console.log("delete judgeElem ", this._id);
+        console.log("delete judgeElem ", this.index);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        plan = delJudgeElem(plan, this._id);
+        plan = delJudgeElem(plan, this.index);
         Session.set("onePlan", EJSON.toJSONValue(plan));
-        if (this._id === "time") {
+        /*
+        if (this.inputId === "time") {
             document.getElementById("addJudgeElemTimeInput")
                 .style.display="";
         }
+        */
         return false;
     },
 
@@ -226,7 +232,6 @@ Template.onePlan.events({
 Template.judgeElemInput.helpers({
 	inputsForJudgeElem: function() {
 		var ret =  contactAll.collec.find({direction:"input"});
-        console.log("here return:", ret);
         return ret;
 	},
 
@@ -251,7 +256,7 @@ Template.judgeElemInput.events({
         var jg = plan.judgeGroup;
         var input = contactAll.collec.findOne({name:event.target.value});
         console.log("select input:", input);
-        jg[this._id].inputId = input._id;
+        jg[this.index].inputId = input._id;
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
         switch (input.type) {
@@ -291,8 +296,7 @@ Template.judgeElemInput.events({
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
         jg.forEach( function (elem, index, array) {
-            console.log("this._id=", this._id);
-            if (elem._id === this._id) {
+            if (elem.index === this.index) {
                 console.log(elem);
                 jg[index].logicOp = event.target.value;
             }
@@ -305,7 +309,7 @@ Template.judgeElemInput.events({
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this._id].valueMin = event.target.value;
+        jg[this.index].valueMin = event.target.value;
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
@@ -314,7 +318,7 @@ Template.judgeElemInput.events({
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this._id].valueMax = event.target.value;
+        jg[this.index].valueMax = event.target.value;
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
@@ -323,7 +327,7 @@ Template.judgeElemInput.events({
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this._id].waterMark = event.target.value;
+        jg[this.index].waterMark = event.target.value;
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
@@ -332,36 +336,36 @@ Template.judgeElemInput.events({
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this._id].valueTrue = event.target.value;
+        jg[this.index].valueTrue = event.target.value;
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 });
 
 Template.judgeElemTimeInput.events({
-    "change #timeStart": function (event, template) {
+    "change #judgeElemTimeStart": function (event, template) {
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this._id].timeStart = event.target.value;
+        jg[this.index].timeStart = event.target.value;
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 
-    "change #timeEnd": function (event, template) {
+    "change #judgeElemTimeEnd": function (event, template) {
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this._id].timeEnd = event.target.value;
+        jg[this.index].timeEnd = event.target.value;
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 
-    "change #weekdayRepeat": function (event, template) {
+    "change #judgeElemWeekday": function (event, template) {
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this._id].weekdayRepeat = event.target.value;
+        jg[this.index].weekdayRepeat = event.target.value;
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
@@ -369,10 +373,10 @@ Template.judgeElemTimeInput.events({
 
 Template.judgeElemInput.onRendered( function() {
     this.find('option.inputForJudgeElem#' + this.data.inputId).setAttribute("selected", "selected");
-    this.find('option.logicOpForJudgeElem[value=' + this.data.logicOp + "]").setAttribute("selected", "selected");
+    this.find('option.logicOpForJudgeElem[value=' + this.data.logicOp + ']').setAttribute("selected", "selected");
 });
 
 Template.onePlan.onRendered( function() {
     this.find('option.outputForPlan#' + this.data.outputId).setAttribute("selected", "selected");
-    this.find('option.outputValueForPlan[value=' + this.data.outputValue + "]").setAttribute("selected", "selected");
+    this.find('option.outputValueForPlan[value=' + this.data.outputValue + ']').setAttribute("selected", "selected");
 });
