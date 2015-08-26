@@ -11,14 +11,15 @@
 <body>
 
 </body>
-
+<!--
 <template name='home'>
   {{> atNavButton}}
 </template>
+-->
 
 <template name='monitor'>
 
-  {{> topMenu }}
+  {{> topMenu}}
 
   <div class="ui container" style="margin-top: 50px">
         <div class="ui segments">
@@ -244,8 +245,16 @@
     <div class="ui form">
       <div class="three fields">
         <div class="field">
+          <div class="input-group clockpicker">
+            <input type="text" class="form-control" id="judgeElemTimeStart" value="09:30">
+            <span class="input-group-addon">
+            <span class="glyphicon glyphicon-time"></span>
+            </span>
+          </div>
+          <!--  
           <label>Start Time</label>
           <input type="text" id="judgeElemTimeStart" value={{timeStart}}>
+            -->
         </div>
         <div class="field">
           <label>End Time</label>

@@ -1,13 +1,10 @@
 Template.monitor.helpers({
-
 	inputs: function() {
 		return contactAll.collec.find({direction:"input"});
 	},
-
 	outputs: function() {
 		return contactAll.collec.find({direction:"output"});
 	},
-
 	plans: function() {
 		return planAll.collec.find({});
 	},
@@ -343,6 +340,12 @@ Template.judgeElemInput.events({
 });
 
 Template.judgeElemTimeInput.events({
+/*
+    "click #judgeElemTimeStart": function (event, template) {
+        console.log("clockpicker clicked");
+        $('input-group.clockpicker').clockpicker();
+    },
+*/
     "change #judgeElemTimeStart": function (event, template) {
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
@@ -379,4 +382,11 @@ Template.judgeElemInput.onRendered( function() {
 Template.onePlan.onRendered( function() {
     this.find('option.outputForPlan#' + this.data.outputId).setAttribute("selected", "selected");
     this.find('option.outputValueForPlan[value=' + this.data.outputValue + ']').setAttribute("selected", "selected");
+});
+
+Template.test.events({
+    "click #pick-a-time": function (event, template) {
+        console.log("clockpicker clicked");
+        $('#pick-a-time').lolliclock({autoclose:true});
+    },
 });
