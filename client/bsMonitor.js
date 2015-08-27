@@ -231,7 +231,7 @@ Template.judgeElemInput.helpers({
 		var ret =  contactAll.collec.find({direction:"input"});
         return ret;
 	},
-
+/*
     inputSelected: function (inputId) {
         console.log("this:", this);
         console.log("inputId:", inputId);
@@ -239,6 +239,7 @@ Template.judgeElemInput.helpers({
         //console.log("input:", input);
         //return input.name;
     },
+*/
 });
 
 Template.judgeElemInput.events({
@@ -339,6 +340,12 @@ Template.judgeElemInput.events({
     },
 });
 
+Template.judgeElemTimeInput.helpers({
+    activeOrNot: function () {
+        
+    },
+});
+
 Template.judgeElemTimeInput.events({
 /*
     "click #judgeElemTimeStart": function (event, template) {
@@ -379,14 +386,29 @@ Template.judgeElemInput.onRendered( function() {
     this.find('option.logicOpForJudgeElem[value=' + this.data.logicOp + ']').setAttribute("selected", "selected");
 });
 
+Template.judgeElemTimeInput.onRendered( function() {
+    this.$('.datetimepicker').datetimepicker({format: 'LT'}); 
+});
+
 Template.onePlan.onRendered( function() {
     this.find('option.outputForPlan#' + this.data.outputId).setAttribute("selected", "selected");
     this.find('option.outputValueForPlan[value=' + this.data.outputValue + ']').setAttribute("selected", "selected");
 });
-
+/*
 Template.test.events({
     "click #pick-a-time": function (event, template) {
         console.log("clockpicker clicked");
         $('#pick-a-time').lolliclock({autoclose:true});
     },
+
+    "click .datetimepicker": function (event, template) {
+        console.log("datetimepicker clicked");
+        $('.datetimepicker').datetimepicker({format: 'LT'}); 
+    },
+});
+*/
+
+Template.test.onRendered(function() {
+    this.$('.datetimepicker').datetimepicker({format: 'LT'}); 
+    this.$('#pick-a-time').lolliclock({autoclose:true});
 });

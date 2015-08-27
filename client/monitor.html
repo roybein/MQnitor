@@ -244,26 +244,30 @@
   <div class="ui attached blue segment">
     <div class="ui form">
       <div class="three fields">
+
         <div class="field">
-          <div class="input-group clockpicker">
-            <input type="text" class="form-control" id="judgeElemTimeStart" value="09:30">
-            <span class="input-group-addon">
-            <span class="glyphicon glyphicon-time"></span>
-            </span>
-          </div>
-          <!--  
           <label>Start Time</label>
-          <input type="text" id="judgeElemTimeStart" value={{timeStart}}>
-            -->
+          <input class="ui dropdown datetimepicker" id="judgeElemTimeStart" type="text" value={{timeStartDisplayStr}}>
         </div>
+
         <div class="field">
           <label>End Time</label>
-          <input type="text" id="judgeElemTimeEnd" value={{timeEnd}}>
+          <input class="ui dropdown datetimepicker" id="judgeElemTimeEnd" type="text" value={{timeEndDisplayStr}}>
         </div>
+
         <div class="field">
-          <label>Repeat Day</label>
-          <input type="text" id="judgeElemWeekday" value={{weekdayRepeat}}>
+          <label>Repeat Days</label>
+          <div class="ui icon buttons">
+            <button class="ui toggle button {{activeOrNot}}" id="wd1">Mon</button>
+            <button class="ui toggle button {{activeOrNot}}" id="wd2">Tue</button>
+            <button class="ui toggle button {{activeOrNot}}" id="wd3">Wen</button>
+            <button class="ui toggle button {{activeOrNot}}" id="wd4">Tur</button>
+            <button class="ui toggle button {{activeOrNot}}" id="wd5">Fri</button>
+            <button class="ui toggle button {{activeOrNot}}" id="wd6">Sat</button>
+            <button class="ui toggle button {{activeOrNot}}" id="wd7">Sun</button>
+          </div> 
         </div>
+
       </div>
     </div>
   </div>
