@@ -247,52 +247,27 @@
 
         <div class="field">
           <label>Start Time</label>
-          <input class="ui dropdown datetimepicker" id="judgeElemTimeStart" type="text" value={{timeStartDisplayStr}}>
+          <input class="ui dropdown datetimepicker" id="judgeElemTimeStart" value={{timeStartDisplayStr}}>
         </div>
 
         <div class="field">
           <label>End Time</label>
-          <input class="ui dropdown datetimepicker" id="judgeElemTimeEnd" type="text" value={{timeEndDisplayStr}}>
+          <input class="ui dropdown datetimepicker" id="judgeElemTimeEnd" value={{timeEndDisplayStr}}>
         </div>
 
         <div class="field">
           <label>Repeat Days</label>
           <div class="ui icon buttons">
-            <button class="ui toggle button {{activeOrNot}}" id="wd1">Mon</button>
-            <button class="ui toggle button {{activeOrNot}}" id="wd2">Tue</button>
-            <button class="ui toggle button {{activeOrNot}}" id="wd3">Wen</button>
-            <button class="ui toggle button {{activeOrNot}}" id="wd4">Tur</button>
-            <button class="ui toggle button {{activeOrNot}}" id="wd5">Fri</button>
-            <button class="ui toggle button {{activeOrNot}}" id="wd6">Sat</button>
-            <button class="ui toggle button {{activeOrNot}}" id="wd7">Sun</button>
+            <button class="ui toggle button {{isRepeatDayActive 1}}" id="1">Mon</button>
+            <button class="ui toggle button {{isRepeatDayActive 2}}" id="2">Tue</button>
+            <button class="ui toggle button {{isRepeatDayActive 3}}" id="3">Wen</button>
+            <button class="ui toggle button {{isRepeatDayActive 4}}" id="4">Tur</button>
+            <button class="ui toggle button {{isRepeatDayActive 5}}" id="5">Fri</button>
+            <button class="ui toggle button {{isRepeatDayActive 6}}" id="6">Sat</button>
+            <button class="ui toggle button {{isRepeatDayActive 7}}" id="7">Sun</button>
           </div> 
         </div>
 
-      </div>
-    </div>
-  </div>
-</template>
-
-<template name="judgeElemWeekdayInput">
-  <h5 class="ui attached header">
-    Plan Time
-    <button class="ui tiny right floated button" id="delJudgeElem">Delete</button>
-  </h5>
-  <div class="ui attached yellow segment">
-    <div class="ui form">
-      <div class="three fields">
-        <div class="field">
-          <label>Start Time</label>
-          <input type="text" id="judgeElemTimeStart" value={{valueStart}}>
-        </div>
-        <div class="field">
-          <label>End Time</label>
-          <input type="text" id="judgeElemTimeEnd" value={{valueEnd}}>
-        </div>
-        <div class="field">
-          <label>Repeat Day</label>
-          <input type="text" id="judgeElemWeekday" value={{valueWeekday}}>
-       </div>
       </div>
     </div>
   </div>

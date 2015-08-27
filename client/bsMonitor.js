@@ -341,41 +341,49 @@ Template.judgeElemInput.events({
 });
 
 Template.judgeElemTimeInput.helpers({
-    activeOrNot: function () {
-        
+    timeStartDisplayStr: function () {
+        return this.timeStart;
+    },
+
+    timeEndDisplayStr: function () {
+        return this.timeEnd;
+    },
+
+    isRepeatDayActive: function (weekday) {
+        if (this.repeatDays.indexOf(weekday) > -1) {
+            return "active";
+        } else {
+            return null;
+        }
     },
 });
 
 Template.judgeElemTimeInput.events({
-/*
-    "click #judgeElemTimeStart": function (event, template) {
-        console.log("clockpicker clicked");
-        $('input-group.clockpicker').clockpicker();
-    },
-*/
-    "change #judgeElemTimeStart": function (event, template) {
+    "dp.change #judgeElemTimeStart": function (event, template) {
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        var jg = plan.judgeGroup;
-        jg[this.index].timeStart = event.target.value;
-        plan.judgeGroup = jg;
+        plan.judgeGroup[this.index].timeStart = event.target.value;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 
-    "change #judgeElemTimeEnd": function (event, template) {
+    "dp.change #judgeElemTimeEnd": function (event, template) {
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        var jg = plan.judgeGroup;
-        jg[this.index].timeEnd = event.target.value;
-        plan.judgeGroup = jg;
+        plan.judgeGroup[this.index].timeEnd = event.target.value;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 
-    "change #judgeElemWeekday": function (event, template) {
-      	console.log(event.target.id, event.target.value);
+    "click #1,#2,#3,#4,#5,#6,#7": function (event, template) {
+      	console.log("clicked", event.target.id);
+        day = Number(event.target.id);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this.index].weekdayRepeat = event.target.value;
+        var dayId = jg[this.index].repeatDays.indexOf(day);
+        if (dayId > -1) {
+            jg[this.index].repeatDays.splice(dayId, 1);
+        } else {
+            jg[this.index].repeatDays.push(day);
+        }
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
