@@ -67,13 +67,12 @@ Template.output.events({
 Template.plan.events({
     "click #editPlan": function(event, template) {
         var plan = planAll.getPlan(this._id);
-        console.log("get onePlan from planAll:", plan);
+        console.log("edit plan:", plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
         $('.long.modal')
-            .modal({observeChanges: true});
+            .modal({observeChanges: true, onShow: planModalOnShow });
         $('.long.modal')
             .modal('show');
-
     },
 
     "click #delPlan": function(event, template) {
@@ -81,6 +80,13 @@ Template.plan.events({
         planAll.delPlan(this._id);
     },
 });
+
+planModalOnShow = function() {
+    console.log("planModalOnShow");
+    var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+    $('.outputForPlan#' + plan.outputId).attr("selected", "selected");
+    $('.outputValueForPlan#' + plan.outputValue).attr("selected", "selected");
+}
 
 Template.onePlan.helpers({
 	outputsForPlan: function() {
@@ -96,6 +102,16 @@ Template.onePlan.helpers({
         } else {
             return null;
         }
+    },
+
+    isPwmDisplay: function() {
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        var output = contactAll.collec.findOne({_id:plan.outputId});
+        if (output.type === "pwm") {
+            return "";
+        } else {
+            return "none";
+        } 
     },
 
     judgeElemInputs: function() {
@@ -164,16 +180,9 @@ Template.onePlan.events({
     "change #planOutputSel": function (event, template) {
       	console.log(event.target.id, ":", event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-				var output = contactAll.collec.findOne({name:event.target.value});
+		var output = contactAll.collec.findOne({name:event.target.value});
         plan.outputId = output._id;
         Session.set("onePlan", EJSON.toJSONValue(plan));
-        if(output.type == "pwm") {
-            console.log("is pwm, show pwm field");
-            document.getElementById("pwm field").style.display="";
-        } else {
-            console.log("not pwm, hide pwm field");
-            document.getElementById("pwm field").style.display="none";
-        }
     },
 /*
     "click #planRelayValue": function (event, template) {
@@ -190,14 +199,10 @@ Template.onePlan.events({
 
     "click #addJudgeElemTimeInput": function (event, template) {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        newJudgeElem = {index:"new", inputId:"time", logicOp:"and"};
+        newJudgeElem = {index:"new", inputId:"time", repeatDays:[], logicOp:"and"};
         newJudgeElem.index = plan.judgeGroup.length.toString();
         plan = addJudgeElem(plan, newJudgeElem);
         Session.set("onePlan", EJSON.toJSONValue(plan));
-        /*
-        document.getElementById("addJudgeElemTimeInput")
-            .style.display="none";
-        */
         return false;
 	},
 
@@ -215,12 +220,6 @@ Template.onePlan.events({
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         plan = delJudgeElem(plan, this.index);
         Session.set("onePlan", EJSON.toJSONValue(plan));
-        /*
-        if (this.inputId === "time") {
-            document.getElementById("addJudgeElemTimeInput")
-                .style.display="";
-        }
-        */
         return false;
     },
 
@@ -228,18 +227,38 @@ Template.onePlan.events({
 
 Template.judgeElemInput.helpers({
 	inputsForJudgeElem: function() {
-		var ret =  contactAll.collec.find({direction:"input"});
-        return ret;
+        return contactAll.collec.find({$and:[{direction:"input"},{type:{$ne:"time"}}]});
 	},
-/*
-    inputSelected: function (inputId) {
-        console.log("this:", this);
-        console.log("inputId:", inputId);
-        //var input = contactAll.collec.findOne({_id:this.inputId});
-        //console.log("input:", input);
-        //return input.name;
+
+    isValueMinMaxDisplay: function() {
+        var input = contactAll.collec.findOne({_id:this.inputId});
+        console.log(input);
+        if (input.type === "sensor" ||
+            input.type === "adc" ||
+            input.type === "wire") {
+            return "";
+        } else {
+            return "none";
+        }
     },
-*/
+
+    isWaterMarkDisplay: function() {
+        var input = contactAll.collec.findOne({_id:this.inputId});
+        if (input.type === "counter") {
+            return "";
+        } else {
+            return "none";
+        }
+    },
+
+    isValueTrueDisplay: function() {
+        var input = contactAll.collec.findOne({_id:this.inputId});
+        if (input.type === "switch") {
+            return "";
+        } else {
+            return "none";
+        }
+    },
 });
 
 Template.judgeElemInput.events({
@@ -257,36 +276,6 @@ Template.judgeElemInput.events({
         jg[this.index].inputId = input._id;
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
-        switch (input.type) {
-            case "adc":
-            case "sensor":
-            case "wire":
-                document.getElementById("judgeElemValueMinMax")
-                    .style.display="";
-                document.getElementById("judgeElemWaterMark")
-                    .style.display="none";
-                document.getElementById("judgeElemValueTrue")
-                    .style.display="none";
-                break;
-            case "switch":
-                document.getElementById("judgeElemValueMinMax")
-                    .style.display="none";
-                document.getElementById("judgeElemWaterMark")
-                    .style.display="none";
-                document.getElementById("judgeElemValueTrue")
-                    .style.display="";
-                break;
-            case "counter":
-                document.getElementById("judgeElemValueMinMax")
-                    .style.display="none";
-                document.getElementById("judgeElemWaterMark")
-                    .style.display="";
-                document.getElementById("judgeElemValueTrue")
-                    .style.display="none";
-                break;
-            default:
-                console.log("unkown input type");
-        }
     },
 
     "change #judgeElemLogicOp": function (event, template) {
@@ -391,17 +380,14 @@ Template.judgeElemTimeInput.events({
 
 Template.judgeElemInput.onRendered( function() {
     this.find('option.inputForJudgeElem#' + this.data.inputId).setAttribute("selected", "selected");
-    this.find('option.logicOpForJudgeElem[value=' + this.data.logicOp + ']').setAttribute("selected", "selected");
+    this.find('option.inputForJudgeElem#' + this.data.inputId).setAttribute("selected", "selected");
+    this.find('option.valueTrueForJudgeElem[value=' + this.data.valueTrue + ']').setAttribute("selected", "selected");
 });
 
 Template.judgeElemTimeInput.onRendered( function() {
     this.$('.datetimepicker').datetimepicker({format: 'LT'}); 
 });
 
-Template.onePlan.onRendered( function() {
-    this.find('option.outputForPlan#' + this.data.outputId).setAttribute("selected", "selected");
-    this.find('option.outputValueForPlan[value=' + this.data.outputValue + ']').setAttribute("selected", "selected");
-});
 /*
 Template.test.events({
     "click #pick-a-time": function (event, template) {

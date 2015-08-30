@@ -33,7 +33,9 @@ var queryInput = contactAll.collec.find({direction:"input"});
 var handle = queryInput.observeChanges({
 		changed: function(id, fields) {
 			console.log("_id=", id, "fields=", fields);
-            if(Object.keys(fields) == 'value') {
+            if( (Object.keys(fields) == 'value') ||
+                (Object.keys(fields) == 'time') ||
+                (Object.keys(fields) == 'weekday') ) {
                 var pIdG = contactAll.collec.findOne({_id:id}).planIdGroup;
                 pIdG.forEach(function(elem, index, group) {
                     planAll.checkPlan(elem);

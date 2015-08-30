@@ -11,11 +11,6 @@
 <body>
 
 </body>
-<!--
-<template name='home'>
-  {{> atNavButton}}
-</template>
--->
 
 <template name='monitor'>
 
@@ -167,12 +162,12 @@
                   <div class="field">
                     <label>Output Value</label>
                     <select class="ui dropdown" id="planOutputValue">
-                      <option class="outputValueForPlan" value="on">on</option>
-                      <option class="outputValueForPlan" value="off">off</option>
+                      <option class="outputValueForPlan" id="on">on</option>
+                      <option class="outputValueForPlan" id="off">off</option>
                     </select>
                   </div>
 
-                  <div class="field" id="pwm field" style="display: none">
+                  <div class="field" id="pwm field" style="display:{{isPwmDisplay}}">
                   <div class="two fields">
                   <div class="field">
                     <label>PWM Frequency</label>
@@ -199,39 +194,6 @@
             <button class="ui primary tiny right floated button" id="addJudgeElemTimeInput">Set Time For Plan</button>
             <button class="ui primary tiny right floated button" id="addJudgeElemInput">Set Input Check For Plan</button>
         </div>
-
-<!--
-    <div class="ui grid" style="margin: 20px 50px">
-
-      <div class="centered row">
-      <table class ="ui small table">
-      <thead>
-          <tr>
-              <th class="one wide">index</th>
-              <th class="two wide">Input Index</th>
-              <th class="two wide">yesMin</th>
-              <th class="two wide">yesMax</th>
-              <th class="two wide">LogicValue</th>
-              <th class="two wide">LogicType</th>
-              <th class="one wide">Action</th>
-          </tr>
-      </thead>
-      <tbody>
-          {{#each onePlan.judgeGroup}}
-              {{> judgeElem}}
-          {{/each}}
-      </tbody>
-      </table>
-      </div>
-
-      <div class="row" >
-      <div class="right floated column">
-      <button class="ui primary tiny right floated button" id="addJudgeElem">add judge element</button>
-      </div>
-      </div>
-
-    </div>
--->
 
   </div>
 </template>
@@ -305,7 +267,7 @@
 
       </div>
 
-      <div class="two fields" id="judgeElemValueMinMax">
+      <div class="two fields" id="judgeElemValueMinMax" style="display: {{isValueMinMaxDisplay}}">
         <div class="field">
           <label>Min Value</label>
           <input type="text" id="judgeElemValueMin" value={{valueMin}}>
@@ -316,16 +278,16 @@
         </div>
       </div>
 
-      <div class="field" id="judgeElemWaterMark" style="display: none">
+      <div class="field" id="judgeElemWaterMark" style="display: {{isWaterMarkDisplay}}">
         <label>Water Mark</label>
         <input type="text" id="judgeElemWaterMark" value={{waterMark}}>
       </div>
 
-      <div class="field" id="judgeElemValueTrue" style="display: none">
+      <div class="field" id="judgeElemValueTrue" style="display: {{isValueTrueDisplay}}">
         <label>Ture Value</label>
           <select class="ui dropdown" id="judgeElemValueTrue">
-            <option value="on">on</option>
-            <option value="off">off</option>
+            <option class="valueTrueForJudgeElem" value="on">on</option>
+            <option class="valueTrueForJudgeElem" value="off">off</option>
           </select>
       </div>
 
