@@ -47,6 +47,15 @@ Template.input.onRendered( function() {
 });
 
 Template.output.helpers({
+    isValueSwitchEnable: function() {
+        var output = contactAll.getContact(this._id);
+        if (output.planSwitch === "enabled") {
+            return "disabled";
+        } else {
+            return "";
+        }
+    },
+
     isValueChecked: function() {
         var output = contactAll.getContact(this._id);
         if (output.value === "on") {
@@ -58,7 +67,7 @@ Template.output.helpers({
 
     isPlanChecked: function() {
         var output = contactAll.getContact(this._id);
-        if (output.planSwitch === "enable") {
+        if (output.planSwitch === "enabled") {
             return "checked";
         } else {
             return "";
@@ -102,11 +111,11 @@ Template.output.onRendered( function() {
     $("[name='outputPlanCheckbox']").checkbox({
         onChecked: function() {
             console.log("checked planSwitch", this.id);
-            contactAll.collec.update({_id:this.id}, {$set:{planSwitch:"enable"}});
+            contactAll.collec.update({_id:this.id}, {$set:{planSwitch:"enabled"}});
         },
         onUnchecked: function() {
             console.log("unchecked planSwitch", this.id);
-            contactAll.collec.update({_id:this.id}, {$set:{planSwitch:"disable"}});
+            contactAll.collec.update({_id:this.id}, {$set:{planSwitch:"disabled"}});
         },
     });
 });
@@ -441,7 +450,7 @@ Template.judgeElemTimeInput.events({
 
 Template.judgeElemInput.onRendered( function() {
     this.find('option.inputForJudgeElem#' + this.data.inputId).setAttribute("selected", "selected");
-    this.find('option.inputForJudgeElem#' + this.data.inputId).setAttribute("selected", "selected");
+    this.find('option.logicOpForJudgeElem[value=' + this.data.logicOp + ']').setAttribute("selected", "selected");
     this.find('option.valueTrueForJudgeElem[value=' + this.data.valueTrue + ']').setAttribute("selected", "selected");
 });
 

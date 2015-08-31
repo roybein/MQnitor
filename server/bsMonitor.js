@@ -31,16 +31,36 @@ mqttClient.on("connect", function() {
 var queryInput = contactAll.collec.find({direction:"input"});
 
 var handle = queryInput.observeChanges({
-		changed: function(id, fields) {
-			console.log("_id=", id, "fields=", fields);
-            if( (Object.keys(fields) == 'value') ||
-                (Object.keys(fields) == 'time') ||
-                (Object.keys(fields) == 'weekday') ) {
-                var pIdG = contactAll.collec.findOne({_id:id}).planIdGroup;
-                pIdG.forEach(function(elem, index, group) {
-                    planAll.checkPlan(elem);
-                });
-            }
-		}
+	changed: function(id, fields) {
+		console.log("input:", id, " fields:", fields, " changed");
+        if( (Object.keys(fields) == 'value') ||
+            (Object.keys(fields) == 'time') ||
+            (Object.keys(fields) == 'weekday') ) {
+            var pIdG = contactAll.collec.findOne({_id:id}).planIdGroup;
+            pIdG.forEach(function(elem, index, group) {
+                planAll.checkPlan(elem);
+            });
+        }
+	}
 });
 
+var queryPlan = planAll.collec.find();
+
+var handle = queryPlan.observeChanges({
+	changed: function(id, fields) {
+		console.log("plan:", id, " fields:", fields, " changed");
+        planAll.checkPlan(id);
+	}
+});
+
+var queryOutput = contactAll.collec.find({direction:"output"});
+
+var handle = queryOutput.observeChanges({
+	changed: function(id, fields) {
+		console.log("output:", id, " fields:", fields, " changed");
+        if (Object.keys(fields) == 'planSwitch') {
+            var planId = contactAll.collec.findOne({_id:id}).planId;
+            planAll.checkPlan(planId);
+        }
+	}
+});
