@@ -22,18 +22,48 @@ Template.monitor.events({
     },
 });
 
+Template.input.helpers({
+    isLockChecked: function() {
+        var output = contactAll.getContact(this._id);
+        if (output.lock === "locked") {
+            return "checked";
+        } else {
+            return "unchecked";
+        }
+    },
+});
+
+Template.input.onRendered( function() {
+    $("[name='inputLockCheckbox']").checkbox({
+        onChecked: function() {
+            console.log("checked Lock", this.id);
+            contactAll.collec.update({_id:this.id}, {$set:{lock:"locked"}});
+        },
+        onUnchecked: function() {
+            console.log("unchecked Lock", this.id);
+            contactAll.collec.update({_id:this.id}, {$set:{lock:"unlocked"}});
+        },
+    });
+});
+
 Template.output.helpers({
-	outputOffCheck: function() {
-		return this.value === "off" ? 'checked' : '';
-	},
+    isValueChecked: function() {
+        var output = contactAll.getContact(this._id);
+        if (output.value === "on") {
+            return "checked";
+        } else {
+            return "unchecked";
+        }
+    },
 
-	outputOnCheck: function() {
-		return this.value === "on"? 'checked' : '';
-	},
-
-	outputAutoCheck: function() {
-		return this.value === "auto"? 'checked' : '';
-	},
+    isPlanChecked: function() {
+        var output = contactAll.getContact(this._id);
+        if (output.planSwitch === "enable") {
+            return "checked";
+        } else {
+            return "";
+        }
+    },
 
 	plan: function() {
 		if(this.planId === null) {
@@ -57,15 +87,42 @@ Template.output.helpers({
     }
 });
 
-Template.output.events({
-  "change .output-control": function (event, template) {
-		console.log(event.target.id, event.target.value);
-        contactAll.collec.update({_id:event.target.id}, {$set:{value:event.target.value}});
-  }
+Template.output.onRendered( function() {
+    $("[name='outputValueSwitch']").checkbox({
+        onChecked: function() {
+            console.log("checked value", this.id);
+            contactAll.collec.update({_id:this.id}, {$set:{value:"on"}});
+        },
+        onUnchecked: function() {
+            console.log("unchecked value", this.id);
+            contactAll.collec.update({_id:this.id}, {$set:{value:"off"}});
+        },
+    });
+
+    $("[name='outputPlanCheckbox']").checkbox({
+        onChecked: function() {
+            console.log("checked planSwitch", this.id);
+            contactAll.collec.update({_id:this.id}, {$set:{planSwitch:"enable"}});
+        },
+        onUnchecked: function() {
+            console.log("unchecked planSwitch", this.id);
+            contactAll.collec.update({_id:this.id}, {$set:{planSwitch:"disable"}});
+        },
+    });
 });
 
+/*
+Template.output.events({
+    "changed #outputValueCheckbox": function (event, template) {
+        console.log(event.target.id, event.target.value);
+        //contactAll.collec.update({_id:event.target.id},
+        //    {$set:{value:event.target.value}});
+    },
+});
+*/
+
 Template.plan.events({
-    "click #editPlan": function(event, template) {
+    "click [name='editPlan']": function(event, template) {
         var plan = planAll.getPlan(this._id);
         console.log("edit plan:", plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
@@ -75,7 +132,7 @@ Template.plan.events({
             .modal('show');
     },
 
-    "click #delPlan": function(event, template) {
+    "click [name='delPlan']": function(event, template) {
         console.log("delPlan:", this._id);
         planAll.delPlan(this._id);
     },
@@ -106,12 +163,16 @@ Template.onePlan.helpers({
 
     isPwmDisplay: function() {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        var output = contactAll.collec.findOne({_id:plan.outputId});
-        if (output.type === "pwm") {
-            return "";
+        if (plan != null) {
+            var output = contactAll.collec.findOne({_id:plan.outputId});
+            if (output.type === "pwm") {
+                return "";
+            } else {
+                return "none";
+            } 
         } else {
             return "none";
-        } 
+        }
     },
 
     judgeElemInputs: function() {

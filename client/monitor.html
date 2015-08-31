@@ -97,7 +97,12 @@
         <td>{{name}}</td>
         <td>{{type}}</td>
         <td>{{value}} {{unit}}</td>
-        <td><input type="checkbox"></td>
+        <td>
+          <div class="ui fitted checkbox" name="inputLockCheckbox">
+            <input type="checkbox" id={{_id}} {{isLockChecked}}>
+            <label></label>
+          </div>
+        </td>
     </tr>
 </template>
 
@@ -107,12 +112,17 @@
         <td>{{name}}</td>
         <td>{{type}}</td>
         <td>
-            <div class="input-container">
-            <label><input type="radio" name={{_id}} class="output-control" id={{_id}} value="off" {{outputOffCheck}}>Off</label>
-            <label><input type="radio" name={{_id}} class="output-control" id={{_id}} value="on" {{outputOnCheck}}>On</label>
-            </div>
+          <div class="ui fitted toggle checkbox" name="outputValueSwitch">
+            <input type="checkbox" id={{_id}} {{isValueChecked}}>
+            <label></label>
+          </div>
         </td>
-        <td>{{plan}}</td>
+        <td>
+          <div class="ui checkbox" name="outputPlanCheckbox">
+            <input type="checkbox" id={{_id}} {{isPlanChecked}}>
+            <label>{{plan}}</label>
+          </div>
+        </td>
     </tr>
 
 </template>
@@ -122,8 +132,8 @@
         <td>{{_id}}</td>
         <td>{{name}}</td>
         <td>{{outputId}}</td>
-        <td><button class="ui mini button" id="editPlan">edit</button></td>
-        <td><button class="ui mini button" id="delPlan">delete</button></td>
+        <td><button class="ui mini button" name="editPlan">edit</button></td>
+        <td><button class="ui mini button" name="delPlan">delete</button></td>
     </tr>
 </template>
 
