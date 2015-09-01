@@ -1,3 +1,9 @@
+Template.topMenu.helpers({
+    currentUser: function() {
+        return Meteor.user().emails[0].address;
+    },
+});
+
 Template.monitor.helpers({
 	inputs: function() {
 		return contactAll.collec.find({direction:"input"});
@@ -174,11 +180,11 @@ Template.onePlan.helpers({
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         if (plan != null) {
             var output = contactAll.collec.findOne({_id:plan.outputId});
-            if (output.type === "pwm") {
+            if (output != null && output.type === "pwm") {
                 return "";
             } else {
                 return "none";
-            } 
+            }
         } else {
             return "none";
         }

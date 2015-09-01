@@ -5,7 +5,14 @@
     <a class="item" href="/monitor" id="topMenuMonitor">Monitor</a>
     <a class="item" href="/test" id="topMenuSetup">Test</a>
     <div class="right menu">
-      {{> atNavButton}} 
+      <div class="item">
+        <div class="ui right large label">
+          <i class="user icon">{{currentUser}}</i>
+        </div>
+      </div>
+      <div>
+        {{> atNavButton}} 
+      </div>
     </div>
   </div>
 </template>
