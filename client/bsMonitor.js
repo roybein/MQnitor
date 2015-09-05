@@ -1,24 +1,27 @@
+currentUser = function() {
+    return Meteor.user().username;
+};
+
 Template.topMenu.helpers({
-    currentUser: function() {
-        return Meteor.user().emails[0].address;
-    },
+    username: currentUser,
 });
+
 
 Template.monitor.helpers({
 	inputs: function() {
-		return contactAll.collec.find({direction:"input"});
+		return contactAll.collec.find({owner:currentUser(), direction:"input"});
 	},
 	outputs: function() {
-		return contactAll.collec.find({direction:"output"});
+		return contactAll.collec.find({owner:currentUser(), direction:"output"});
 	},
 	plans: function() {
-		return planAll.collec.find({});
+		return planAll.collec.find({owner:currentUser()});
 	},
 });
 
 Template.monitor.events({
     "click #createPlan": function(event, template) {
-        var plan = {_id:"new", name:null, outputId:null, outputValue:null, judgeGroup:[]};
+        var plan = {owner:currentUser(), localId:"new", name:null, outputId:null, outputValue:null, judgeGroup:[]};
         console.log("get new plan:", plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
         $('.long.modal')
@@ -30,8 +33,8 @@ Template.monitor.events({
 
 Template.input.helpers({
     isLockChecked: function() {
-        var output = contactAll.getContact(this._id);
-        if (output.lock === "locked") {
+        var input = contactAll.getContact(currentUser(), this.localId);
+        if (input.lock === "locked") {
             return "checked";
         } else {
             return "unchecked";
@@ -43,18 +46,22 @@ Template.input.onRendered( function() {
     $("[name='inputLockCheckbox']").checkbox({
         onChecked: function() {
             console.log("checked Lock", this.id);
-            contactAll.collec.update({_id:this.id}, {$set:{lock:"locked"}});
+            var i = consoleAll.collec.findOne({owner:currentUser(), localId:this.id});
+            if (i === null) return;
+            contactAll.collec.update({_id:i._id}, {$set:{lock:"locked"}});
         },
         onUnchecked: function() {
             console.log("unchecked Lock", this.id);
-            contactAll.collec.update({_id:this.id}, {$set:{lock:"unlocked"}});
+            var i = consoleAll.collec.findOne({owner:currentUser(), localId:this.id});
+            if (i === null) return;
+            contactAll.collec.update({_id:i._id}, {$set:{lock:"unlocked"}});
         },
     });
 });
 
 Template.output.helpers({
     isValueSwitchEnable: function() {
-        var output = contactAll.getContact(this._id);
+        var output = contactAll.getContact(currentUser(), this.localId);
         if (output.planSwitch === "enabled") {
             return "disabled";
         } else {
@@ -63,7 +70,7 @@ Template.output.helpers({
     },
 
     isValueChecked: function() {
-        var output = contactAll.getContact(this._id);
+        var output = contactAll.getContact(currentUser(), this.localId);
         if (output.value === "on") {
             return "checked";
         } else {
@@ -72,7 +79,7 @@ Template.output.helpers({
     },
 
     isPlanChecked: function() {
-        var output = contactAll.getContact(this._id);
+        var output = contactAll.getContact(currentUser(), this.localId);
         if (output.planSwitch === "enabled") {
             return "checked";
         } else {
@@ -93,35 +100,36 @@ Template.output.helpers({
 		}
 	},
 
-    buttonName: function() {
-        if(this.planId === null) {
-            return "Add";
-        } else {
-            return "Edit";
-        }
-    }
 });
 
 Template.output.onRendered( function() {
     $("[name='outputValueSwitch']").checkbox({
         onChecked: function() {
             console.log("checked value", this.id);
-            contactAll.collec.update({_id:this.id}, {$set:{value:"on"}});
+            var o = contactAll.collec.findOne({owner:currentUser(), localId:this.id});
+            if (o === null) return;
+            contactAll.collec.update({_id:o._id}, {$set:{value:"on"}});
         },
         onUnchecked: function() {
             console.log("unchecked value", this.id);
-            contactAll.collec.update({_id:this.id}, {$set:{value:"off"}});
+            var o = contactAll.collec.findOne({owner:currentUser(), localId:this.id});
+            if (o === null) return;
+            contactAll.collec.update({_id:o._id}, {$set:{value:"off"}});
         },
     });
 
     $("[name='outputPlanCheckbox']").checkbox({
         onChecked: function() {
             console.log("checked planSwitch", this.id);
-            contactAll.collec.update({_id:this.id}, {$set:{planSwitch:"enabled"}});
+            var o = contactAll.collec.findOne({owner:currentUser(), localId:this.id});
+            if (o === null) return;
+            contactAll.collec.update({_id:o._id}, {$set:{planSwitch:"enabled"}});
         },
         onUnchecked: function() {
             console.log("unchecked planSwitch", this.id);
-            contactAll.collec.update({_id:this.id}, {$set:{planSwitch:"disabled"}});
+            var o = contactAll.collec.findOne({owner:currentUser(), localId:this.id});
+            if (o === null) return;
+            contactAll.collec.update({_id:o._id}, {$set:{planSwitch:"disabled"}});
         },
     });
 });
@@ -130,7 +138,7 @@ Template.output.onRendered( function() {
 Template.output.events({
     "changed #outputValueCheckbox": function (event, template) {
         console.log(event.target.id, event.target.value);
-        //contactAll.collec.update({_id:event.target.id},
+        //contactAll.collec.update({localId:event.target.id},
         //    {$set:{value:event.target.value}});
     },
 });
@@ -138,7 +146,7 @@ Template.output.events({
 
 Template.plan.events({
     "click [name='editPlan']": function(event, template) {
-        var plan = planAll.getPlan(this._id);
+        var plan = planAll.getPlan(currentUser(), this.localId);
         console.log("edit plan:", plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
         $('.long.modal')
@@ -148,8 +156,8 @@ Template.plan.events({
     },
 
     "click [name='delPlan']": function(event, template) {
-        console.log("delPlan:", this._id);
-        planAll.delPlan(this._id);
+        console.log("delPlan:", this.localId);
+        planAll.delPlan(currentUser(), this.localId);
     },
 });
 
@@ -162,7 +170,7 @@ planModalOnShow = function() {
 
 Template.onePlan.helpers({
 	outputsForPlan: function() {
-		var ret =  contactAll.collec.find({direction:"output"});
+		var ret =  contactAll.collec.find({owner:currentUser(), direction:"output"});
         return ret;
 	},
 
@@ -179,7 +187,7 @@ Template.onePlan.helpers({
     isPwmDisplay: function() {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         if (plan != null) {
-            var output = contactAll.collec.findOne({_id:plan.outputId});
+            var output = contactAll.collec.findOne({owner:currentUser(), localId:plan.outputId});
             if (output != null && output.type === "pwm") {
                 return "";
             } else {
@@ -217,15 +225,15 @@ Template.onePlan.events({
     "click #savePlan": function (event, template) {
         //TOOD: validate
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        if(plan._id == "new") {
-            plan._id = planAll.collec.find().count().toString();
+        if(plan.localId == "new") {
+            plan.localId = planAll.collec.find({owner:currentUser()}).count().toString();
             console.log("savePlan:", plan);
             planAll.addPlan(plan);
-            planAll.attachPlan(plan._id);
+            planAll.attachPlan(plan.owner, plan.localId);
         } else {
-            planAll.detachPlan(plan._id);
+            planAll.detachPlan(plan.owner, plan.localId);
             planAll.updatePlan(plan);
-            planAll.attachPlan(plan._id);
+            planAll.attachPlan(plan.owner, plan.localId);
         }
 
         $('.long.modal')
@@ -256,8 +264,8 @@ Template.onePlan.events({
     "change #planOutputSel": function (event, template) {
       	console.log(event.target.id, ":", event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-		var output = contactAll.collec.findOne({name:event.target.value});
-        plan.outputId = output._id;
+		var output = contactAll.collec.findOne({owner:currentUser(), name:event.target.value});
+        plan.outputId = output.localId;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 /*
@@ -303,11 +311,11 @@ Template.onePlan.events({
 
 Template.judgeElemInput.helpers({
 	inputsForJudgeElem: function() {
-        return contactAll.collec.find({$and:[{direction:"input"},{type:{$ne:"time"}}]});
+        return contactAll.collec.find({$and:[{owner:currentUser()},{direction:"input"},{type:{$ne:"time"}}]});
 	},
 
     isValueMinMaxDisplay: function() {
-        var input = contactAll.collec.findOne({_id:this.inputId});
+        var input = contactAll.collec.findOne({owner:currentUser(), localId:this.inputId});
         console.log(input);
         if (input.type === "sensor" ||
             input.type === "adc" ||
@@ -319,7 +327,7 @@ Template.judgeElemInput.helpers({
     },
 
     isWaterMarkDisplay: function() {
-        var input = contactAll.collec.findOne({_id:this.inputId});
+        var input = contactAll.collec.findOne({owner:currentUser(), localId:this.inputId});
         if (input.type === "counter") {
             return "";
         } else {
@@ -328,7 +336,7 @@ Template.judgeElemInput.helpers({
     },
 
     isValueTrueDisplay: function() {
-        var input = contactAll.collec.findOne({_id:this.inputId});
+        var input = contactAll.collec.findOne({owner:currentUser(), localId:this.inputId});
         if (input.type === "switch") {
             return "";
         } else {
@@ -347,9 +355,9 @@ Template.judgeElemInput.events({
     "change #judgeElemInputSel": function(event, template) {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        var input = contactAll.collec.findOne({name:event.target.value});
+        var input = contactAll.collec.findOne({owner:currentUser(), name:event.target.value});
         console.log("select input:", input);
-        jg[this.index].inputId = input._id;
+        jg[this.index].inputId = input.localId;
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
@@ -455,9 +463,13 @@ Template.judgeElemTimeInput.events({
 });
 
 Template.judgeElemInput.onRendered( function() {
-    this.find('option.inputForJudgeElem#' + this.data.inputId).setAttribute("selected", "selected");
-    this.find('option.logicOpForJudgeElem[value=' + this.data.logicOp + ']').setAttribute("selected", "selected");
-    this.find('option.valueTrueForJudgeElem[value=' + this.data.valueTrue + ']').setAttribute("selected", "selected");
+    try {
+        this.find('option.inputForJudgeElem#' + this.data.inputId).setAttribute("selected", "selected");
+        this.find('option.logicOpForJudgeElem[value=' + this.data.logicOp + ']').setAttribute("selected", "selected");
+        this.find('option.valueTrueForJudgeElem[value=' + this.data.valueTrue + ']').setAttribute("selected", "selected");
+    }
+    catch(err) {
+    }
 });
 
 Template.judgeElemTimeInput.onRendered( function() {

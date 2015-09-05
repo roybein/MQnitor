@@ -93,13 +93,13 @@
 
 <template name="input">
     <tr>
-        <td>{{_id}}</td>
+        <td>{{localId}}</td>
         <td>{{name}}</td>
         <td>{{type}}</td>
         <td>{{value}} {{unit}}</td>
         <td>
           <div class="ui fitted checkbox" name="inputLockCheckbox">
-            <input type="checkbox" id={{_id}} {{isLockChecked}}>
+            <input type="checkbox" id={{localId}} {{isLockChecked}}>
             <label></label>
           </div>
         </td>
@@ -108,18 +108,18 @@
 
 <template name="output">
     <tr>
-        <td>{{_id}}</td>
+        <td>{{localId}}</td>
         <td>{{name}}</td>
         <td>{{type}}</td>
         <td>
           <div class="ui fitted toggle checkbox" name="outputValueSwitch">
-            <input type="checkbox" id={{_id}} {{isValueSwitchEnable}} {{isValueChecked}}>
+            <input type="checkbox" id={{localId}} {{isValueSwitchEnable}} {{isValueChecked}}>
             <label></label>
           </div>
         </td>
         <td>
           <div class="ui checkbox" name="outputPlanCheckbox">
-            <input type="checkbox" id={{_id}} {{isPlanChecked}}>
+            <input type="checkbox" id={{localId}} {{isPlanChecked}}>
             <label>{{plan}}</label>
           </div>
         </td>
@@ -129,7 +129,7 @@
 
 <template name="plan">
     <tr>
-        <td>{{_id}}</td>
+        <td>{{localId}}</td>
         <td>{{name}}</td>
         <td>{{outputId}}</td>
         <td><button class="ui mini button" name="editPlan">edit</button></td>
@@ -161,7 +161,7 @@
                     <label>Output</label>
                     <select class="ui dropdown" id="planOutputSel">
                         {{#each outputsForPlan}}
-                          <option class="outputForPlan" id={{_id}}>{{name}}</option>
+                          <option class="outputForPlan" id={{localId}}>{{name}}</option>
                         {{/each}}
                     </select>
 
@@ -260,7 +260,7 @@
           <label>Iutput</label>
           <select class="ui dropdown" id="judgeElemInputSel">
             {{#each inputsForJudgeElem}}
-              <option class="inputForJudgeElem" id={{_id}}>{{name}}</option>
+              <option class="inputForJudgeElem" id={{localId}}>{{name}}</option>
             {{/each}}
           </select>
         </div>
