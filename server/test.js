@@ -51,3 +51,11 @@ planOnPwmLight = addJudgeElem(planOnPwmLight, judgeElem4);
 planOnPwmLight = addJudgeElem(planOnPwmLight, judgeElem5);
 planAll.addPlan(planOnPwmLight);
 planAll.attachPlan("test", "1");
+
+var testConfig = {owner:"test", model:"br864",
+    AI1:"adc", AI2:"adc", AI3:"adc", AI4:"adc",
+    DI1:"switch", DI2:"switch", DI3:"switch", DI4:"switch", DI5:"switch", DI6:"switch",
+    DO1:"relay", DO2:"relay", DO3:"relay", DO4:"relay", DO5:"relay", DO6:"relay",
+    DO7:"pwm", DO8:"pwm"};
+
+configAll.insert(testConfig);

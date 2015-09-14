@@ -6,6 +6,47 @@ Template.topMenu.helpers({
     username: currentUser,
 });
 
+Template.config.helpers({
+    contacts: function() {
+        return contactAll.collec.find();
+    },
+});
+
+Template.contact.helpers({
+    typesForContact: function(localId) {
+        console.log("localId:", localId);
+        var idType = localId.substr(0, 2);
+        var options = [];
+        switch (idType) {
+            case "AI":
+                options.push({type:"adc"});
+                break;
+            case "DI":
+                options.push({type:"counter"});
+                options.push({type:"switch"});
+                options.push({type:"sensor"});
+                break;
+            case "DO":
+                options.push({type:"switch"});
+                options.push({type:"pwm"});
+                break;
+            default:
+        }
+        return options;
+    },
+});
+
+Template.contact.events({
+    "change #contactTypeSel": function(event, template) {
+        //var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        //var jg = plan.judgeGroup;
+        //var input = contactAll.collec.findOne({owner:currentUser(), name:event.target.value});
+        //console.log("select input:", input);
+        //jg[this.index].inputId = input.localId;
+        //plan.judgeGroup = jg;
+        //Session.set("onePlan", EJSON.toJSONValue(plan));
+    },
+});
 
 Template.monitor.helpers({
 	inputs: function() {
@@ -21,11 +62,13 @@ Template.monitor.helpers({
 
 Template.monitor.events({
     "click #createPlan": function(event, template) {
-        var plan = {owner:currentUser(), localId:"new", name:null, outputId:null, outputValue:null, judgeGroup:[]};
+        var outputsForPlan = getOutputsForPlan().fetch();
+        var defaultOutputForPlan = outputsForPlan[0]
+        var plan = {owner:currentUser(), localId:"new", name:defaultOutputForPlan.name, outputId:defaultOutputForPlan.localId, outputValue:defaultOutputForPlan.value, judgeGroup:[]};
         console.log("get new plan:", plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
         $('.long.modal')
-            .modal({observeChanges: true});
+            .modal({observeChanges: true, onShow: planModalOnShow });
         $('.long.modal')
             .modal('show');
     },
@@ -168,11 +211,12 @@ planModalOnShow = function() {
     $('.outputValueForPlan#' + plan.outputValue).attr("selected", "selected");
 }
 
+getOutputsForPlan = function() {
+    return  contactAll.collec.find({owner:currentUser(), direction:"output"});
+}
+
 Template.onePlan.helpers({
-	outputsForPlan: function() {
-		var ret =  contactAll.collec.find({owner:currentUser(), direction:"output"});
-        return ret;
-	},
+	outputsForPlan: getOutputsForPlan,
 
     onePlan: function() {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
@@ -292,7 +336,9 @@ Template.onePlan.events({
 
     "click #addJudgeElemInput": function (event, template) {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        newJudgeElem = {index:"new"};
+        var inputsForJudgeElem = getInputsForJudgeElem().fetch();
+        var defaultInputForJudgeElem = inputsForJudgeElem[0];
+        newJudgeElem = {index:"new", inputId:defaultInputForJudgeElem.localId };
         newJudgeElem.index = plan.judgeGroup.length.toString();
         plan = addJudgeElem(plan, newJudgeElem);
         Session.set("onePlan", EJSON.toJSONValue(plan));
@@ -309,14 +355,15 @@ Template.onePlan.events({
 
 });
 
-Template.judgeElemInput.helpers({
-	inputsForJudgeElem: function() {
+getInputsForJudgeElem = function() {
         return contactAll.collec.find({$and:[{owner:currentUser()},{direction:"input"},{type:{$ne:"time"}}]});
-	},
+}
+
+Template.judgeElemInput.helpers({
+	inputsForJudgeElem: getInputsForJudgeElem,
 
     isValueMinMaxDisplay: function() {
         var input = contactAll.collec.findOne({owner:currentUser(), localId:this.inputId});
-        console.log(input);
         if (input.type === "sensor" ||
             input.type === "adc" ||
             input.type === "wire") {

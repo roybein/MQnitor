@@ -1,0 +1,43 @@
+<template name='config'>
+
+  {{> topMenu}}
+
+  <div class="ui container" style="margin-top: 50px">
+    <div class="ui segments">
+      <div class="ui red segment">
+        <!--<h3 class="ui center topMarginSmall header">Config</h3>-->
+        <div class= "left floated header">
+          Configure
+          <button class="ui primary tiny right floated button" id="updateConfig">Update</button>
+        </div>
+        <table class ="ui celled padded table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each contacts}}
+              {{> contact}}
+            {{/each}}
+          </tbody>
+        </table>
+      </div>  
+    </div>
+  </div>
+
+</template>
+
+<template name="contact">
+  <tr>
+    <td>{{localId}}</td>
+    <td>
+      <select class="ui dropdown" id="contactTypeSel">
+        {{#each typesForContact localId}}
+          <option class="typeForContact" id={{localId}}>{{type}}</option>
+        {{/each}}
+      </select>
+    </td>
+  </tr>
+</template>

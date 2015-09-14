@@ -85,7 +85,6 @@ onMsgUpBsTarget = function(target, topic, message) {
     var Fiber = Npm.require('fibers');
     Fiber(function() {
         console.log("I am in a fiber");
-        //console.log(contactAll.collec.findOne({direction:"input"}));
         if (Meteor.users.findOne({username: target}) !== undefined) {
             console.log("message from:", target);
             var tpKey = topic.shift();
@@ -107,3 +106,13 @@ onMsgUpBsTargetInput = function(target, topic, message) {
     contactAll.collec.update({owner:target, localId:tpKey}, {$set:{value:message.toString()}});
     console.log("update input:", target, tpKey, message);
 }
+
+doMsgDown = function(topic, message) {
+    mqttClient.publish(topic, message);
+}
+
+doMsgDownBsTargetOutput = function(target, outputId, value) {
+    var topic = "/down/bs/" + target + "/output" + outputId;
+    doMsgDown(topic, value);
+}
+

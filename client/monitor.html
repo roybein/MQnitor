@@ -17,124 +17,122 @@
   {{> topMenu}}
 
   <div class="ui container" style="margin-top: 50px">
-        <div class="ui segments">
-            <div class="ui red segment">
-              <h3 class="ui center topMarginSmall header">Input</h3>
-                <table class ="ui celled padded table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Value</th>
-                            <th>Lock</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each inputs}}
-                            {{> input}}
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
+    <div class="ui segments">
 
-            <div class="ui yellow segment">
-              <h3 class="ui center topMarginSmall header">output</h3>
-                <table class ="ui celled padded table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Value</th>
-                            <th>Plan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each outputs}}
-                            {{> output}}
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="ui yellow segment">
-              <div class= "left floated header">
-                New Plan
-                <button class="ui primary tiny right floated button" id="createPlan">New Plan</button>
-              </div>
-                <table class ="ui celled padded table">
-                    <thead>
-                        <tr>
-                            <th>Index</th>
-                            <th>Name</th>
-                            <th>Output Index</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each plans}}
-                            {{> plan}}
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
-
-
-          <div class="onePlan ui large long modal">
-            {{> onePlan}}
-          </div>
-
+      <div class="ui red segment">
+        <h3 class="ui center topMarginSmall header">Input</h3>
+          <table class ="ui celled padded table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Lock</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each inputs}}
+                {{> input}}
+              {{/each}}
+            </tbody>
+          </table>
       </div>
 
+      <div class="ui yellow segment">
+        <h3 class="ui center topMarginSmall header">output</h3>
+          <table class ="ui celled padded table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Plan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each outputs}}
+                {{> output}}
+              {{/each}}
+            </tbody>
+          </table>
+      </div>
+
+      <div class="ui yellow segment">
+        <div class= "left floated header">
+          New Plan
+          <button class="ui primary tiny right floated button" id="createPlan">New Plan</button>
+        </div>
+        <table class ="ui celled padded table">
+          <thead>
+            <tr>
+                <th>Index</th>
+                <th>Name</th>
+                <th>Output Index</th>
+                <th></th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each plans}}
+                {{> plan}}
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="onePlan ui large long modal">
+        {{> onePlan}}
+      </div>
+
+    </div>
   </div>
 </template>
 
 <template name="input">
-    <tr>
-        <td>{{localId}}</td>
-        <td>{{name}}</td>
-        <td>{{type}}</td>
-        <td>{{value}} {{unit}}</td>
-        <td>
-          <div class="ui fitted checkbox" name="inputLockCheckbox">
-            <input type="checkbox" id={{localId}} {{isLockChecked}}>
-            <label></label>
-          </div>
-        </td>
-    </tr>
+  <tr>
+    <td>{{localId}}</td>
+    <td>{{name}}</td>
+    <td>{{type}}</td>
+    <td>{{value}} {{unit}}</td>
+    <td>
+      <div class="ui fitted checkbox" name="inputLockCheckbox">
+        <input type="checkbox" id={{localId}} {{isLockChecked}}>
+        <label></label>
+      </div>
+    </td>
+  </tr>
 </template>
 
 <template name="output">
-    <tr>
-        <td>{{localId}}</td>
-        <td>{{name}}</td>
-        <td>{{type}}</td>
-        <td>
-          <div class="ui fitted toggle checkbox" name="outputValueSwitch">
-            <input type="checkbox" id={{localId}} {{isValueSwitchEnable}} {{isValueChecked}}>
-            <label></label>
-          </div>
-        </td>
-        <td>
-          <div class="ui checkbox" name="outputPlanCheckbox">
-            <input type="checkbox" id={{localId}} {{isPlanChecked}}>
-            <label>{{plan}}</label>
-          </div>
-        </td>
-    </tr>
-
+  <tr>
+    <td>{{localId}}</td>
+    <td>{{name}}</td>
+    <td>{{type}}</td>
+    <td>
+      <div class="ui fitted toggle checkbox" name="outputValueSwitch">
+        <input type="checkbox" id={{localId}} {{isValueSwitchEnable}} {{isValueChecked}}>
+        <label></label>
+      </div>
+    </td>
+    <td>
+      <div class="ui checkbox" name="outputPlanCheckbox">
+        <input type="checkbox" id={{localId}} {{isPlanChecked}}>
+        <label>{{plan}}</label>
+      </div>
+    </td>
+  </tr>
 </template>
 
 <template name="plan">
-    <tr>
-        <td>{{localId}}</td>
-        <td>{{name}}</td>
-        <td>{{outputId}}</td>
-        <td><button class="ui mini button" name="editPlan">edit</button></td>
-        <td><button class="ui mini button" name="delPlan">delete</button></td>
-    </tr>
+  <tr>
+    <td>{{localId}}</td>
+    <td>{{name}}</td>
+    <td>{{outputId}}</td>
+    <td><button class="ui mini button" name="editPlan">edit</button></td>
+    <td><button class="ui mini button" name="delPlan">delete</button></td>
+  </tr>
 </template>
 
 <template name="onePlan">
