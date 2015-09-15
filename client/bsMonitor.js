@@ -1,3 +1,7 @@
+Accounts.onLogin(function() {
+    console.log("here login");
+});
+
 currentUser = function() {
     return Meteor.user().username;
 };
@@ -9,6 +13,33 @@ Template.topMenu.helpers({
 Template.config.helpers({
     contacts: function() {
         return contactAll.collec.find();
+    },
+});
+
+getCurrentConfig = function(target) {
+    var config = "";
+    contactAll.collec.find({owner:target}, {fields: {localId:1, type:1, _id:0}}).forEach( function(doc) {
+        config = config + doc.localId + ':' + doc.type + ',';
+    });
+    console.log("get config:", config); 
+    return config;
+}
+
+Template.config.events({
+    "click #updateConfig": function(event, template) {
+        console.log("update config");
+        var target = currentUser();
+        Meteor.call("doMsgDownBsTargetConfig", target, getCurrentConfig(target));        
+    },
+
+    "change #contactTypeSel": function(event, template) {
+        //var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        //var jg = plan.judgeGroup;
+        //var input = contactAll.collec.findOne({owner:currentUser(), name:event.target.value});
+        //console.log("select input:", input);
+        //jg[this.index].inputId = input.localId;
+        //plan.judgeGroup = jg;
+        //Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 });
 
@@ -36,17 +67,6 @@ Template.contact.helpers({
     },
 });
 
-Template.contact.events({
-    "change #contactTypeSel": function(event, template) {
-        //var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        //var jg = plan.judgeGroup;
-        //var input = contactAll.collec.findOne({owner:currentUser(), name:event.target.value});
-        //console.log("select input:", input);
-        //jg[this.index].inputId = input.localId;
-        //plan.judgeGroup = jg;
-        //Session.set("onePlan", EJSON.toJSONValue(plan));
-    },
-});
 
 Template.monitor.helpers({
 	inputs: function() {

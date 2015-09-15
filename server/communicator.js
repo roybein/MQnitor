@@ -1,4 +1,3 @@
-// a mqtt test
 
 mqttClient = mqtt.connect('mqtt:123.57.208.39');
 
@@ -9,29 +8,13 @@ mqttClient.on("connect", function() {
         console.log("publish done");
     });
 
+    doMsgDown("/test", "test publish");
+
     mqttClient.subscribe("/#", function() {
             console.log("subscribe done");
     });
 
     mqttClient.on("message", onMsgMqtt);
-/*
- function(p1, p2) {
-        var Fiber = Npm.require('fibers');
-        Fiber(function() {
-            console.log("I am in a fiber");
-            console.log(contactAll.collec.findOne({direction:"input"}));
-        }).run();
-        //console.log(Fiber(contactAll.collec.findOne("direction:input")));
-    });
-/*
-        if (parseInt(p2) > 900) {
-            console.log("turn on");
-            mqttClient.publish("/nodemcu/output", "1");
-        } else {
-            console.log("turn off");
-            mqttClient.publish("/nodemcu/output", "0");
-        }
-*/
 });
 
 onMsgMqtt = function(topic, message) {
@@ -78,7 +61,13 @@ onMsgUpBs = function(topic, message) {
 }
 
 onMsgUpBsCheckin = function(topic, message) {
-    console.log("checkin:", message.toString()); 
+    var target = message.toString();
+    console.log("checkin:", target);
+    var config = configAll.findOne({owner:target});
+    if (config === null) {
+    } else {
+        Session.set("config@" + target, EJSON.toJSONValue(config));
+    }
 }
 
 onMsgUpBsTarget = function(target, topic, message) {
@@ -108,6 +97,7 @@ onMsgUpBsTargetInput = function(target, topic, message) {
 }
 
 doMsgDown = function(topic, message) {
+    console.log("publish", topic, message);
     mqttClient.publish(topic, message);
 }
 
@@ -116,3 +106,11 @@ doMsgDownBsTargetOutput = function(target, outputId, value) {
     doMsgDown(topic, value);
 }
 
+doMsgDownBsTargetConfig = function(target, config) {
+    var topic = "/down/bs/" + target + "/config";
+    doMsgDown(topic, config);
+}
+
+Meteor.methods({
+    doMsgDownBsTargetConfig: doMsgDownBsTargetConfig,
+});
