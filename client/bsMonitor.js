@@ -16,20 +16,11 @@ Template.config.helpers({
     },
 });
 
-getCurrentConfig = function(target) {
-    var config = "";
-    contactAll.collec.find({owner:target}, {fields: {localId:1, type:1, _id:0}}).forEach( function(doc) {
-        config = config + doc.localId + ':' + doc.type + ',';
-    });
-    console.log("get config:", config); 
-    return config;
-}
-
 Template.config.events({
     "click #updateConfig": function(event, template) {
         console.log("update config");
         var target = currentUser();
-        Meteor.call("doMsgDownBsTargetConfig", target, getCurrentConfig(target));        
+        Meteor.call("doMsgDownBsTargetConfig", target);        
     },
 
     "change #contactTypeSel": function(event, template) {
@@ -171,13 +162,15 @@ Template.output.onRendered( function() {
             console.log("checked value", this.id);
             var o = contactAll.collec.findOne({owner:currentUser(), localId:this.id});
             if (o === null) return;
-            contactAll.collec.update({_id:o._id}, {$set:{value:"on"}});
+            Meteor.call("doMsgDownBsTargetOutput", currentUser(), this.id, "on");
+            //contactAll.collec.update({_id:o._id}, {$set:{value:"on"}});
         },
         onUnchecked: function() {
             console.log("unchecked value", this.id);
             var o = contactAll.collec.findOne({owner:currentUser(), localId:this.id});
             if (o === null) return;
-            contactAll.collec.update({_id:o._id}, {$set:{value:"off"}});
+            Meteor.call("doMsgDownBsTargetOutput", currentUser(), this.id, "off");
+            //contactAll.collec.update({_id:o._id}, {$set:{value:"off"}});
         },
     });
 
