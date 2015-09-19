@@ -21,7 +21,7 @@ var queryPlan = planAll.collec.find();
 var handle = queryPlan.observeChanges({
 	changed: function(id, fields) {
         var p = planAll.collec.findOne({_id:id});
-        planAll.checkPlan(p.owner, p.localId);
+        planAll.checkPlan(p.owner, p.localName);
 	}
 });
 

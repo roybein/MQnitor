@@ -11,7 +11,7 @@ mqttClient.on("connect", function() {
 
     doMsgDown("/test", "test publish");
 
-    mqttClient.subscribe("/up/#", function() {
+    mqttClient.subscribe("/dev/up/#", function() {
             console.log("subscribe done");
     });
 
@@ -24,6 +24,13 @@ onMsgMqtt = function(topic, message) {
     if (tpArray.shift() !== "") {
         console.log("unsupported message start without /");
         return -1;
+    }
+
+    if (tpArray.shift() !== "dev") {
+        console.log("do not handle message non dev");
+        return -1;
+    }else {
+        console.log("dev message");
     }
 
     var tpKey = tpArray.shift();
@@ -77,7 +84,10 @@ onMsgUpBsTarget = function(target, topic, message) {
             switch(tpKey) {
                 case "input":
                     onMsgUpBsTargetInput(target, topic, message);
-                break;
+                    break;
+                case "output":
+                    onMsgUpBsTargetOutput(target, topic, message);
+                    break;
                 default:
                     console.log("unsupported topic key:", tpKey );
             }
@@ -89,8 +99,16 @@ onMsgUpBsTarget = function(target, topic, message) {
 
 onMsgUpBsTargetInput = function(target, topic, message) {
     var tpKey = topic.shift();
-    contactAll.collec.update({owner:target, localId:tpKey}, {$set:{value:message.toString()}});
+    contactAll.collec.update({owner:target, localName:tpKey},
+        {$set:{value:message.toString()}});
     console.log("update input:", target, tpKey, message);
+}
+
+onMsgUpBsTargetOutput = function(target, topic, message) {
+    var tpKey = topic.shift();
+    contactAll.collec.update({owner:target, localName:tpKey},
+        {$set:{value:message.toString()}});
+    console.log("update output:", target, tpKey, message);
 }
 
 doMsgDown = function(topic, message) {
@@ -105,8 +123,9 @@ doMsgDownBsTargetOutput = function(target, outputId, value) {
 
 getCurrentConfig = function(target) {
         var config = "";
-        contactAll.collec.find({owner:target, port:"digital"}, {fields: {localId:1, type:1, _id:0}}).forEach( function(doc) {
-            config = config + doc.localId + ':' + doc.type + ',';
+        contactAll.collec.find({owner:target, port:"digital"},
+            {fields: {localName:1, type:1, _id:0}}).forEach( function(doc) {
+            config = config + doc.localName + ':' + doc.type + ',';
         });
         console.log("get config:", config);
         return config;

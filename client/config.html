@@ -30,11 +30,11 @@
 
 <template name="contact">
   <tr>
-    <td>{{localId}}</td>
+    <td>{{localName}}</td>
     <td>
       <select class="ui dropdown" id="contactTypeSel">
-        {{#each typesForContact localId}}
-          <option class="typeForContact" id={{localId}}>{{type}}</option>
+        {{#each typesForContact localName}}
+          <option class="typeForContact" id={{localName}}>{{type}}</option>
         {{/each}}
       </select>
     </td>
