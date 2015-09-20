@@ -12,15 +12,14 @@ Template.topMenu.helpers({
 
 Template.config.helpers({
     contacts: function() {
-        return contactAll.collec.find();
+        return contactAll.collec.find({owner:currentUser()}, {sort:{localId:1}});
     },
 });
 
 Template.config.events({
     "click #updateConfig": function(event, template) {
         console.log("update config");
-        var target = currentUser();
-        Meteor.call("doMsgDownBsTargetConfig", target);
+        Meteor.call("doMsgDownBsTargetConfig", currentUser());
     },
 
     "change #contactTypeSel": function(event, template) {
@@ -35,29 +34,120 @@ Template.config.events({
 });
 
 Template.contact.helpers({
-    typesForContact: function(localName) {
-        console.log("localName:", localName);
-        var idType = localName.substr(0, 2);
+    typesForContact: function(port) {
         var options = [];
-        switch (idType) {
-            case "AI":
+        switch (port) {
+            case "analog":
                 options.push({type:"adc"});
                 break;
-            case "DI":
+            case "digital":
                 options.push({type:"counter"});
                 options.push({type:"switch"});
                 options.push({type:"sensor"});
                 break;
-            case "DO":
-                options.push({type:"switch"});
+            case "relay":
+                options.push({type:"relay"});
+            case "pwm":
                 options.push({type:"pwm"});
                 break;
             default:
         }
         return options;
     },
+
 });
 
+Template.oneContact.helpers({
+    oneContact: function() {
+        var contact = EJSON.fromJSONValue(Session.get("oneContact"));
+        if (contact != null) {
+            console.log("return oneContact in helpers:", contact);
+            return contact;
+        } else {
+            return null;
+        }
+    },
+
+    typesForContact: function(port) {
+        var options = [];
+        switch (port) {
+            case "analog":
+                options.push({type:"adc"});
+                break;
+            case "digital":
+                options.push({type:"counter"});
+                options.push({type:"switch"});
+                options.push({type:"sensor"});
+                break;
+            case "relay":
+                options.push({type:"relay"});
+            case "pwm":
+                options.push({type:"pwm"});
+                break;
+            default:
+        }
+        return options;
+    },
+
+    isUnitDisplay: function() {
+        var contact = EJSON.fromJSONValue(Session.get("oneContact"));
+        console.log("here", contact);
+        if (contact != null) {
+            if (contact.direction === "input"
+                && (contact.type === "adc" ||
+                    contact.type === "sensor") ) {
+                return "";
+            } else {
+                return "none";
+            }
+        } else {
+            return "none";
+        }
+    },
+});
+
+Template.oneContact.events({
+    "click #saveContact": function (event, template) {
+        //TOOD: validate
+        var contact = EJSON.fromJSONValue(Session.get("oneContact"));
+        contact.value = "n/a";
+        if(contact.localName == "new") {
+            contact.localName = contactAll.collec.find({owner:currentUser()}).count().toString();
+            console.log("saveContact:", contact);
+            contactAll.addContact(plan);
+        } else {
+            contactAll.updateContact(contact);
+            Meteor.call("doMsgDownBsTargetConfig", currentUser());
+        }
+
+        $('#oneContactModal')
+            .modal('hide');
+        return false;
+    },
+
+    "change #contactName": function (event, template) {
+      	console.log(event.target.id, ":", event.target.value);
+        var contact = EJSON.fromJSONValue(Session.get("oneContact"));
+        contact.name = event.target.value;
+        console.log(contact);
+        Session.set("oneContact", EJSON.toJSONValue(contact));
+    },
+
+    "change #contactTypeSel": function (event, template) {
+      	console.log(event.target.id, ":", event.target.value);
+        var contact = EJSON.fromJSONValue(Session.get("oneContact"));
+		contact.type = event.target.value;
+        Session.set("oneContact", EJSON.toJSONValue(contact));
+    },
+
+    "change #contactUnit": function (event, template) {
+      	console.log(event.target.id, ":", event.target.value);
+        var contact = EJSON.fromJSONValue(Session.get("oneContact"));
+        contact.unit = event.target.value;
+        console.log(contact);
+        Session.set("oneContact", EJSON.toJSONValue(contact));
+    },
+});
 
 Template.monitor.helpers({
 	inputs: function() {
@@ -79,9 +169,20 @@ Template.monitor.events({
             outputId:defaultOutputForPlan.localName, outputValue:defaultOutputForPlan.value, judgeGroup:[]};
         console.log("get new plan:", plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
-        $('.long.modal')
+        //$('.long.modal')
+        $('#onePlanModal')
             .modal({observeChanges: true, onShow: planModalOnShow });
-        $('.long.modal')
+        $('#onePlanModal')
+            .modal('show');
+    },
+
+    "click [name='editContact']": function(event, template) {
+        var contact = contactAll.getContact(currentUser(), this.localName);
+        console.log("edit contact:", contact);
+        Session.set("oneContact", EJSON.toJSONValue(contact));
+        $('#oneContactModal')
+            .modal({observeChanges: true, onShow: contactModalOnShow });
+        $('#oneContactModal')
             .modal('show');
     },
 });
@@ -96,6 +197,24 @@ Template.input.helpers({
         }
     },
 });
+/*
+Template.input.events({
+    "click [name='editContact']": function(event, template) {
+        var contact = contactAll.getContact(currentUser(), this.localName);
+        console.log("edit contact:", contact);
+        Session.set("oneContact", EJSON.toJSONValue(contact));
+        $('#oneContactModal')
+            .modal({observeChanges: true, onShow: contactModalOnShow });
+        $('#oneContactModal')
+            .modal('show');
+    },
+});
+*/
+contactModalOnShow = function() {
+    console.log("contactModalOnShow");
+    var contact = EJSON.fromJSONValue(Session.get("oneContact"));
+    $('.typeForContact#' + contact.type).attr("selected", "selected");
+}
 
 Template.input.onRendered( function() {
     $("[name='inputLockCheckbox']").checkbox({
@@ -207,9 +326,9 @@ Template.plan.events({
         var plan = planAll.getPlan(currentUser(), this.localName);
         console.log("edit plan:", plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
-        $('.long.modal')
+        $('#onePlanModal')
             .modal({observeChanges: true, onShow: planModalOnShow });
-        $('.long.modal')
+        $('#onePlanModal')
             .modal('show');
     },
 
@@ -295,7 +414,7 @@ Template.onePlan.events({
             planAll.attachPlan(plan.owner, plan.localName);
         }
 
-        $('.long.modal')
+        $('#onePlanModal')
             .modal('hide');
         return false;
     },

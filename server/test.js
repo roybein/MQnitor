@@ -29,22 +29,22 @@ contactAll.addContact(DI5);
 var DI6 = {owner:"864-test", localId:10, localName:"DI6", direction:"input", port:"digital", type:"switch", name:"digital input 6", unit:"", value:"on", description:"is door open", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(DI6);
 
-var RELAY1 = {owner:"864-test", localId:11, localName:"RELAY1", direction:"output", type:"relay", name:"relay 1", value:"on", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY1 = {owner:"864-test", localId:11, localName:"RELAY1", direction:"output", port:"relay", type:"relay", name:"relay 1", value:"on", description:"switch master power", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY1);
-var RELAY2 = {owner:"864-test", localId:12, localName:"RELAY2", direction:"output", type:"relay", name:"relay 2", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY2 = {owner:"864-test", localId:12, localName:"RELAY2", direction:"output", port:"relay", type:"relay", name:"relay 2", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY2);
-var RELAY3 = {owner:"864-test", localId:13, localName:"RELAY3", direction:"output", type:"relay", name:"relay 3", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY3 = {owner:"864-test", localId:13, localName:"RELAY3", direction:"output", port:"relay", type:"relay", name:"relay 3", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY3);
-var RELAY4 = {owner:"864-test", localId:14, localName:"RELAY4", direction:"output", type:"relay", name:"relay 4", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY4 = {owner:"864-test", localId:14, localName:"RELAY4", direction:"output", port:"relay", type:"relay", name:"relay 4", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY4);
-var RELAY5 = {owner:"864-test", localId:15, localName:"RELAY5", direction:"output", type:"relay", name:"relay 5", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY5 = {owner:"864-test", localId:15, localName:"RELAY5", direction:"output", port:"relay", type:"relay", name:"relay 5", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY5);
-var RELAY6 = {owner:"864-test", localId:16, localName:"RELAY6", direction:"output", type:"relay", name:"relay 6", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY6 = {owner:"864-test", localId:16, localName:"RELAY6", direction:"output", port:"relay", type:"relay", name:"relay 6", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY6);
 
-var PWM1 = {owner:"864-test", localId:17, localName:"PWM1", direction:"output", type:"pwm", name:"pwm light", value:"off", freq:"100Hz", duty:"50%", description:"switch master power", planId:null, planSwitch:"enabled"}
+var PWM1 = {owner:"864-test", localId:17, localName:"PWM1", direction:"output", port:"pwm", type:"pwm", name:"pwm light", value:"off", freq:"100Hz", duty:"50%", description:"switch master power", planId:null, planSwitch:"enabled"}
 contactAll.addContact(PWM1);
-var PWM2 = {owner:"864-test", localId:18, localName:"PWM2", direction:"output", type:"pwm", name:"pwm 2", value:"off", freq:"100Hz", duty:"50%", description:"switch master power", planId:null, planSwitch:"enabled"}
+var PWM2 = {owner:"864-test", localId:18, localName:"PWM2", direction:"output", port:"pwm", type:"pwm", name:"pwm 2", value:"off", freq:"100Hz", duty:"50%", description:"switch master power", planId:null, planSwitch:"enabled"}
 contactAll.addContact(PWM2);
 
 var time = {owner:"864-test", localId:19, localName:"time", direction:"input", type:"time", name:"localTime", time:"8:45 AM", weekday:5, planIdGroup:[], lock:"unlocked"};
