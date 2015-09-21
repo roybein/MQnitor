@@ -47,8 +47,11 @@ contactAll.addContact(PWM1);
 var PWM2 = {owner:"864-test", localId:18, localName:"PWM2", direction:"output", port:"pwm", type:"pwm", name:"pwm 2", value:"off", freq:"100Hz", duty:"50%", description:"switch master power", planId:null, planSwitch:"enabled"}
 contactAll.addContact(PWM2);
 
-var time = {owner:"864-test", localId:19, localName:"time", direction:"input", type:"time", name:"localTime", time:"8:45 AM", weekday:5, planIdGroup:[], lock:"unlocked"};
+var time = {owner:"864-test", localId:19, localName:"time", direction:"input", type:"time", name:"localTime", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(time);
+
+var timeShadow = {localName:"timeShadow", time:"8:45 AM", weekday:5};
+contactAll.addContact(timeShadow);
 
 //Add Plan For Test
 var planOnMasterPower = {owner:"864-test", localName:"0", name:"plan for master power", outputId:"RELAY1", outputValue:"off", judgeGroup:[]};
