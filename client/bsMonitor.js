@@ -285,14 +285,14 @@ Template.output.onRendered( function() {
             var o = contactAll.collec.findOne({owner:currentUser(), localName:this.id});
             if (o === null) return;
             Meteor.call("doMsgDownBsTargetOutput", currentUser(), this.id, "on");
-            
+            contactAll.collec.update({_id:o._id}, {$set:{value:"on"}});
         },
         onUnchecked: function() {
             console.log("unchecked value", this.id);
             var o = contactAll.collec.findOne({owner:currentUser(), localName:this.id});
             if (o === null) return;
             Meteor.call("doMsgDownBsTargetOutput", currentUser(), this.id, "off");
-            contactAll.collec.update({_id:o._id}, {$set:{value:"on"}});
+            contactAll.collec.update({_id:o._id}, {$set:{value:"off"}});
         },
     });
 
@@ -308,7 +308,6 @@ Template.output.onRendered( function() {
             var o = contactAll.collec.findOne({owner:currentUser(), localName:this.id});
             if (o === null) return;
             contactAll.collec.update({_id:o._id}, {$set:{planSwitch:"disabled"}});
-            contactAll.collec.update({_id:o._id}, {$set:{value:"off"}});
         },
     });
 });
@@ -454,7 +453,7 @@ Template.onePlan.events({
         $('#planRelayValue').dropdown();
     },
 */
-    "change #outputValue": function (event, template) {
+    "change #planOutputValue": function (event, template) {
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         plan.outputValue = event.target.value;

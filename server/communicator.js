@@ -13,8 +13,6 @@ function getIPAddress() {
   return '0.0.0.0';
 }
 
-console.log(getIPAddress());
-
 mqttClient = mqtt.connect('mqtt:123.57.208.39');
 //mqttClient = mqtt.connect('mqtt:iot.eclipse.org');
 
@@ -93,7 +91,6 @@ onMsgUpBsCheckin = function(topic, message) {
 onMsgUpBsTarget = function(target, topic, message) {
     var Fiber = Npm.require('fibers');
     Fiber(function() {
-        console.log("I am in a fiber");
         if (Meteor.users.findOne({username: target}) !== undefined) {
             //console.log("message from:", target);
             var tpKey = topic.shift();
