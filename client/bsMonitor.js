@@ -165,8 +165,10 @@ Template.monitor.events({
     "click #createPlan": function(event, template) {
         var outputsForPlan = getOutputsForPlan().fetch();
         var defaultOutputForPlan = outputsForPlan[0]
-        var plan = {owner:currentUser(), localName:"new", name:defaultOutputForPlan.name,
-            outputId:defaultOutputForPlan.localName, outputValue:defaultOutputForPlan.value, judgeGroup:[]};
+        var plan = {owner:currentUser(), localName:"new", name:null,
+            outputId:defaultOutputForPlan.localName,
+            outputValue:defaultOutputForPlan.value,
+            judgeGroup:[]};
         console.log("get new plan:", plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
         //$('.long.modal')
@@ -561,7 +563,7 @@ Template.judgeElemInput.events({
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this.index].valueMin = event.target.value;
+        jg[this.index].valueMin = parseInt(event.target.value);
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
@@ -570,7 +572,7 @@ Template.judgeElemInput.events({
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var jg = plan.judgeGroup;
-        jg[this.index].valueMax = event.target.value;
+        jg[this.index].valueMax = parseInt(event.target.value);
         plan.judgeGroup = jg;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },

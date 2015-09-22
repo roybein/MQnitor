@@ -1,3 +1,19 @@
+function getIPAddress() {
+  var interfaces = Npm.require('os').networkInterfaces();
+  for (var devName in interfaces) {
+    var iface = interfaces[devName];
+
+    for (var i = 0; i < iface.length; i++) {
+      var alias = iface[i];
+      if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal)
+        return alias.address;
+    }
+  }
+
+  return '0.0.0.0';
+}
+
+console.log(getIPAddress());
 
 mqttClient = mqtt.connect('mqtt:123.57.208.39');
 //mqttClient = mqtt.connect('mqtt:iot.eclipse.org');
@@ -11,7 +27,7 @@ mqttClient.on("connect", function() {
 
     doMsgDown("/test", "test publish");
 
-    mqttClient.subscribe("/dev/up/#", function() {
+    mqttClient.subscribe("/up/#", function() {
             console.log("subscribe done");
     });
 
@@ -20,19 +36,19 @@ mqttClient.on("connect", function() {
 
 onMsgMqtt = function(topic, message) {
     var tpArray = topic.split("/"); 
-    console.log(tpArray, message.toString());
+    //console.log(tpArray, message.toString());
     if (tpArray.shift() !== "") {
         console.log("unsupported message start without /");
         return -1;
     }
-
+/*
     if (tpArray.shift() !== "dev") {
         console.log("do not handle message non dev");
         return -1;
     }else {
         console.log("dev message");
     }
-
+*/
     var tpKey = tpArray.shift();
     switch(tpKey) {
         case "up":
@@ -99,9 +115,10 @@ onMsgUpBsTarget = function(target, topic, message) {
 
 onMsgUpBsTargetInput = function(target, topic, message) {
     var tpKey = topic.shift();
+    var value = parseInt(message.toString());
     contactAll.collec.update({owner:target, localName:tpKey},
-        {$set:{value:message.toString()}});
-    console.log("update input:", target, tpKey, message);
+        {$set:{value:value}});
+    console.log("update input:", target, tpKey, value);
 }
 
 onMsgUpBsTargetOutput = function(target, topic, message) {
