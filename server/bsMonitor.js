@@ -16,6 +16,25 @@ var handle = queryInput.observeChanges({
 	}
 });
 
+var queryTimeShadow = contactAll.collec.find({localName:"timeShadow"});
+
+var handle = queryTimeShadow.observeChanges({
+	changed: function(id, fields) {
+        var i = contactAll.collec.findOne({_id:id});
+        if( (Object.keys(fields) == 'time') ||
+            (Object.keys(fields) == 'weekday') ) {
+            contactAll.collec.find({localName:"time"}).
+                forEach( function(elem, index, group) {
+                    var owner = elem.owner;
+                    var pIdG = elem.planIdGroup;
+                    pIdG.forEach(function(elem, index, group) {
+                        planAll.checkPlan(owner, elem);
+                    });
+                });
+        }
+	}
+});
+
 var queryPlan = planAll.collec.find();
 
 var handle = queryPlan.observeChanges({
