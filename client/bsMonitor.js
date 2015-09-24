@@ -163,7 +163,7 @@ Template.monitor.helpers({
 
 Template.monitor.events({
     "click #createPlan": function(event, template) {
-        var outputsForPlan = getOutputsForPlan().fetch();
+        var outputsForPlan = getOutputsNoPlan().fetch();
         var defaultOutputForPlan = outputsForPlan[0]
         var plan = {owner:currentUser(), localName:"new", name:null,
             outputId:defaultOutputForPlan.localName,
@@ -344,10 +344,21 @@ planModalOnShow = function() {
     var plan = EJSON.fromJSONValue(Session.get("onePlan"));
     $('.outputForPlan#' + plan.outputId).attr("selected", "selected");
     $('.outputValueForPlan#' + plan.outputValue).attr("selected", "selected");
+    getOutputsForPlan().forEach( function (elem, index, array) {
+        if (elem.planId === null) {
+            $('.outputForPlan#' + elem.localName).attr("disabled", null);
+        } else {
+            $('.outputForPlan#' + elem.localName).attr("disabled", "disabled");
+        }
+    });
 }
 
 getOutputsForPlan = function() {
     return  contactAll.collec.find({owner:currentUser(), direction:"output"});
+}
+
+getOutputsNoPlan = function() {
+    return  contactAll.collec.find({owner:currentUser(), direction:"output", planId:null});
 }
 
 Template.onePlan.helpers({
