@@ -151,7 +151,7 @@ Template.oneContact.events({
 
 Template.monitor.helpers({
 	inputs: function() {
-		return contactAll.collec.find({owner:currentUser(), direction:"input"}, {sort:{localId:1}});
+		return contactAll.collec.find({$and:[ {owner:currentUser(), direction:"input"}, {type:{$ne:"time"}} ]}, {sort:{localId:1}});
 	},
 	outputs: function() {
 		return contactAll.collec.find({owner:currentUser(), direction:"output"}, {sort:{localId:1}});
