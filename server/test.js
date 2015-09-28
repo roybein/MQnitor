@@ -1,58 +1,56 @@
 //Add Contacts For Test
-var AI1 = {owner:"864-test", localId:1, localName:"AI1", direction:"input", port:"analog", type:"adc", name:"light", unit:"lux", value:550, description:"a light sensor", planIdGroup:[], lock:"unlocked"};
+var AI1 = {owner:"864-test", localId:1, localName:"AI1", direction:"input", port:"analog", type:"adc", name:"analog input 1", unit:"", value:null, description:"an analog input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(AI1);
 
-var AI2 = {owner:"864-test", localId:2, localName:"AI2", direction:"input", port:"analog", type:"adc", name:"light", unit:"lux", value:550, description:"a light sensor", planIdGroup:[], lock:"unlocked"};
+var AI2 = {owner:"864-test", localId:2, localName:"AI2", direction:"input", port:"analog", type:"adc", name:"analog input 2", unit:"", value:null, description:"an analog input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(AI2);
 
-var AI3 = {owner:"864-test", localId:3, localName:"AI3", direction:"input", port:"analog", type:"adc", name:"light", unit:"lux", value:550, description:"a light sensor", planIdGroup:[], lock:"unlocked"};
+var AI3 = {owner:"864-test", localId:3, localName:"AI3", direction:"input", port:"analog", type:"adc", name:"analog input 3", unit:"", value:null, description:"an analog input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(AI3);
 
-var AI4 = {owner:"864-test", localId:4, localName:"AI4", direction:"input", port:"analog", type:"adc", name:"light", unit:"lux", value:550, description:"a light sensor", planIdGroup:[], lock:"unlocked"};
+var AI4 = {owner:"864-test", localId:4, localName:"AI4", direction:"input", port:"analog", type:"adc", name:"analog input 4", unit:"", value:null, description:"an analog input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(AI4);
 
-var DI1 = {owner:"864-test", localId:5, localName:"DI1", direction:"input", port:"digital", type:"sensor", name:"temperature", unit:"C", value:30, description:"a temperature sensor", planIdGroup:[], lock:"locked"};
+var DI1 = {owner:"864-test", localId:5, localName:"DI1", direction:"input", port:"digital", type:"switch", name:"digital input 1", unit:"", value:null, description:"a digital input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(DI1);
 
-var DI2 = {owner:"864-test", localId:6, localName:"DI2", direction:"input", port:"digital", type:"counter", name:"people counter", unit:"", value:200, description:"a people counter", planIdGroup:[], lock:"unlocked"};
+var DI2 = {owner:"864-test", localId:6, localName:"DI2", direction:"input", port:"digital", type:"switch", name:"digital intput 2", unit:"", value:null, description:"a digital input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(DI2);
 
-var DI3 = {owner:"864-test", localId:7, localName:"DI3", direction:"input", port:"digital", type:"switch", name:"door", unit:"", value:"on", description:"is door open", planIdGroup:[], lock:"unlocked"};
+var DI3 = {owner:"864-test", localId:7, localName:"DI3", direction:"input", port:"digital", type:"switch", name:"digital input 3", unit:"", value:null, description:"a digital input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(DI3);
 
-var DI4 = {owner:"864-test", localId:8, localName:"DI4", direction:"input", port:"digital", type:"switch", name:"digital input 4", unit:"", value:"on", description:"is door open", planIdGroup:[], lock:"unlocked"};
+var DI4 = {owner:"864-test", localId:8, localName:"DI4", direction:"input", port:"digital", type:"switch", name:"digital input 4", unit:"", value:null, description:"a digital input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(DI4);
 
-var DI5 = {owner:"864-test", localId:9, localName:"DI5", direction:"input", port:"digital", type:"switch", name:"digital input 5", unit:"", value:"on", description:"is door open", planIdGroup:[], lock:"unlocked"};
+var DI5 = {owner:"864-test", localId:9, localName:"DI5", direction:"input", port:"digital", type:"switch", name:"digital input 5", unit:"", value:null, description:"a digital input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(DI5);
 
-var DI6 = {owner:"864-test", localId:10, localName:"DI6", direction:"input", port:"digital", type:"switch", name:"digital input 6", unit:"", value:"on", description:"is door open", planIdGroup:[], lock:"unlocked"};
+var DI6 = {owner:"864-test", localId:10, localName:"DI6", direction:"input", port:"digital", type:"switch", name:"digital input 6", unit:"", value:null, description:"a digital input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(DI6);
 
-var RELAY1 = {owner:"864-test", localId:11, localName:"RELAY1", direction:"output", port:"relay", type:"relay", name:"relay 1", value:"on", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY1 = {owner:"864-test", localId:11, localName:"RELAY1", direction:"output", port:"relay", type:"relay", name:"relay 1", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY1);
-var RELAY2 = {owner:"864-test", localId:12, localName:"RELAY2", direction:"output", port:"relay", type:"relay", name:"relay 2", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY2 = {owner:"864-test", localId:12, localName:"RELAY2", direction:"output", port:"relay", type:"relay", name:"relay 2", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY2);
-var RELAY3 = {owner:"864-test", localId:13, localName:"RELAY3", direction:"output", port:"relay", type:"relay", name:"relay 3", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY3 = {owner:"864-test", localId:13, localName:"RELAY3", direction:"output", port:"relay", type:"relay", name:"relay 3", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY3);
-var RELAY4 = {owner:"864-test", localId:14, localName:"RELAY4", direction:"output", port:"relay", type:"relay", name:"relay 4", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY4 = {owner:"864-test", localId:14, localName:"RELAY4", direction:"output", port:"relay", type:"relay", name:"relay 4", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY4);
-var RELAY5 = {owner:"864-test", localId:15, localName:"RELAY5", direction:"output", port:"relay", type:"relay", name:"relay 5", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY5 = {owner:"864-test", localId:15, localName:"RELAY5", direction:"output", port:"relay", type:"relay", name:"relay 5", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY5);
-var RELAY6 = {owner:"864-test", localId:16, localName:"RELAY6", direction:"output", port:"relay", type:"relay", name:"relay 6", value:"off", description:"switch master power", planId:null, planSwitch:"disabled"};
+var RELAY6 = {owner:"864-test", localId:16, localName:"RELAY6", direction:"output", port:"relay", type:"relay", name:"relay 6", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
 contactAll.addContact(RELAY6);
 
-var PWM1 = {owner:"864-test", localId:17, localName:"PWM1", direction:"output", port:"pwm", type:"pwm", name:"pwm light", value:"off", freq:"100Hz", duty:"50%", description:"switch master power", planId:null, planSwitch:"enabled"}
+var PWM1 = {owner:"864-test", localId:17, localName:"PWM1", direction:"output", port:"pwm", type:"pwm", name:"pwm 1", value:"off", freq:"0", duty:"50%", description:"a pwm output", planId:null, planSwitch:"disabled"}
 contactAll.addContact(PWM1);
-var PWM2 = {owner:"864-test", localId:18, localName:"PWM2", direction:"output", port:"pwm", type:"pwm", name:"pwm 2", value:"off", freq:"100Hz", duty:"50%", description:"switch master power", planId:null, planSwitch:"enabled"}
+var PWM2 = {owner:"864-test", localId:18, localName:"PWM2", direction:"output", port:"pwm", type:"pwm", name:"pwm 2", value:"off", freq:"0", duty:"50%", description:"a pwm output", planId:null, planSwitch:"disabled"}
 contactAll.addContact(PWM2);
 
 var time = {owner:"864-test", localId:19, localName:"time", direction:"input", type:"time", name:"localTime", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(time);
 
-var timeShadow = {localName:"timeShadow", time:"8:45 AM", weekday:5};
-contactAll.addContact(timeShadow);
-
+/*
 //Add Plan For Test
 var planOnMasterPower = {owner:"864-test", localName:"0", name:"plan for master power", outputId:"RELAY1", outputValue:"off", judgeGroup:[]};
 var judgeElem1 = {index:"0", inputId:"AI1", valueMin:500, valueMax:600, logicOp:"and"};
@@ -82,3 +80,4 @@ planOnPwmLight = addJudgeElem(planOnPwmLight, judgeElem4);
 planOnPwmLight = addJudgeElem(planOnPwmLight, judgeElem5);
 planAll.addPlan(planOnPwmLight);
 planAll.attachPlan("864-test", "1");
+*/

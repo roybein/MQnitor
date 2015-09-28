@@ -484,7 +484,7 @@ Template.onePlan.events({
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var inputsForJudgeElem = getInputsForJudgeElem().fetch();
         var defaultInputForJudgeElem = inputsForJudgeElem[0];
-        newJudgeElem = {index:"new", inputId:defaultInputForJudgeElem.localName };
+        newJudgeElem = {index:"new", inputId:defaultInputForJudgeElem.localName, logicOp:"and"};
         newJudgeElem.index = plan.judgeGroup.length.toString();
         plan = addJudgeElem(plan, newJudgeElem);
         Session.set("onePlan", EJSON.toJSONValue(plan));
