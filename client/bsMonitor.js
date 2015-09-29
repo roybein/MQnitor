@@ -110,7 +110,6 @@ Template.oneContact.events({
     "click #saveContact": function (event, template) {
         //TOOD: validate
         var contact = EJSON.fromJSONValue(Session.get("oneContact"));
-        contact.value = "n/a";
         if(contact.localName == "new") {
             contact.localName = contactAll.collec.find({owner:currentUser()}).count().toString();
             console.log("saveContact:", contact);
