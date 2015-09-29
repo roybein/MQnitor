@@ -115,14 +115,14 @@ onMsgUpBsTargetInput = function(target, topic, message) {
     var value = parseInt(message.toString());
     contactAll.collec.update({owner:target, localName:tpKey},
         {$set:{value:value}});
-    console.log("update input:", target, tpKey, value);
+    //console.log("update input:", target, tpKey, value);
 }
 
 onMsgUpBsTargetOutput = function(target, topic, message) {
     var tpKey = topic.shift();
     contactAll.collec.update({owner:target, localName:tpKey},
         {$set:{value:message.toString()}});
-    console.log("update output:", target, tpKey, message);
+    //console.log("update output:", target, tpKey, message);
 }
 
 doMsgDown = function(topic, message) {

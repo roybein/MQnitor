@@ -472,7 +472,7 @@ Template.onePlan.events({
 
     "click #addJudgeElemTimeInput": function (event, template) {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        newJudgeElem = {index:"new", inputId:"time", repeatDays:[], logicOp:"and"};
+        newJudgeElem = {index:"new", inputId:"time", repeatDays:[1,2,3,4,5], logicOp:"and"};
         newJudgeElem.index = plan.judgeGroup.length.toString();
         plan = addJudgeElem(plan, newJudgeElem);
         Session.set("onePlan", EJSON.toJSONValue(plan));
