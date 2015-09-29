@@ -4,13 +4,23 @@
     </div>
     <a class="item" href="/monitor" id="topMenuMonitor">Monitor</a>
     <!--<a class="item" href="/config" id="topMenuSetup">Config</a>-->
+    
     <div class="right menu">
+
       <div class="item">
-        <div class="ui right large label">
-          <i class="user icon"></i>
-          {{username}}
-        </div>
+        {{#if isOnline}}
+          <div class="ui right big green label">
+            <i class="linkify icon"></i>
+            {{username}}
+          </div>
+        {{else}}
+          <div class="ui right big grep label">
+            <i class="unlink icon"></i>
+            {{username}}
+          </div>
+        {{/if}}
       </div>
+
       <div>
         {{> atNavButton}} 
       </div>

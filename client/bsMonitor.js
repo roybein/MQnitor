@@ -8,6 +8,9 @@ currentUser = function() {
 
 Template.topMenu.helpers({
     username: currentUser,
+    isOnline: function() {
+        return profileAll.collec.findOne({owner:currentUser()}).isOnline;
+    },
 });
 
 Template.config.helpers({

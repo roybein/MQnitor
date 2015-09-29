@@ -50,6 +50,8 @@ contactAll.addContact(PWM2);
 var time = {owner:"864-dev", localId:19, localName:"time", direction:"input", type:"time", name:"localTime", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(time);
 
+var profile = {owner:"864-dev", isOnline:false};
+profileAll.addProfile(profile);
 /*
 //Add Plan For Test
 var planOnMasterPower = {owner:"864-dev", localName:"0", name:"plan for master power", outputId:"RELAY1", outputValue:"off", judgeGroup:[]};
