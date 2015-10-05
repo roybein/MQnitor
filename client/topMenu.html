@@ -9,12 +9,12 @@
 
       <div class="item">
         {{#if isOnline}}
-          <div class="ui right big green label">
+          <div class="ui right big green labeled icon button" id="onlineButton">
             <i class="linkify icon"></i>
             {{username}}
           </div>
         {{else}}
-          <div class="ui right big grep label">
+          <div class="ui right big grep labeled icon button" id="offlineButton" data-content="Link your device to internet">
             <i class="unlink icon"></i>
             {{username}}
           </div>
@@ -26,5 +26,37 @@
       </div>
     </div>
   </div>
+
+  <div class="ui large long modal" id="oneNetworkModal">
+    {{> oneNetwork}}
+  </div>
 </template>
 
+<template name="oneNetwork">
+  <div class= "left floated header">
+    <a class="ui red ribbon label">Network</a>
+    <button class="ui primary right floated button" id="saveNetwork">Save</button>
+  </div>
+
+  <div class="ui container">
+    <div class="ui segments">
+      <div class="ui red segment">
+        <div class="ui form">
+
+          <div class="two fields">
+            <div class="field">
+              <label>SSID</label>
+              <input type="text" id="ssid" value={{oneNetwork.ssid}}>
+            </div>
+            <div class="field">
+              <label>Password</label>
+              <input type="password" id="pwd" value={{oneNetwork.pwd}}>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>

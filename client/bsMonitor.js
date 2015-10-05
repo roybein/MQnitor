@@ -13,27 +13,58 @@ Template.topMenu.helpers({
     },
 });
 
-Template.config.helpers({
-    contacts: function() {
-        return contactAll.collec.find({owner:currentUser()}, {sort:{localId:1}});
+Template.topMenu.events({
+    "click #offlineButton": function (event, template) {
+    },
+    "click #onlineButton": function (event, template) {
+        var network = profileAll.collec.findOne({owner:currentUser()});
+        Session.set("oneNetwork", EJSON.toJSONValue(network));
+        $('#oneNetworkModal')
+            .modal('show');
     },
 });
 
-Template.config.events({
-    "click #updateConfig": function(event, template) {
-        console.log("update config");
-        Meteor.call("doMsgDownBsTargetConfig", currentUser());
+Template.oneNetwork.helpers({
+    oneNetwork: function() {
+        var network = EJSON.fromJSONValue(Session.get("oneNetwork"));
+        if (network != null) {
+            console.log("return oneContact in helpers:", network);
+            return network;
+        } else {
+            return null;
+        }
+    },
+});
+
+Template.oneNetwork.events({
+    "click #saveNetwork": function(event, template) {
+        var network = EJSON.fromJSONValue(Session.get("oneNetwork"));
+        profileAll.collec.update({_id:network._id}, {$set:{ssid:network.ssid, pwd:network.pwd}});
+        //TODO: mqtt
+        Meteor.call("doMsgDownBsTargetConfigNetwork", currentUser());
+        $('#oneNetworkModal')
+            .modal('hide');
+        return false;
     },
 
-    "change #contactTypeSel": function(event, template) {
-        //var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        //var jg = plan.judgeGroup;
-        //var input = contactAll.collec.findOne({owner:currentUser(), name:event.target.value});
-        //console.log("select input:", input);
-        //jg[this.index].inputId = input.localName;
-        //plan.judgeGroup = jg;
-        //Session.set("onePlan", EJSON.toJSONValue(plan));
+    "change #ssid": function(event, template) {
+        var network = EJSON.fromJSONValue(Session.get("oneNetwork"));
+        network.ssid = event.target.value;
+        console.log(network);
+        Session.set("oneNetwork", EJSON.toJSONValue(network));
     },
+
+    "change #pwd": function(event, template) {
+        var network = EJSON.fromJSONValue(Session.get("oneNetwork"));
+        network.pwd = event.target.value;
+        console.log(network);
+        Session.set("oneNetwork", EJSON.toJSONValue(network));
+    },
+});
+
+Template.topMenu.onRendered( function() {
+    $("#offlineButton")
+      .popup();
 });
 
 Template.contact.helpers({

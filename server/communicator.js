@@ -1,3 +1,5 @@
+var broker = "VyAVxfHye";
+
 function getIPAddress() {
   var interfaces = Npm.require('os').networkInterfaces();
   for (var devName in interfaces) {
@@ -19,38 +21,67 @@ mqttClient = mqtt.connect('mqtt:123.57.208.39');
 mqttClient.on("connect", function() {
     console.log("connected mqtt broker");
 
-    mqttClient.publish("presence", "hello mqtt from bsMonitor", function() {
+    mqttClient.publish("presence", "hello from bsMonitor", function() {
         console.log("publish done");
     });
 
-    doMsgDown("/test", "test publish");
-
     mqttClient.subscribe("/up/#", function() {
-            console.log("subscribe done");
+        console.log("subscribe up done");
+    });
+
+    mqttClient.subscribe("$SYS/"+broker+"/new/clients", function() {
+        console.log("subscribe client connected done");
+    });
+
+    mqttClient.subscribe("$SYS/"+broker+"/disconnect/clients", function() {
+        console.log("subscribe client disconnected done");
     });
 
     mqttClient.on("message", onMsgMqtt);
 });
 
-onMsgMqtt = function(topic, message) {
-    var tpArray = topic.split("/"); 
-    //console.log(tpArray, message.toString());
-    if (tpArray.shift() !== "") {
-        console.log("unsupported message start without /");
-        return -1;
+onMsgMqtt = function(topicStr, message) {
+    var topic = topicStr.split("/"); 
+    //console.log(topic, message.toString());
+
+    var tpKey = topic.shift();
+    switch(tpKey) {
+        case "$SYS":
+            onMsgSys(topic, message);
+            break;
+        case "":
+            onMsgMain(topic, message);
+            break;
+        default:
+            console.log("unsupported topic key:", tpKey );
+            return -1;
+    } 
+}
+
+onMsgSys = function(topic, message) {
+    var tpKey = topic.shift();
+    if (tpKey === broker) {
+        switch(topic) {
+            case "disconnect/clients":
+                var device = message.toString();
+                console.log("client disconnected: ", device);
+                profileAll.collec.update({owner:device}, {$set:{isOnline:true}}); 
+                break;
+            case "new/clients":
+                var device = message.toString();
+                console.log("client connected: ", device);
+                profileAll.collec.update({owner:device}, {$set:{isOnline:false}}); 
+                break;
+            default:
+        }
     }
-/*
-    if (tpArray.shift() !== "dev") {
-        console.log("do not handle message non dev");
-        return -1;
-    }else {
-        console.log("dev message");
-    }
-*/
-    var tpKey = tpArray.shift();
+}
+
+onMsgMain = function(topic, message) {
+    var tpKey = topic.shift();
     switch(tpKey) {
         case "up":
-            onMsgUp(tpArray, message);
+            onMsgUp(topic, message);
             break;
         case "down":
             console.log("get down message");
@@ -91,8 +122,10 @@ onMsgUpBsCheckin = function(topic, message) {
 onMsgUpBsTarget = function(target, topic, message) {
     var Fiber = Npm.require('fibers');
     Fiber(function() {
+
         if (Meteor.users.findOne({username: target}) !== undefined) {
             //console.log("message from:", target);
+            profileAll.collec.update({owner:target}, {$set:{isOnline:true}}); 
             var tpKey = topic.shift();
             switch(tpKey) {
                 case "input":
@@ -149,12 +182,21 @@ doMsgDownBsTargetConfig = function(target) {
     var Fiber = Npm.require('fibers');
     Fiber(function() {
         var topic = "/down/bs/" + target + "/config";
-        config = getCurrentConfig(target);
+        var config = getCurrentConfig(target);
         doMsgDown(topic, config);
     }).run();
+}
+
+doMsgDownBsTargetConfigNetwork = function(target) {
+    var network = profileAll.collec.findOne({owner:target});
+    var config = "ssid:" + network.ssid + "," + "password:" + network.pwd;
+    console.log("netowrk config:", config);
+    var topic = "/down/bs/" + target + "/config";
+    doMsgDown(topic, config);
 }
 
 Meteor.methods({
     doMsgDownBsTargetOutput: doMsgDownBsTargetOutput,
     doMsgDownBsTargetConfig: doMsgDownBsTargetConfig,
+    doMsgDownBsTargetConfigNetwork: doMsgDownBsTargetConfigNetwork,
 });
