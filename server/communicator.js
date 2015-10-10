@@ -61,16 +61,23 @@ onMsgMqtt = function(topicStr, message) {
 onMsgSys = function(topic, message) {
     var tpKey = topic.shift();
     if (tpKey === broker) {
-        switch(topic) {
-            case "disconnect/clients":
+        tpKey = topic.shift();
+        switch(tpKey) {
+            case "disconnect":
                 var device = message.toString();
                 console.log("client disconnected: ", device);
-                profileAll.collec.update({owner:device}, {$set:{isOnline:true}}); 
+                var Fiber = Npm.require('fibers');
+                Fiber(function() {
+                    profileAll.collec.update({owner:device}, {$set:{isOnline:false}});
+                }).run();
                 break;
-            case "new/clients":
+            case "new":
                 var device = message.toString();
                 console.log("client connected: ", device);
-                profileAll.collec.update({owner:device}, {$set:{isOnline:false}}); 
+                var Fiber = Npm.require('fibers');
+                Fiber(function() {
+                    profileAll.collec.update({owner:device}, {$set:{isOnline:true}});
+                }).run();
                 break;
             default:
         }
@@ -122,7 +129,6 @@ onMsgUpBsCheckin = function(topic, message) {
 onMsgUpBsTarget = function(target, topic, message) {
     var Fiber = Npm.require('fibers');
     Fiber(function() {
-
         if (Meteor.users.findOne({username: target}) !== undefined) {
             //console.log("message from:", target);
             profileAll.collec.update({owner:target}, {$set:{isOnline:true}}); 

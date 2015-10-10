@@ -125,7 +125,6 @@ Template.oneContact.helpers({
 
     isUnitDisplay: function() {
         var contact = EJSON.fromJSONValue(Session.get("oneContact"));
-        console.log("here", contact);
         if (contact != null) {
             if (contact.direction === "input"
                 && (contact.type === "adc" ||
