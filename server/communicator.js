@@ -1,3 +1,11 @@
+/*
+Meteor.methods({
+    doMsgDownBsTargetOutput: doMsgDownBsTargetOutput,
+    doMsgDownBsTargetConfig: doMsgDownBsTargetConfig,
+    doMsgDownBsTargetConfigNetwork: doMsgDownBsTargetConfigNetwork,
+});
+*/
+
 var broker = "VyAVxfHye";
 
 function getIPAddress() {
@@ -200,9 +208,3 @@ doMsgDownBsTargetConfigNetwork = function(target) {
     var topic = "/down/bs/" + target + "/config";
     doMsgDown(topic, config);
 }
-
-Meteor.methods({
-    doMsgDownBsTargetOutput: doMsgDownBsTargetOutput,
-    doMsgDownBsTargetConfig: doMsgDownBsTargetConfig,
-    doMsgDownBsTargetConfigNetwork: doMsgDownBsTargetConfigNetwork,
-});

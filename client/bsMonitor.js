@@ -701,7 +701,6 @@ Template.judgeElemTimeInput.onRendered( function() {
     this.$('.datetimepicker').datetimepicker({format: 'LT'});
 });
 
-/*
 Template.test.events({
     "click #pick-a-time": function (event, template) {
         console.log("clockpicker clicked");
@@ -712,8 +711,12 @@ Template.test.events({
         console.log("datetimepicker clicked");
         $('.datetimepicker').datetimepicker({format: 'LT'});
     },
+
+    "click #sendMail": function(event, template) {
+        console.log("send mail");
+        Meteor.call("sendMail", "rockybay@126.com", "roybein@gmail.com", "test mail", "this is a test mail");
+    },
 });
-*/
 
 Template.test.onRendered(function() {
     this.$('.datetimepicker').datetimepicker({format: 'LT'});
