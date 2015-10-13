@@ -222,7 +222,6 @@
           </div>
 
           <div class="two fields">
-
             <div class="field">
               <label>Output Value</label>
               <select class="ui dropdown" id="planOutputValue">
@@ -243,8 +242,38 @@
                 </div>
               </div>
             </div>
-
           </div>
+
+            <div class="field">
+              <label>Send Email</label>
+              <div class="ui fitted checkbox" name="outputEmailCheckbox">
+                <input type="checkbox" id="outputEmail" {{isOuputEmailChecked}}>
+                <label></label>
+              </div>
+            </div>
+
+            <div class="two fields" style="display:{{isEmailDisplay}}">
+              <div class="field">
+                <label>To</label>
+                <input type="text" id="planOutputEmailTo" placeholder="" value={{onePlan.outputEmail.to}}>
+              </div>
+              <div class="field">
+                <label>From</label>
+                <input type="text" id="planOutputEmailFrom" placeholder="" value={{onePlan.outputEmail.from}}>
+              </div>
+            </div>
+
+            <div class="two fields" style="display:{{isEmailDisplay}}">
+              <div class="field">
+                <label>Subject</label>
+                <input type="text" id="planOutputEmailSubject" placeholder="" value={{onePlan.outputEmail.subject}}>
+              </div>
+
+              <div class="field">
+                <label>Text</label>
+                <input type="text" id="planOutputEmailText" placeholder="" value={{onePlan.outputEmail.text}}>
+              </div>
+            </div>
 
         </div>
       </div>
@@ -263,6 +292,7 @@
 
   </div>
 </template>
+
 
 <template name="judgeElemTimeInput">
   <h5 class="ui attached header">

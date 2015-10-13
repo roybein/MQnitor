@@ -200,6 +200,8 @@ Template.monitor.events({
         var plan = {owner:currentUser(), localName:"new", name:null,
             outputId:defaultOutputForPlan.localName,
             outputValue:defaultOutputForPlan.value,
+            sendEmail:false,
+            outputEmail:{to:"",from:"",subject:"",text:""},
             judgeGroup:[]};
         console.log("get new plan:", plan);
         Session.set("onePlan", EJSON.toJSONValue(plan));
@@ -371,6 +373,7 @@ Template.plan.events({
     },
 });
 
+
 planModalOnShow = function() {
     console.log("planModalOnShow");
     var plan = EJSON.fromJSONValue(Session.get("onePlan"));
@@ -403,6 +406,28 @@ Template.onePlan.helpers({
             return plan;
         } else {
             return null;
+        }
+    },
+
+    isOutputEmailChecked: function() {
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        if (plan.sendEmail === false) {
+            return "checked";
+        } else {
+            return "unchecked";
+        }
+    },
+
+    isEmailDisplay: function() {
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        if (plan != null) {
+            if (plan.sendEmail === true) {
+                return "";
+            } else {
+                return "none";
+            }
+        } else {
+            return "none";
         }
     },
 
@@ -503,9 +528,37 @@ Template.onePlan.events({
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 
+    "change #planOutputEmailTo": function (event, template) {
+      	console.log(event.target.id, event.target.value);
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        plan.outputEmail.to = event.target.value;
+        Session.set("onePlan", EJSON.toJSONValue(plan));
+    },
+
+    "change #planOutputEmailFrom": function (event, template) {
+      	console.log(event.target.id, event.target.value);
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        plan.outputEmail.from = event.target.value;
+        Session.set("onePlan", EJSON.toJSONValue(plan));
+    },
+
+    "change #planOutputEmailSubject": function (event, template) {
+      	console.log(event.target.id, event.target.value);
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        plan.outputEmail.subject = event.target.value;
+        Session.set("onePlan", EJSON.toJSONValue(plan));
+    },
+
+    "change #planOutputEmailText": function (event, template) {
+      	console.log(event.target.id, event.target.value);
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        plan.outputEmail.text = event.target.value;
+        Session.set("onePlan", EJSON.toJSONValue(plan));
+    },
+
     "click #addJudgeElemTimeInput": function (event, template) {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        newJudgeElem = {index:"new", inputId:"time", repeatDays:[1,2,3,4,5], logicOp:"and"};
+        var newJudgeElem = {index:"new", inputId:"time", repeatDays:[1,2,3,4,5], logicOp:"and"};
         newJudgeElem.index = plan.judgeGroup.length.toString();
         plan = addJudgeElem(plan, newJudgeElem);
         Session.set("onePlan", EJSON.toJSONValue(plan));
@@ -516,7 +569,7 @@ Template.onePlan.events({
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
         var inputsForJudgeElem = getInputsForJudgeElem().fetch();
         var defaultInputForJudgeElem = inputsForJudgeElem[0];
-        newJudgeElem = {index:"new", inputId:defaultInputForJudgeElem.localName, logicOp:"and"};
+        var newJudgeElem = {index:"new", inputId:defaultInputForJudgeElem.localName, logicOp:"and"};
         newJudgeElem.index = plan.judgeGroup.length.toString();
         plan = addJudgeElem(plan, newJudgeElem);
         Session.set("onePlan", EJSON.toJSONValue(plan));
@@ -531,6 +584,23 @@ Template.onePlan.events({
         return false;
     },
 
+});
+
+Template.onePlan.onRendered( function() {
+    $("[name='outputEmailCheckbox']").checkbox({
+        onChecked: function() {
+            console.log("checked outputEmail", this.id);
+            var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+            plan.sendEmail = true;
+            Session.set("onePlan", EJSON.toJSONValue(plan));
+        },
+        onUnchecked: function() {
+            console.log("unchecked outputEmail", this.id);
+            var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+            plan.sendEmail = false;
+            Session.set("onePlan", EJSON.toJSONValue(plan));
+        },
+    });
 });
 
 getInputsForJudgeElem = function() {
