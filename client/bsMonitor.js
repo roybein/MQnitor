@@ -183,10 +183,12 @@ Template.oneContact.events({
 
 Template.monitor.helpers({
 	inputs: function() {
-		return contactAll.collec.find({$and:[ {owner:currentUser(), direction:"input"}, {type:{$ne:"time"}} ]}, {sort:{localId:1}});
+		return contactAll.collec.find({$and:[ {owner:currentUser(), direction:"input"},
+                                                {type:{$ne:"time"}} ]}, {sort:{localId:1}});
 	},
 	outputs: function() {
-		return contactAll.collec.find({owner:currentUser(), direction:"output"}, {sort:{localId:1}});
+		return contactAll.collec.find({$and:[ {owner:currentUser(), direction:"output"},
+                                                {type:{$ne:"email"}} ]}, {sort:{localId:1}});
 	},
 	plans: function() {
 		return planAll.collec.find({owner:currentUser()});
@@ -800,9 +802,9 @@ Template.test.events({
         $('.datetimepicker').datetimepicker({format: 'LT'});
     },
 
-    "click #sendMail": function(event, template) {
+    "click #sendEmail": function(event, template) {
         console.log("send mail");
-        Meteor.call("sendMail", "rockybay@126.com", "roybein@gmail.com", "test mail", "this is a test mail");
+        Meteor.call("sendEmail", "rockybay@126.com", "roybein@gmail.com", "test mail", "this is a test mail");
     },
 });
 

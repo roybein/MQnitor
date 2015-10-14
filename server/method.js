@@ -4,5 +4,5 @@ Meteor.methods({
     doMsgDownBsTargetOutput: doMsgDownBsTargetOutput,
     doMsgDownBsTargetConfig: doMsgDownBsTargetConfig,
     doMsgDownBsTargetConfigNetwork: doMsgDownBsTargetConfigNetwork,
-    sendMail: sendMail,
+    sendEmail: sendEmail,
 });
