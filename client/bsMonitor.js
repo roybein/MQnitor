@@ -385,6 +385,7 @@ planModalOnShow = function() {
         } else {
             $('.outputForPlan#' + elem.localName).attr("disabled", "disabled");
         }
+        $('.outputForPlan#' + "email").attr("disabled", null);
     });
 }
 
@@ -411,7 +412,7 @@ Template.onePlan.helpers({
 
     isOutputEmailChecked: function() {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        if (plan.sendEmail === false) {
+        if (plan.sendEmail === true) {
             return "checked";
         } else {
             return "unchecked";
@@ -439,6 +440,20 @@ Template.onePlan.helpers({
                 return "";
             } else {
                 return "none";
+            }
+        } else {
+            return "none";
+        }
+    },
+
+    isOutputValueDisplay: function() {
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        if (plan != null) {
+            var output = contactAll.collec.findOne({owner:currentUser(), localName:plan.outputId});
+            if (output == null || output.type === "email") {
+                return "none";
+            } else {
+                return "";
             }
         } else {
             return "none";
@@ -513,6 +528,9 @@ Template.onePlan.events({
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
 		var output = contactAll.collec.findOne({owner:currentUser(), name:event.target.value});
         plan.outputId = output.localName;
+        if (plan.outputId === "email") {
+            plan.sendEmail = true;
+        }
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 /*

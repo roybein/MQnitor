@@ -47,7 +47,10 @@ contactAll.addContact(PWM1);
 var PWM2 = {owner:"864-test", localId:18, localName:"PWM2", direction:"output", port:"pwm", type:"pwm", name:"pwm 2", value:"off", freq:"0", duty:"50%", description:"a pwm output", planId:null, planSwitch:"disabled"}
 contactAll.addContact(PWM2);
 
-var time = {owner:"864-test", localId:19, localName:"time", direction:"input", type:"time", name:"localTime", planIdGroup:[], lock:"unlocked"};
+var email = {owner: "864-test", localId:19, localName:"email", direction:"output", type:"email", name:"email", planId:null};
+contactAll.addContact(email);
+
+var time = {owner:"864-test", localId:20, localName:"time", direction:"input", type:"time", name:"localTime", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(time);
 
 var profile = {owner:"864-test", isOnline:false};

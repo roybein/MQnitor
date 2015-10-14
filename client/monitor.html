@@ -221,7 +221,7 @@
             </div>
           </div>
 
-          <div class="two fields">
+          <div class="two fields" style="display:{{isOutputValueDisplay}}">
             <div class="field">
               <label>Output Value</label>
               <select class="ui dropdown" id="planOutputValue">
@@ -247,7 +247,7 @@
             <div class="field">
               <label>Send Email</label>
               <div class="ui fitted checkbox" name="outputEmailCheckbox">
-                <input type="checkbox" id="outputEmail" {{isOuputEmailChecked}}>
+                <input type="checkbox" id="outputEmail" {{isOutputEmailChecked}}>
                 <label></label>
               </div>
             </div>
