@@ -1,5 +1,9 @@
 Accounts.onLogin(function() {
     console.log("here login");
+    Meteor.subscribe("users");
+    Meteor.subscribe("contact");
+    Meteor.subscribe("plan");
+    Meteor.subscribe("profile");
 });
 
 currentUser = function() {
