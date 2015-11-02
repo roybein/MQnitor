@@ -1,2 +1,3 @@
 .meteor
-client/semantic
+client/semantic/*
+!client/semantic/custom.semantic.json
