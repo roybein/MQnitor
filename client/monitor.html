@@ -171,6 +171,7 @@
           </div>
 
           <div class="two fields">
+
             <div class="field">
               <label>Type</label>
               <select class="ui dropdown" id="contactTypeSel">
@@ -179,10 +180,24 @@
                 {{/each}}
               </select>
             </div>
-            <div class="field" id="unit field" style="display:{{isUnitDisplay}}">
+
+            <div class="field" style="display:{{isUnitDisplay}}">
               <label>Unit</label>
               <input type="text" id="contactUnit" placeholder="input a unit" value={{oneContact.unit}}>
             </div>
+
+            <div class="two fields" style="display:{{isContactPwmDisplay}}">
+              <div class="field">
+                <label>Frequency</label>
+                <input type="text" id="contactPwmFrequency" placeholder="input a pwm frequency" value={{oneContact.freq}}>
+              </div>
+
+              <div class="field">
+                <label>Duty</label>
+                <input type="text" id="contactPwmDuty" placeholder="input a pwm duty" value={{oneContact.duty}}>
+              </div>
+            </div>
+
           </div>
 
         </div>

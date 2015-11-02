@@ -106,8 +106,7 @@ Template.oneContact.helpers({
         }
     },
 
-    typesForContact: function(port) {
-        var options = [];
+    typesForContact: function(port) { var options = [];
         switch (port) {
             case "analog":
                 options.push({type:"adc"});
@@ -119,6 +118,7 @@ Template.oneContact.helpers({
                 break;
             case "relay":
                 options.push({type:"relay"});
+                break;
             case "pwm":
                 options.push({type:"pwm"});
                 break;
@@ -133,6 +133,19 @@ Template.oneContact.helpers({
             if (contact.direction === "input"
                 && (contact.type === "adc" ||
                     contact.type === "sensor") ) {
+                return "";
+            } else {
+                return "none";
+            }
+        } else {
+            return "none";
+        }
+    },
+
+    isContactPwmDisplay: function() {
+        var contact = EJSON.fromJSONValue(Session.get("oneContact"));
+        if (contact != null) {
+            if (contact.type === "pwm") {
                 return "";
             } else {
                 return "none";
@@ -180,6 +193,22 @@ Template.oneContact.events({
       	console.log(event.target.id, ":", event.target.value);
         var contact = EJSON.fromJSONValue(Session.get("oneContact"));
         contact.unit = event.target.value;
+        console.log(contact);
+        Session.set("oneContact", EJSON.toJSONValue(contact));
+    },
+
+    "change #contactPwmFrequency": function (event, template) {
+      	console.log(event.target.id, ":", event.target.value);
+        var contact = EJSON.fromJSONValue(Session.get("oneContact"));
+        contact.freq = event.target.value;
+        console.log(contact);
+        Session.set("oneContact", EJSON.toJSONValue(contact));
+    },
+
+    "change #contactPwmDuty": function (event, template) {
+      	console.log(event.target.id, ":", event.target.value);
+        var contact = EJSON.fromJSONValue(Session.get("oneContact"));
+        contact.duty = event.target.value;
         console.log(contact);
         Session.set("oneContact", EJSON.toJSONValue(contact));
     },
