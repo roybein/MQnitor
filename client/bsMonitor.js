@@ -1,19 +1,23 @@
 Accounts.onLogin(function() {
     console.log("here login");
-    Meteor.subscribe("users");
-    Meteor.subscribe("contact");
-    Meteor.subscribe("plan");
-    Meteor.subscribe("profile");
 });
 
 currentUser = function() {
-    return Meteor.user().username;
+    try {
+        return Meteor.user().username;
+    } catch (exception) {
+        console.log(exception);
+    }
 };
 
 Template.topMenu.helpers({
     username: currentUser,
     isOnline: function() {
-        return profileAll.collec.findOne({owner:currentUser()}).isOnline;
+        try {
+            return profileAll.collec.findOne({owner:currentUser()}).isOnline;
+        } catch (exception) {
+            console.log(exception);
+        }
     },
 });
 
@@ -447,10 +451,13 @@ Template.onePlan.helpers({
 
     isOutputEmailChecked: function() {
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        try {
         if (plan.sendEmail === true) {
             return "checked";
         } else {
             return "unchecked";
+        } } catch(exception) {
+            console.log(exception);
         }
     },
 
