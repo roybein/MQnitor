@@ -53,8 +53,9 @@ contactAll.addContact(email);
 var time = {owner:"864-dev", localId:20, localName:"time", direction:"input", type:"time", name:"localTime", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(time);
 
-var profile = {owner:"864-dev", isOnline:false};
-profileAll.addProfile(profile);
+var deviceProfile = {owner:"864-dev", isOnline:false};
+deviceProfileAll.addProfile(deviceProfile);
+
 /*
 //Add Plan For Test
 var planOnMasterPower = {owner:"864-dev", localName:"0", name:"plan for master power", outputId:"RELAY1", outputValue:"off", judgeGroup:[]};
