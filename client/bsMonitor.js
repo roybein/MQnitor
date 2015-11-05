@@ -23,7 +23,7 @@ Template.topMenu.helpers({
     username: currentDevice,
     isOnline: function() {
         try {
-            return deviceProfileAll.collec.findOne({owner:currentDevice()}).isOnline;
+            return deviceProfileAll.collec.findOne({name:currentDevice()}).isOnline;
         } catch (exception) {
             console.log(exception);
         }
@@ -34,7 +34,7 @@ Template.topMenu.events({
     "click #offlineButton": function (event, template) {
     },
     "click #onlineButton": function (event, template) {
-        var network = deviceProfileAll.collec.findOne({owner:currentDevice()});
+        var network = deviceProfileAll.collec.findOne({name:currentDevice()});
         Session.set("oneNetwork", EJSON.toJSONValue(network));
         $('#oneNetworkModal')
             .modal('show');

@@ -1,0 +1,21 @@
+<template name="manage">
+  <div class="ui container">
+    {{> atNavButton}} 
+
+    <div class="ui massive middle aligned selection list">
+      {{#each devices}}
+        {{> device}}
+      {{/each}}
+    </div>
+
+  </div>
+</template>
+
+<template name="device">
+  <div class="item">
+    <i class="linkify icon"></i>
+    <div class="content">
+      <div class="header">{{name}}</div>
+    </div>
+  </div>
+</template>
