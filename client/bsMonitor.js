@@ -19,6 +19,19 @@ currentDevice = function() {
     }
 }
 
+subscribeUserData = function() {
+    console.log("subscribe user data");
+    Meteor.subscribe("users");
+    Meteor.subscribe("deviceProfile");
+    Meteor.subscribe("userProfile");
+}
+
+subscribeDeviceData = function() {
+    console.log("subscribe device data");
+    Meteor.subscribe("contact");
+    Meteor.subscribe("plan");
+}
+
 Template.topMenu.helpers({
     username: currentDevice,
     isOnline: function() {
@@ -225,6 +238,11 @@ Template.oneContact.events({
         console.log(contact);
         Session.set("oneContact", EJSON.toJSONValue(contact));
     },
+});
+
+Template.monitor.onCreated( function() {
+    Meteor.call("publishDeviceData", Session.get("currentDevice"));
+    subscribeDeviceData();
 });
 
 Template.monitor.helpers({

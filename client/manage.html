@@ -2,7 +2,7 @@
   <div class="ui container">
     {{> atNavButton}} 
 
-    <div class="ui massive middle aligned selection list">
+    <div class="ui middle aligned divided selection list">
       {{#each devices}}
         {{> device}}
       {{/each}}
@@ -12,10 +12,18 @@
 </template>
 
 <template name="device">
-  <div class="item">
-    <i class="linkify icon"></i>
-    <div class="content">
-      <div class="header">{{name}}</div>
+  <div class="item" id="device">
+    <div class="right floated content">
+      <div class="ui button" id={{name}} name="editDevice">edit</div>
     </div>
+
+    <h2 class="ui header">
+      <i class="linkify icon"></i>
+      <div class="content">
+        {{name}}
+        <div class="sub header">the device ID of {{name}}</div>
+      </div>
+    </h2>
+  
   </div>
 </template>

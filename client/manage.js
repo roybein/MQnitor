@@ -18,8 +18,21 @@ getAllDevOfCurrentUser = function() {
     }
 }
 
+Template.manage.onCreated( function() {
+    Meteor.call("publishUserData", currentUser());
+    subscribeUserData(); 
+});
+
 Template.manage.helpers({
     devices: function() {
         return getAllDevOfCurrentUser();
     },
 });
+
+Template.device.events({
+    'click #device': function(event, template) {
+        Session.set("currentDevice", this.name);
+        Router.go("monitor");
+    }, 
+});
+
