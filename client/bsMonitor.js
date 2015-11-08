@@ -12,8 +12,8 @@ currentUser = function() {
 
 currentDevice = function() {
     try {
-        //return Session.get("currentDevice");
-        return "864-dev";
+        return Router.current().params._id;
+        //return "864-dev";
     } catch (exception) {
         console.log(exception);
     }
@@ -240,8 +240,11 @@ Template.oneContact.events({
     },
 });
 
-Template.monitor.onCreated( function() {
-    Meteor.call("publishDeviceData", Session.get("currentDevice"));
+Template.monitor.onRendered( function() {
+    console.log("monitor onCreated");
+    //var currentDevice = Session.get("currentDevice");
+    console.log("get currentDevice =", currentDevice());
+    Meteor.call("publishDeviceData", currentDevice());
     subscribeDeviceData();
 });
 

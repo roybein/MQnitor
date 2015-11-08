@@ -31,8 +31,9 @@ Template.manage.helpers({
 
 Template.device.events({
     'click #device': function(event, template) {
-        Session.set("currentDevice", this.name);
-        Router.go("monitor");
+        //Session.set("currentDevice", this.name);
+        console.log("go to monitor @", this.name);
+        Router.go("monitor", {_id:this.name});
     }, 
 });
 
