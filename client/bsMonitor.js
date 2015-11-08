@@ -1,5 +1,5 @@
 Accounts.onLogin(function() {
-    console.log("here login");
+    console.log("here login", currentUser());
 });
 
 currentUser = function() {
@@ -19,17 +19,17 @@ currentDevice = function() {
     }
 }
 
-subscribeUserData = function() {
-    console.log("subscribe user data");
-    Meteor.subscribe("users");
-    Meteor.subscribe("deviceProfile");
-    Meteor.subscribe("userProfile");
+subscribeUserData = function(username) {
+    console.log("subscribe user data of", username);
+    Meteor.subscribe("users@"+username);
+    Meteor.subscribe("deviceProfile@"+username);
+    Meteor.subscribe("userProfile@"+username);
 }
 
-subscribeDeviceData = function() {
-    console.log("subscribe device data");
-    Meteor.subscribe("contact");
-    Meteor.subscribe("plan");
+subscribeDeviceData = function(devicename) {
+    console.log("subscribe device data if", devicename);
+    Meteor.subscribe("contact@"+devicename);
+    Meteor.subscribe("plan@"+devicename);
 }
 
 Template.topMenu.helpers({
@@ -241,11 +241,9 @@ Template.oneContact.events({
 });
 
 Template.monitor.onRendered( function() {
-    console.log("monitor onCreated");
-    //var currentDevice = Session.get("currentDevice");
     console.log("get currentDevice =", currentDevice());
     Meteor.call("publishDeviceData", currentDevice());
-    subscribeDeviceData();
+    subscribeDeviceData(currentDevice());
 });
 
 Template.monitor.helpers({

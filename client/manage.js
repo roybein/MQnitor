@@ -1,6 +1,5 @@
 getAllDevOfCurrentUser = function() {
     try {
-        console.log(currentUser());
         var dl = userProfileAll.collec.findOne({name:currentUser()}).deviceList;
         var devices = [];
         dl.forEach( function( elem, index, array) {
@@ -18,9 +17,10 @@ getAllDevOfCurrentUser = function() {
     }
 }
 
-Template.manage.onCreated( function() {
+Template.manage.onRendered( function() {
+    console.log("onRendered", currentUser());
     Meteor.call("publishUserData", currentUser());
-    subscribeUserData(); 
+    subscribeUserData(currentUser()); 
 });
 
 Template.manage.helpers({

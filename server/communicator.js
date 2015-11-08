@@ -137,7 +137,7 @@ onMsgUpBsCheckin = function(topic, message) {
 onMsgUpBsTarget = function(target, topic, message) {
     var Fiber = Npm.require('fibers');
     Fiber(function() {
-        if (Meteor.users.findOne({username: target}) !== undefined) {
+        if (deviceProfileAll.collec.findOne({name: target}) !== undefined) {
             //console.log("message from:", target);
             deviceProfileAll.collec.update({owner:target}, {$set:{isOnline:true}}); 
             var tpKey = topic.shift();
@@ -152,7 +152,7 @@ onMsgUpBsTarget = function(target, topic, message) {
                     console.log("unsupported topic key:", tpKey );
             }
         } else {
-            console.log("unrecognized user:", target);
+            console.log("unrecognized device:", target);
         }
     }).run();
 }
