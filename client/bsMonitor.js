@@ -27,7 +27,8 @@ subscribeUserData = function(username) {
 }
 
 subscribeDeviceData = function(devicename) {
-    console.log("subscribe device data if", devicename);
+    console.log("subscribe device data of", devicename);
+    Meteor.subscribe("deviceProfile@"+devicename);
     Meteor.subscribe("contact@"+devicename);
     Meteor.subscribe("plan@"+devicename);
 }
@@ -240,8 +241,7 @@ Template.oneContact.events({
     },
 });
 
-Template.monitor.onRendered( function() {
-    console.log("get currentDevice =", currentDevice());
+Template.monitor.onCreated( function() {
     Meteor.call("publishDeviceData", currentDevice());
     subscribeDeviceData(currentDevice());
 });

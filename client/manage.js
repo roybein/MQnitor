@@ -17,8 +17,7 @@ getAllDevOfCurrentUser = function() {
     }
 }
 
-Template.manage.onRendered( function() {
-    console.log("onRendered", currentUser());
+Template.manage.onCreated( function() {
     Meteor.call("publishUserData", currentUser());
     subscribeUserData(currentUser()); 
 });
