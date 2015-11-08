@@ -76,7 +76,7 @@ onMsgSys = function(topic, message) {
                 console.log("client disconnected: ", device);
                 var Fiber = Npm.require('fibers');
                 Fiber(function() {
-                    deviceProfileAll.collec.update({owner:device}, {$set:{isOnline:false}});
+                    deviceProfileAll.collec.update({name:device}, {$set:{isOnline:false}});
                 }).run();
                 break;
             case "new":
@@ -84,7 +84,7 @@ onMsgSys = function(topic, message) {
                 console.log("client connected: ", device);
                 var Fiber = Npm.require('fibers');
                 Fiber(function() {
-                    deviceProfileAll.collec.update({owner:device}, {$set:{isOnline:true}});
+                    deviceProfileAll.collec.update({name:device}, {$set:{isOnline:true}});
                 }).run();
                 break;
             default:
@@ -139,7 +139,7 @@ onMsgUpBsTarget = function(target, topic, message) {
     Fiber(function() {
         if (deviceProfileAll.collec.findOne({name: target}) !== undefined) {
             //console.log("message from:", target);
-            deviceProfileAll.collec.update({owner:target}, {$set:{isOnline:true}}); 
+            deviceProfileAll.collec.update({name:target}, {$set:{isOnline:true}}); 
             var tpKey = topic.shift();
             switch(tpKey) {
                 case "input":
@@ -202,7 +202,7 @@ doMsgDownBsTargetConfig = function(target) {
 }
 
 doMsgDownBsTargetConfigNetwork = function(target) {
-    var network = deviceProfileAll.collec.findOne({owner:target});
+    var network = deviceProfileAll.collec.findOne({name:target});
     var config = "ssid:" + network.ssid + "," + "password:" + network.pwd;
     console.log("netowrk config:", config);
     var topic = "/down/bs/" + target + "/config";
