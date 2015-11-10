@@ -1,4 +1,7 @@
 <template name="manage">
+
+  {{> topMenu}}
+
   <div class="ui container">
     {{> atNavButton}} 
 
@@ -7,6 +10,8 @@
         {{> device}}
       {{/each}}
     </div>
+
+    <button class="ui primary tiny right floated button" id="addDevice">Add Device</button>
 
   </div>
 </template>

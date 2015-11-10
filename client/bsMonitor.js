@@ -34,7 +34,8 @@ subscribeDeviceData = function(devicename) {
 }
 
 Template.topMenu.helpers({
-    username: currentDevice,
+    currentUser: currentUser,
+    currentDevice: currentDevice,
     isOnline: function() {
         try {
             return deviceProfileAll.collec.findOne({name:currentDevice()}).isOnline;
@@ -52,6 +53,9 @@ Template.topMenu.events({
         Session.set("oneNetwork", EJSON.toJSONValue(network));
         $('#oneNetworkModal')
             .modal('show');
+    },
+    "click #userButton": function (event, template) {
+        Router.go("manage");
     },
 });
 

@@ -1,29 +1,37 @@
 <template name='topMenu'>
   <div class="ui top fixed menu">
-    <div class="item">
-    </div>
-    <a class="item" href="/monitor" id="topMenuMonitor">Monitor</a>
-    <!--<a class="item" href="/config" id="topMenuSetup">Config</a>-->
+    <!--<a class="item" href="/monitor" id="topMenuMonitor">Monitor</a>-->
+    <!--<a class="item" href="/manage" id="topMenuManage">Manage</a>-->
     
     <div class="right menu">
 
+    {{#if currentDevice}}
       <div class="item">
         {{#if isOnline}}
           <div class="ui right big green labeled icon button" id="onlineButton">
             <i class="linkify icon"></i>
-            {{username}}
+            {{currentDevice}}
           </div>
         {{else}}
           <div class="ui right big grep labeled icon button" id="offlineButton" data-content="Link your device to internet">
             <i class="unlink icon"></i>
-            {{username}}
+            {{currentDevice}}
           </div>
         {{/if}}
+      </div>
+    {{/if}}
+
+      <div class="item">
+        <div class="ui right big violet labeled icon button" id="userButton">
+          <i class="user icon"></i>
+          {{currentUser}}
+        </div>
       </div>
 
       <div>
         {{> atNavButton}} 
       </div>
+
     </div>
   </div>
 
