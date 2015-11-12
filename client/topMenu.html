@@ -8,7 +8,7 @@
     {{#if currentDevice}}
       <div class="item">
         {{#if isOnline}}
-          <div class="ui right big green labeled icon button" id="onlineButton">
+          <div class="ui right big green labeled icon button" id="onlineButton" data-content="configure wifi connect">
             <i class="linkify icon"></i>
             {{currentDevice}}
           </div>
@@ -22,7 +22,7 @@
     {{/if}}
 
       <div class="item">
-        <div class="ui right big violet labeled icon button" id="userButton">
+        <div class="ui right big violet labeled icon button" id="userButton" data-content="Go to your device list">
           <i class="user icon"></i>
           {{currentUser}}
         </div>
@@ -66,5 +66,4 @@
       </div>
     </div>
   </div>
-
 </template>

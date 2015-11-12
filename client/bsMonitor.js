@@ -98,8 +98,9 @@ Template.oneNetwork.events({
 });
 
 Template.topMenu.onRendered( function() {
-    $("#offlineButton")
-      .popup();
+    $("#offlineButton").popup();
+    //$("#onlineButton").popup();
+    //$("#userButton").popup();
 });
 
 Template.contact.helpers({

@@ -2,33 +2,68 @@
 
   {{> topMenu}}
 
-  <div class="ui container">
-    {{> atNavButton}} 
+  <div class="ui container" style="margin-top: 50px">
+    <div class="ui segments">
 
-    <div class="ui middle aligned divided selection list">
-      {{#each devices}}
-        {{> device}}
-      {{/each}}
+      <div class="ui middle aligned celled selection list">
+        {{#each devices}}
+          {{> device}}
+        {{/each}}
+      </div>
+
+      <button class="ui primary tiny right floated button" id="addDevice">Add Device</button>
+
     </div>
-
-    <button class="ui primary tiny right floated button" id="addDevice">Add Device</button>
-
   </div>
+
+  <div class="ui large long modal" id="oneDeviceModal">
+    {{> oneDevice}}
+  </div>
+
 </template>
 
 <template name="device">
   <div class="item" id="device">
     <div class="right floated content">
-      <div class="ui button" id={{name}} name="editDevice">edit</div>
+      <!--<div class="ui button" id={{name}} name="editDevice">edit</div>-->
     </div>
 
-    <h2 class="ui header">
+    <h3 class="ui header">
       <i class="linkify icon"></i>
       <div class="content">
         {{name}}
         <div class="sub header">the device ID of {{name}}</div>
       </div>
-    </h2>
+    </h3>
   
   </div>
+</template>
+
+<template name="oneDevice">
+  <div class= "left floated header">
+    <a class="ui red ribbon label">Device</a>
+    <button class="ui primary right floated button" id="saveDevice">Save</button>
+  </div>
+
+  <div class="ui container">
+    <div class="ui segments">
+      <div class="ui red segment">
+        <div class="ui form">
+
+          <div class="two fields">
+            <div class="field">
+              <label>ID</label>
+              <input type="text" id="uuid" value={{oneDevice.name}}>
+            </div>
+            <div class="field">
+              <label>Name</label>
+              <input type="text" id="name" value={{oneDevice.alias}}>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </template>
