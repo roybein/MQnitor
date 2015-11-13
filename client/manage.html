@@ -5,7 +5,7 @@
   <div class="ui container" style="margin-top: 50px">
     <div class="ui segments">
 
-      <div class="ui middle aligned celled selection list">
+      <div class="ui middle aligned animated celled selected list">
         {{#each devices}}
           {{> device}}
         {{/each}}
@@ -23,19 +23,21 @@
 </template>
 
 <template name="device">
-  <div class="item" id="device">
+  <div class="item">
     <div class="right floated content">
-      <!--<div class="ui button" id={{name}} name="editDevice">edit</div>-->
+      <button class="ui mini button" id="editDevice">edit</button>
+      <button class="ui mini button" id="delDevice">delete</button>
     </div>
 
-    <h3 class="ui header">
+    <h3 class="ui header" id="device">
       <i class="linkify icon"></i>
       <div class="content">
-        {{name}}
+        {{alias}}
         <div class="sub header">the device ID of {{name}}</div>
       </div>
     </h3>
   
+
   </div>
 </template>
 

@@ -53,7 +53,7 @@ contactAll.addContact(email);
 var time = {owner:"864-test", localId:20, localName:"time", direction:"input", type:"time", name:"localTime", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(time);
 
-var deviceProfile = {owner:"god-test", name:"864-test", isOnline:false};
+var deviceProfile = {owner:"god-test", name:"864-test", alias:"unnamed", isOnline:false};
 deviceProfileAll.addProfile(deviceProfile);
 
 //var userProfile = {name:"god-test", deviceList:["864-test"]};

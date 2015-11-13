@@ -20,7 +20,7 @@ Template.manage.helpers({
 Template.manage.events({
     'click #addDevice': function(event, template) {
         console.log("addDevice");
-        var device = {name:"", alias:"", isOnline:false};
+        var device = {owner:"", name:"", alias:"", isOnline:false};
         Session.set("oneDevice", EJSON.toJSONValue(device));
         $('#oneDeviceModal')
             .modal('show');
@@ -29,9 +29,23 @@ Template.manage.events({
 
 Template.device.events({
     'click #device': function(event, template) {
-        //Session.set("currentDevice", this.name);
         console.log("go to monitor @", this.name);
         Router.go("monitor", {_id:this.name});
+    },
+    'click #editDevice': function(event, template) {
+        console.log("edit device", this.name);
+        var p = deviceProfileAll.getProfile(this.name);
+        console.log("edit profile:", p);
+        Session.set("oneDevice", EJSON.toJSONValue(p));
+        $('#oneDeviceModal')
+            .modal({observeChanges: true});
+        $('#oneDeviceModal')
+            .modal('show');
+        
+    },
+    'click #delDevice': function(event, template) {
+        console.log("delete device", this.name);
+        deviceProfileAll.delProfile(this.name);
     },
 });
 
@@ -51,22 +65,29 @@ Template.oneDevice.events({
     "click #saveDevice": function(event, template) {
         var device = EJSON.fromJSONValue(Session.get("oneDevice"));
         var d = deviceProfileAll.getProfile(device.name);
+
         if (typeof(d) === "undefined") {
             deviceProfileAll.addProfile(device);
             //TODO: add device data
             var d = deviceProfileAll.getProfile(device.name);
-            d.owner = currentUser();
-            deviceProfileAll.updateProfile(d);
+            device.owner = currentUser();
+            deviceProfileAll.updateProfile(device);
 
             console.log(d.name, "has been owned by", currentUser());
 
-            $('#oneDeviceModal')
-                .modal('hide');
+            $('#oneDeviceModal').modal('hide');
             return false;
         } else {
-            console.log("the device", device.name,
-                " has been added by someone, can not be added twice");
-            //TODO: notify
+            if(d.owner == currentUser()) {
+                console.log("want to update", device);
+                deviceProfileAll.updateProfile(device); 
+                $('#oneDeviceModal').modal('hide');
+                return false;
+            } else {
+                console.log("the device", device.name,
+                    " has been added by someone, can not be added twice");
+                //TODO: notify
+            }
         }
     },
 
