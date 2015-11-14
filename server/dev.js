@@ -1,3 +1,4 @@
+/*
 //Add Contacts For Test
 var AI1 = {owner:"864-dev", localId:1, localName:"AI1", direction:"input", port:"analog", type:"adc", name:"analog input 1", unit:"", value:null, description:"an analog input", planIdGroup:[], lock:"unlocked"};
 contactAll.addContact(AI1);
@@ -58,6 +59,8 @@ deviceProfileAll.addProfile(deviceProfile);
 
 //var userProfile = {name:"god-dev", deviceList:["864-dev"]};
 //userProfileAll.addProfile(userProfile);
+
+*/
 
 /*
 //Add Plan For Test

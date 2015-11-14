@@ -4,7 +4,7 @@ Accounts.onLogin(function() {
 
 currentUser = function() {
     try {
-        return Meteor.user().username;
+        return Meteor.user().emails[0].address;
     } catch (exception) {
         console.log(exception);
     }
