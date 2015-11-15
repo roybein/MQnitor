@@ -159,9 +159,18 @@ onMsgUpBsTarget = function(target, topic, message) {
 
 onMsgUpBsTargetInput = function(target, topic, message) {
     var tpKey = topic.shift();
-    var value = parseInt(message.toString());
-    contactAll.collec.update({owner:target, localName:tpKey},
-        {$set:{value:value}});
+    switch(tpKey) {
+        case "bundle":
+            var value = JSON.parse(message.toString());
+            for (var k in value) {
+                contactAll.collec.update({owner:target, localName:k},
+                    {$set:{value:value[k]}});
+            }
+        default:
+            var value = parseInt(message.toString());
+            contactAll.collec.update({owner:target, localName:tpKey},
+                {$set:{value:value}});
+    }
     //console.log("update input:", target, tpKey, value);
 }
 

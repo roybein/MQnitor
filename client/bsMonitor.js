@@ -271,7 +271,7 @@ Template.monitor.events({
         var defaultOutputForPlan = outputsForPlan[0]
         var plan = {owner:currentDevice(), localName:"new", name:null,
             outputId:defaultOutputForPlan.localName,
-            outputValue:defaultOutputForPlan.value,
+            outputValue:{value:defaultOutputForPlan.value},
             sendEmail:false,
             outputEmail:{to:"",from:"",subject:"",text:""},
             judgeGroup:[]};
@@ -353,7 +353,7 @@ Template.output.helpers({
 
     isValueChecked: function() {
         var output = contactAll.getContact(currentDevice(), this.localName);
-        if (output.value === "on") {
+        if (output.value.value === "on") {
             return "checked";
         } else {
             return "unchecked";
@@ -389,16 +389,22 @@ Template.output.onRendered( function() {
         onChecked: function() {
             console.log("checked value", this.id);
             var o = contactAll.collec.findOne({owner:currentDevice(), localName:this.id});
-            if (o === null) return;
-            Meteor.call("doMsgDownBsTargetOutput", currentDevice(), this.id, "on");
-            contactAll.collec.update({_id:o._id}, {$set:{value:"on"}});
+            if (o === null) {
+                return;
+            }
+            o.value.value = "on";
+            Meteor.call("doMsgDownBsTargetOutput", currentDevice(), this.id, JSON.stringify(o.value));
+            contactAll.updateContact(o);
         },
         onUnchecked: function() {
             console.log("unchecked value", this.id);
             var o = contactAll.collec.findOne({owner:currentDevice(), localName:this.id});
-            if (o === null) return;
-            Meteor.call("doMsgDownBsTargetOutput", currentDevice(), this.id, "off");
-            contactAll.collec.update({_id:o._id}, {$set:{value:"off"}});
+            if (o === null) {
+                return;
+            }
+            o.value.value = "off";
+            Meteor.call("doMsgDownBsTargetOutput", currentDevice(), this.id, JSON.stringify(o.value));
+            contactAll.updateContact(o);
         },
     });
 
@@ -450,7 +456,7 @@ planModalOnShow = function() {
     console.log("planModalOnShow");
     var plan = EJSON.fromJSONValue(Session.get("onePlan"));
     $('.outputForPlan#' + plan.outputId).attr("selected", "selected");
-    $('.outputValueForPlan#' + plan.outputValue).attr("selected", "selected");
+    $('.outputValueForPlan#' + plan.outputValue.value).attr("selected", "selected");
     getOutputsForPlan().forEach( function (elem, index, array) {
         if (elem.planId === null) {
             $('.outputForPlan#' + elem.localName).attr("disabled", null);
@@ -603,9 +609,15 @@ Template.onePlan.events({
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
 		var output = contactAll.collec.findOne({owner:currentDevice(), name:event.target.value});
         plan.outputId = output.localName;
-        if (plan.outputId === "email") {
+
+        var o = contactAll.getContact(plan.owner, plan.outputId);
+        if (o.type === "email") {
             plan.sendEmail = true;
         }
+        if (o.type === "pwm") {
+            plan.outputValue = {value:plan.outputValue.value, pwmFreq:"", pwmDuty:""};
+        }
+
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 /*
@@ -617,7 +629,21 @@ Template.onePlan.events({
     "change #planOutputValue": function (event, template) {
       	console.log(event.target.id, event.target.value);
         var plan = EJSON.fromJSONValue(Session.get("onePlan"));
-        plan.outputValue = event.target.value;
+        plan.outputValue.value = event.target.value;
+        Session.set("onePlan", EJSON.toJSONValue(plan));
+    },
+
+    "change #planOutputPwmFreq": function(event, template) {
+        console.log(event,target.id, event.target.value);
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        plan.outputValue.pwmFreq = event.target.value;
+        Session.set("onePlan", EJSON.toJSONValue(plan));
+    },
+
+    "change #planOutputPwmFreq": function(event, template) {
+        console.log(event,target.id, event.target.value);
+        var plan = EJSON.fromJSONValue(Session.get("onePlan"));
+        plan.outputValue.pwmDuty = event.target.value;
         Session.set("onePlan", EJSON.toJSONValue(plan));
     },
 

@@ -46,28 +46,28 @@ addAllContact = function(owner) {
     var DI6 = {owner:owner, localId:10, localName:"DI6", direction:"input", port:"digital", type:"switch", name:"digital input 6", unit:"", value:null, description:"a digital input", planIdGroup:[], lock:"unlocked"};
     contactAll.addContact(DI6);
     
-    var RELAY1 = {owner:owner, localId:11, localName:"RELAY1", direction:"output", port:"relay", type:"relay", name:"relay 1", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
+    var RELAY1 = {owner:owner, localId:11, localName:"RELAY1", direction:"output", port:"relay", type:"relay", name:"relay 1", value:{value:"off"}, description:"a relay", planId:null, planSwitch:"disabled"};
     contactAll.addContact(RELAY1);
 
-    var RELAY2 = {owner:owner, localId:12, localName:"RELAY2", direction:"output", port:"relay", type:"relay", name:"relay 2", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
+    var RELAY2 = {owner:owner, localId:12, localName:"RELAY2", direction:"output", port:"relay", type:"relay", name:"relay 2", value:{value:"off"}, description:"a relay", planId:null, planSwitch:"disabled"};
     contactAll.addContact(RELAY2);
 
-    var RELAY3 = {owner:owner, localId:13, localName:"RELAY3", direction:"output", port:"relay", type:"relay", name:"relay 3", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
+    var RELAY3 = {owner:owner, localId:13, localName:"RELAY3", direction:"output", port:"relay", type:"relay", name:"relay 3", value:{value:"off"}, description:"a relay", planId:null, planSwitch:"disabled"};
     contactAll.addContact(RELAY3);
 
-    var RELAY4 = {owner:owner, localId:14, localName:"RELAY4", direction:"output", port:"relay", type:"relay", name:"relay 4", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
+    var RELAY4 = {owner:owner, localId:14, localName:"RELAY4", direction:"output", port:"relay", type:"relay", name:"relay 4", value:{value:"off"}, description:"a relay", planId:null, planSwitch:"disabled"};
     contactAll.addContact(RELAY4);
 
-    var RELAY5 = {owner:owner, localId:15, localName:"RELAY5", direction:"output", port:"relay", type:"relay", name:"relay 5", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
+    var RELAY5 = {owner:owner, localId:15, localName:"RELAY5", direction:"output", port:"relay", type:"relay", name:"relay 5", value:{value:"off"}, description:"a relay", planId:null, planSwitch:"disabled"};
     contactAll.addContact(RELAY5);
 
-    var RELAY6 = {owner:owner, localId:16, localName:"RELAY6", direction:"output", port:"relay", type:"relay", name:"relay 6", value:"off", description:"a relay", planId:null, planSwitch:"disabled"};
+    var RELAY6 = {owner:owner, localId:16, localName:"RELAY6", direction:"output", port:"relay", type:"relay", name:"relay 6", value:{value:"off"}, description:"a relay", planId:null, planSwitch:"disabled"};
     contactAll.addContact(RELAY6);
     
-    var PWM1 = {owner:owner, localId:17, localName:"PWM1", direction:"output", port:"pwm", type:"pwm", name:"pwm 1", value:"off", freq:"0", duty:"50%", description:"a pwm output", planId:null, planSwitch:"disabled"}
+    var PWM1 = {owner:owner, localId:17, localName:"PWM1", direction:"output", port:"pwm", type:"pwm", name:"pwm 1", value:{value:"off", pwmFreq:"0", pwmDuty:"50"}, description:"a pwm output", planId:null, planSwitch:"disabled"}
     contactAll.addContact(PWM1);
 
-    var PWM2 = {owner:owner, localId:18, localName:"PWM2", direction:"output", port:"pwm", type:"pwm", name:"pwm 2", value:"off", freq:"0", duty:"50%", description:"a pwm output", planId:null, planSwitch:"disabled"}
+    var PWM2 = {owner:owner, localId:18, localName:"PWM2", direction:"output", port:"pwm", type:"pwm", name:"pwm 2", value:{value:"off", pwmFreq:"0", pwmDuty:"50"}, description:"a pwm output", planId:null, planSwitch:"disabled"}
     contactAll.addContact(PWM2);
     
     var email = {owner:owner, localId:19, localName:"email", direction:"output", type:"email", name:"email", planId:null};
