@@ -271,7 +271,7 @@ Template.monitor.events({
         var defaultOutputForPlan = outputsForPlan[0]
         var plan = {owner:currentDevice(), localName:"new", name:null,
             outputId:defaultOutputForPlan.localName,
-            outputValue:{value:defaultOutputForPlan.value},
+            outputValue:{value:defaultOutputForPlan.value.value},
             sendEmail:false,
             outputEmail:{to:"",from:"",subject:"",text:""},
             judgeGroup:[]};
