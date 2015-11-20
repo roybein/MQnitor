@@ -163,7 +163,10 @@ onMsgUpBsTargetInput = function(target, topic, message) {
         case "bundle":
             try {
                 //var value = JSON.parse(JSON.stringify(message.toString()));
-                var value = JSON.parse(message.slice(0, (message.length -1)).toString());
+                if (message[message.length -1] == '\0') {
+                    message.slice(0, message.length - 1);
+                }
+                var value = JSON.parse(message.toString());
                 for (var k in value) {
                     console.log(k, Number(value[k]));
                     contactAll.collec.update({owner:target, localName:k},
